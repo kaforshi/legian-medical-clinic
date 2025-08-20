@@ -1,0 +1,137 @@
+body {
+    font-family: 'Inter', sans-serif;
+}
+
+/* Smooth scroll behavior (fallback) */
+html {
+    scroll-behavior: smooth;
+}
+
+.hero-bg {
+    background-image: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('https://placehold.co/1920x1080/a0aec0/ffffff?text=Klinik+Modern');
+    background-size: cover;
+    background-position: center;
+    min-height: 80vh;
+}
+
+.section-title {
+    border-left: 4px solid #0d6efd;
+    padding-left: 1rem;
+}
+
+.navbar {
+    transition: background-color 0.3s ease;
+}
+
+.doctor-card img {
+    width: 150px;
+    height: 150px;
+    object-fit: cover;
+}
+
+.service-card .icon {
+    font-size: 3rem;
+    color: #0d6efd;
+}
+
+.accordion-button:not(.collapsed) {
+    color: #fff;
+    background-color: #0d6efd;
+}
+
+.accordion-button:focus {
+    box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, .25);
+}
+
+/* --- EFEK HOVER BARU --- */
+.service-card {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.service-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 .5rem 1.5rem rgba(0,0,0,.15)!important;
+}
+
+.doctor-card {
+    transition: transform 0.3s ease;
+}
+
+.doctor-card:hover {
+    transform: scale(1.05);
+}
+
+.nav-link {
+    transition: color 0.2s ease-in-out;
+}
+
+/* --- STYLING UNTUK MODAL KUESIONER --- */
+#questionnaireModal .modal-content {
+    border-radius: 15px;
+    border: none;
+}
+
+#questionnaireModal .modal-body {
+    padding: 2rem;
+}
+
+#questionnaireModal .btn-primary {
+    border-radius: 10px;
+    font-weight: 500;
+    transition: all 0.3s ease;
+}
+
+#questionnaireModal .btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(13, 110, 253, 0.3);
+}
+
+#questionnaireModal .btn-link {
+    color: #6c757d;
+    text-decoration: none;
+    font-weight: 500;
+}
+
+#questionnaireModal .btn-link:hover {
+    color: #0d6efd;
+    text-decoration: underline;
+}
+
+/* Modal animation */
+.modal.fade .modal-dialog {
+    transition: transform 0.3s ease-out;
+    transform: translate(0, -50px);
+}
+
+.modal.show .modal-dialog {
+    transform: none;
+}
+
+/* --- FIX UNTUK SCROLLING SETELAH MODAL DITUTUP --- */
+body:not(.modal-open) {
+    overflow: auto !important;
+    padding-right: 0 !important;
+}
+
+html:not(.modal-open) {
+    overflow: auto !important;
+}
+
+/* Pastikan scrolling selalu berfungsi */
+body {
+    overflow-y: auto !important;
+}
+
+html {
+    overflow-y: auto !important;
+}
+
+/* Reset untuk modal yang sudah ditutup */
+.modal:not(.show) {
+    pointer-events: none;
+}
+
+/* Pastikan tidak ada blocking untuk scrolling */
+.modal-backdrop:not(.show) {
+    display: none !important;
+}
