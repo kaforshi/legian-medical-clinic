@@ -12,6 +12,11 @@ class Localization
 {
     public function handle(Request $request, Closure $next)
     {
+        // Skip localization for admin routes
+        if ($request->is('admin*')) {
+            return $next($request);
+        }
+        
         // Jika ada data 'locale' di session, atur bahasa aplikasi sesuai session
         if (Session::has('locale')) {
             $locale = Session::get('locale');

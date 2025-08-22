@@ -4,6 +4,9 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\PageController;
 use App\Http\Controllers\LanguageController;
 
+// Include admin routes
+require __DIR__.'/admin.php';
+
 // Route untuk mengganti bahasa (harus di atas route lain)
 Route::get('lang/{locale}', [LanguageController::class, 'swap'])->name('lang.swap')->where('locale', 'id|en');
 

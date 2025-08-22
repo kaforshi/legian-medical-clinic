@@ -15,11 +15,14 @@
                 <li class="nav-item"><a class="nav-link" href="#contact">{{ __('messages.navContact') }}</a></li>
                 <li class="nav-item"><a class="nav-link" href="#faq">{{ __('messages.navFaq') }}</a></li>
             </ul>
-            <div class="ms-lg-3">
+            <div class="ms-lg-3 d-flex align-items-center gap-2">
                 <select id="language-switcher" class="form-select" onchange="location = this.value;">
                     <option value="{{ route('lang.swap', 'id') }}" @if(app()->getLocale() == 'id') selected @endif>Indonesia (ID)</option>
                     <option value="{{ route('lang.swap', 'en') }}" @if(app()->getLocale() == 'en') selected @endif>English (EN)</option>
                 </select>
+                <a href="{{ route('admin.login') }}" class="btn btn-outline-primary btn-sm" title="Admin Panel">
+                    <i class="fas fa-cog"></i>
+                </a>
             </div>
         </div>
     </div>

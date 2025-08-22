@@ -7,11 +7,102 @@ html {
     scroll-behavior: smooth;
 }
 
-.hero-bg {
-    background-image: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('https://placehold.co/1920x1080/a0aec0/ffffff?text=Klinik+Modern');
+/* Hero Slider Styles */
+.hero-section {
+    position: relative;
+    height: 100vh;
+    min-height: 600px;
+    overflow: hidden;
+}
+
+.hero-slide {
+    height: 100vh;
+    min-height: 600px;
     background-size: cover;
     background-position: center;
-    min-height: 80vh;
+    background-repeat: no-repeat;
+    position: relative;
+}
+
+.hero-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.4);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.hero-overlay .container {
+    z-index: 2;
+}
+
+#heroCarousel {
+    height: 100vh;
+    min-height: 600px;
+}
+
+#heroCarousel .carousel-item {
+    height: 100vh;
+    min-height: 600px;
+}
+
+#heroCarousel .carousel-indicators {
+    bottom: 30px;
+}
+
+#heroCarousel .carousel-indicators button {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    margin: 0 5px;
+    background-color: rgba(255, 255, 255, 0.5);
+    border: 2px solid rgba(255, 255, 255, 0.3);
+}
+
+#heroCarousel .carousel-indicators button.active {
+    background-color: #fff;
+    border-color: #fff;
+}
+
+#heroCarousel .carousel-control-prev,
+#heroCarousel .carousel-control-next {
+    width: 5%;
+    opacity: 0.8;
+}
+
+#heroCarousel .carousel-control-prev:hover,
+#heroCarousel .carousel-control-next:hover {
+    opacity: 1;
+}
+
+/* Fallback hero styles */
+.hero-bg {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    height: 100vh;
+    min-height: 600px;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .hero-section,
+    .hero-slide,
+    #heroCarousel,
+    #heroCarousel .carousel-item {
+        height: 70vh;
+        min-height: 500px;
+    }
+    
+    .hero-overlay h1 {
+        font-size: 2rem !important;
+    }
+    
+    .hero-overlay .lead {
+        font-size: 1rem !important;
+    }
 }
 
 .section-title {
@@ -134,4 +225,18 @@ html {
 /* Pastikan tidak ada blocking untuk scrolling */
 .modal-backdrop:not(.show) {
     display: none !important;
+}
+
+/* Sortable list styles */
+.sortable-ghost {
+    opacity: 0.5;
+    background-color: #f8f9fa;
+}
+
+.list-group-item {
+    cursor: move;
+}
+
+.list-group-item:hover {
+    background-color: #f8f9fa;
 }
