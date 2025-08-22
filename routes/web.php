@@ -23,6 +23,9 @@ Route::get('test-locale', function() {
     ]);
 });
 
+// Route untuk clear priority section
+Route::post('/clear-priority', [PageController::class, 'clearPriority'])->name('clear.priority');
+
 // Route untuk halaman utama, dengan parameter {section} yang opsional
 // Parameter ini digunakan untuk menentukan section mana yang akan diprioritaskan
 Route::get('/{section?}', [PageController::class, 'index'])->name('home');

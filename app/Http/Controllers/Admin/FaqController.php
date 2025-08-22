@@ -117,3 +117,4 @@ class FaqController extends Controller
             ->with('success', 'Status FAQ berhasil ' . $status . '!');
     }
 }
+

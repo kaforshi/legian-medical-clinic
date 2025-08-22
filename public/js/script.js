@@ -18,14 +18,12 @@ function setupSmoothScroll() {
     document.querySelectorAll('a[href^="#"]').forEach(anchor => {
         anchor.addEventListener('click', function (e) {
             e.preventDefault();
-            const targetId = this.getAttribute('href');
-            const targetElement = document.querySelector(targetId);
-
-            if (targetElement) {
-                const header = document.querySelector('nav.navbar');
-                const headerHeight = header ? header.offsetHeight : 0;
-                const targetPosition = targetElement.getBoundingClientRect().top + window.pageYOffset - headerHeight;
-
+            const target = document.querySelector(this.getAttribute('href'));
+            if (target) {
+                const navbar = document.querySelector('nav.navbar');
+                const navbarHeight = navbar ? navbar.offsetHeight : 0;
+                const targetPosition = target.offsetTop - navbarHeight - 20;
+                
                 window.scrollTo({
                     top: targetPosition,
                     behavior: 'smooth'
@@ -35,133 +33,82 @@ function setupSmoothScroll() {
     });
 }
 
-// Fungsi utama untuk menampilkan modal kuesioner
-function showQuestionnaire() {
-    console.log('Attempting to show questionnaire...');
-    
-    const modal = document.getElementById('questionnaireModal');
-    if (!modal) {
-        console.error('Modal element not found!');
-        return;
-    }
-    
-    console.log('Modal element found, showing...');
-    
-    // Coba dengan Bootstrap
-    if (typeof bootstrap !== 'undefined') {
-        try {
-            const bootstrapModal = new bootstrap.Modal(modal);
-            bootstrapModal.show();
-            console.log('Modal shown with Bootstrap');
-        } catch (error) {
-            console.error('Bootstrap error:', error);
-            // Fallback CSS
-            modal.style.display = 'block';
-            modal.classList.add('show');
-            document.body.classList.add('modal-open');
-        }
-    } else {
-        console.log('Bootstrap not available, using CSS');
-        modal.style.display = 'block';
-        modal.classList.add('show');
-        document.body.classList.add('modal-open');
-    }
-}
-
-// Fungsi untuk membersihkan backdrop modal
-function cleanupModalBackdrop() {
-    // Hapus backdrop Bootstrap
-    const backdrops = document.querySelectorAll('.modal-backdrop');
-    backdrops.forEach(backdrop => {
-        backdrop.remove();
-    });
-    
-    // Hapus class modal-open dari body
-    document.body.classList.remove('modal-open');
-    
-    // Hapus class show dari modal
-    const modal = document.getElementById('questionnaireModal');
-    if (modal) {
-        modal.classList.remove('show');
-        modal.style.display = 'none';
-    }
-    
-    // Pastikan scrolling berfungsi normal
-    document.body.style.overflow = '';
-    document.body.style.paddingRight = '';
-    document.documentElement.style.overflow = '';
-    
-    console.log('Modal backdrop cleaned up and scrolling restored');
-}
-
 // Event listener utama
 document.addEventListener('DOMContentLoaded', function() {
-    console.log('DOM loaded, checking questionnaire...');
-    
-    // Cek status kuesioner
-    const answered = sessionStorage.getItem('questionnaireAnswered');
-    console.log('Questionnaire answered:', answered);
-    
-    if (!answered) {
-        console.log('Will show questionnaire in 2 seconds...');
-        setTimeout(showQuestionnaire, 2000);
-    }
+    console.log('DOM loaded');
     
     // Setup smooth scroll
     setupSmoothScroll();
     
-    // Setup event handler untuk tombol skip
-    setupSkipButtonHandler();
+    // Setup FAQ search and filter
+    setupFaqSearchAndFilter();
 });
 
-// Fallback event listener
-window.addEventListener('load', function() {
-    console.log('Window loaded, checking questionnaire...');
+// FAQ Search and Filter functionality
+function setupFaqSearchAndFilter() {
+    const searchInput = document.getElementById('faq-search');
+    const searchBtn = document.getElementById('faq-search-btn');
+    const categoryFilter = document.getElementById('faq-category-filter');
+    const faqItems = document.querySelectorAll('#faq-accordion .accordion-item');
     
-    const answered = sessionStorage.getItem('questionnaireAnswered');
-    if (!answered) {
-        console.log('Will show questionnaire in 1 second...');
-        setTimeout(showQuestionnaire, 1000);
+    if (!searchInput || !categoryFilter) return;
+    
+    // Search functionality
+    function performSearch() {
+        const searchTerm = searchInput.value.toLowerCase().trim();
+        const selectedCategory = categoryFilter.value;
+        
+        faqItems.forEach(item => {
+            const question = item.querySelector('.accordion-button').textContent.toLowerCase();
+            const answer = item.querySelector('.accordion-body').textContent.toLowerCase();
+            const category = item.dataset.category || '';
+            
+            const matchesSearch = !searchTerm || question.includes(searchTerm) || answer.includes(searchTerm);
+            const matchesCategory = !selectedCategory || category === selectedCategory;
+            
+            if (matchesSearch && matchesCategory) {
+                item.style.display = 'block';
+                item.classList.remove('d-none');
+            } else {
+                item.style.display = 'none';
+                item.classList.add('d-none');
+            }
+        });
+        
+        // Show/hide no results message
+        const visibleItems = Array.from(faqItems).filter(item => item.style.display !== 'none');
+        const noResultsMsg = document.getElementById('faq-no-results');
+        
+        if (visibleItems.length === 0) {
+            if (!noResultsMsg) {
+                const msg = document.createElement('div');
+                msg.id = 'faq-no-results';
+                msg.className = 'text-center text-muted py-4';
+                msg.innerHTML = '<i class="fas fa-search fa-2x mb-3"></i><p>{{ __("messages.noFaqResults") }}</p>';
+                document.getElementById('faq-accordion').appendChild(msg);
+            }
+        } else if (noResultsMsg) {
+            noResultsMsg.remove();
+        }
     }
     
-    // Setup event handler untuk tombol skip
-    setupSkipButtonHandler();
-});
-
-// Setup skip button dengan event handler yang proper
-function setupSkipButtonHandler() {
-    const skipButton = document.querySelector('#questionnaireModal button[data-bs-dismiss="modal"]');
-    if (skipButton) {
-        // Hapus event listener lama jika ada
-        skipButton.removeEventListener('click', handleSkipClick);
-        // Tambahkan event listener baru
-        skipButton.addEventListener('click', handleSkipClick);
-        console.log('Skip button handler setup complete');
-    }
-}
-
-// Handler untuk tombol skip
-function handleSkipClick() {
-    console.log('Skip button clicked');
-    
-    // Simpan status bahwa kuesioner sudah dijawab
-    sessionStorage.setItem('questionnaireAnswered', 'true');
-    
-    // Hapus backdrop dan class modal-open jika ada
-    cleanupModalBackdrop();
-    
-    console.log('Questionnaire skipped and cleaned up');
-}
-
-// Event listener untuk modal hidden event (Bootstrap)
-document.addEventListener('DOMContentLoaded', function() {
-    const modal = document.getElementById('questionnaireModal');
-    if (modal) {
-        modal.addEventListener('hidden.bs.modal', function() {
-            console.log('Modal hidden event triggered');
-            cleanupModalBackdrop();
+    // Event listeners
+    if (searchInput) {
+        searchInput.addEventListener('input', performSearch);
+        searchInput.addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                performSearch();
+            }
         });
     }
-});
+    
+    if (searchBtn) {
+        searchBtn.addEventListener('click', performSearch);
+    }
+    
+    if (categoryFilter) {
+        categoryFilter.addEventListener('change', performSearch);
+    }
+}
 
-console.log('Questionnaire script loaded successfully');
+console.log('Script loaded successfully');

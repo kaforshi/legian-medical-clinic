@@ -4,6 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>Legian Medical Clinic - Pelayanan Kesehatan Terpercaya</title>
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -11,7 +12,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="{{ asset('css/style.css') }}">
 </head>
-<body class="bg-light text-dark" data-prioritized="{{ $prioritizedSection ?? '' }}">
+<body class="bg-light text-dark">
 
     {{-- Memanggil modal kuesioner --}}
     @include('partials._questionnaire_modal')
@@ -30,15 +31,28 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
     <script src="{{ asset('js/script.js') }}"></script>
     
-    {{-- Script langsung untuk memastikan modal kuesioner muncul --}}
+    {{-- Script untuk modal kuesioner --}}
     <script>
-        // Script langsung untuk modal kuesioner
+        // Script untuk modal kuesioner
         document.addEventListener('DOMContentLoaded', function() {
             console.log('Direct script: DOM loaded');
             
-            // Cek apakah kuesioner sudah dijawab
-            const answered = sessionStorage.getItem('questionnaireAnswered');
-            console.log('Direct script: Questionnaire answered:', answered);
+            // Cek apakah kuesioner sudah dijawab dari session dan sessionStorage
+            const sessionAnswered = {{ session('questionnaireAnswered') ? 'true' : 'false' }};
+            const flashAnswered = {{ session()->has('questionnaireAnswered') ? 'true' : 'false' }};
+            const storageAnswered = sessionStorage.getItem('questionnaireAnswered');
+            const answered = sessionAnswered === 'true' || flashAnswered === 'true' || storageAnswered === 'true';
+            
+            console.log('Direct script: Session answered:', sessionAnswered);
+            console.log('Direct script: Flash answered:', flashAnswered);
+            console.log('Direct script: Storage answered:', storageAnswered);
+            console.log('Direct script: Final answered status:', answered);
+            
+            // Jika session mengatakan sudah dijawab, simpan juga ke sessionStorage
+            if (sessionAnswered === 'true' || flashAnswered === 'true') {
+                sessionStorage.setItem('questionnaireAnswered', 'true');
+                console.log('Direct script: Synced session/flash to sessionStorage');
+            }
             
             if (!answered) {
                 console.log('Direct script: Will show questionnaire in 2 seconds...');
@@ -76,31 +90,9 @@
             
             // Setup event handler untuk tombol skip
             setupSkipButtonHandler();
-        });
-        
-        // Fallback jika DOMContentLoaded tidak terpanggil
-        window.addEventListener('load', function() {
-            console.log('Direct script: Window loaded');
             
-            const answered = sessionStorage.getItem('questionnaireAnswered');
-            if (!answered) {
-                setTimeout(function() {
-                    const modal = document.getElementById('questionnaireModal');
-                    if (modal) {
-                        if (typeof bootstrap !== 'undefined') {
-                            const bootstrapModal = new bootstrap.Modal(modal);
-                            bootstrapModal.show();
-                        } else {
-                            modal.style.display = 'block';
-                            modal.classList.add('show');
-                            document.body.classList.add('modal-open');
-                        }
-                    }
-                }, 1000);
-            }
-            
-            // Setup event handler untuk tombol skip
-            setupSkipButtonHandler();
+            // Setup event handler untuk form submission
+            setupQuestionnaireFormHandler();
         });
         
         // Fungsi untuk setup event handler tombol skip
@@ -146,6 +138,28 @@
             
             console.log('Modal backdrop cleaned up and scrolling restored');
         }
+        
+        // Fungsi untuk setup event handler form kuesioner
+        function setupQuestionnaireFormHandler() {
+            const form = document.getElementById('questionnaireForm');
+            if (form) {
+                form.addEventListener('submit', function(e) {
+                    console.log('Questionnaire form submitted');
+                    
+                    // Simpan status bahwa kuesioner sudah dijawab
+                    sessionStorage.setItem('questionnaireAnswered', 'true');
+                    
+                    // Biarkan form submit secara normal
+                    console.log('Form will submit normally');
+                });
+            }
+        }
+        
+        // Fungsi untuk clear questionnaire status (untuk testing)
+        window.clearQuestionnaireStatus = function() {
+            sessionStorage.removeItem('questionnaireAnswered');
+            console.log('Questionnaire status cleared from sessionStorage');
+        };
         
         // Event listener untuk modal hidden event (Bootstrap)
         document.addEventListener('DOMContentLoaded', function() {

@@ -36,8 +36,9 @@ return [
     // FAQ Section
     'faqTitle' => 'Pertanyaan Umum',
     'faqSubtitle' => 'Temukan jawaban untuk pertanyaan yang sering diajukan',
-    'noFaqs' => 'Belum ada FAQ',
-    'noFaqsMessage' => 'FAQ akan segera ditambahkan. Silakan hubungi kami untuk informasi lebih lanjut.',
+    'searchFaq' => 'Cari FAQ...',
+    'allCategories' => 'Semua Kategori',
+    'noFaqResults' => 'Tidak ada FAQ yang sesuai dengan kriteria pencarian Anda',
 
     // Common
     'learnMore' => 'Pelajari Lebih Lanjut',
@@ -45,4 +46,16 @@ return [
     'contactUs' => 'Hubungi Kami',
     'bookAppointment' => 'Buat Janji Temu',
     'readMore' => 'Baca Selengkapnya',
+
+    // Questionnaire
+    'questionnaireTitle' => 'Apa yang Anda cari?',
+    'questionnaireSubtitle' => 'Silakan pilih satu opsi untuk membantu kami melayani Anda dengan lebih baik',
+    'q1' => 'Saya membutuhkan informasi kontak resmi',
+    'q2' => 'Saya ingin mengetahui lokasi',
+    'q3' => 'Saya ingin mengetahui informasi tentang Anda',
+    'q4' => 'Saya tertarik dengan layanan Anda',
+    'skipButton' => 'Lewati',
+    'sectionPrioritized' => 'Section diprioritaskan berdasarkan jawaban kuesioner Anda',
+
+
 ];

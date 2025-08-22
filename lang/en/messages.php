@@ -36,8 +36,9 @@ return [
     // FAQ Section
     'faqTitle' => 'Frequently Asked Questions',
     'faqSubtitle' => 'Find answers to commonly asked questions',
-    'noFaqs' => 'No FAQs Available',
-    'noFaqsMessage' => 'FAQs will be added soon. Please contact us for more information.',
+    'searchFaq' => 'Search FAQ...',
+    'allCategories' => 'All Categories',
+    'noFaqResults' => 'No FAQ found matching your search criteria',
 
     // Common
     'learnMore' => 'Learn More',
@@ -45,4 +46,16 @@ return [
     'contactUs' => 'Contact Us',
     'bookAppointment' => 'Book Appointment',
     'readMore' => 'Read More',
+
+    // Questionnaire
+    'questionnaireTitle' => 'What are you looking for?',
+    'questionnaireSubtitle' => 'Please select one option to help us serve you better',
+    'q1' => 'I need official contact information',
+    'q2' => 'I want to know the location',
+    'q3' => 'I want to know information about you',
+    'q4' => 'I am interested in your services',
+    'skipButton' => 'Skip',
+    'sectionPrioritized' => 'Section prioritized based on your questionnaire answer',
+
+
 ];

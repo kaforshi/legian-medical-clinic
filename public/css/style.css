@@ -86,6 +86,8 @@ html {
     min-height: 600px;
 }
 
+
+
 /* Responsive adjustments */
 @media (max-width: 768px) {
     .hero-section,
@@ -162,6 +164,23 @@ html {
     border: none;
 }
 
+/* --- STYLING UNTUK HIGHLIGHT SECTION SETELAH KUESIONER --- */
+.questionnaire-highlight {
+    animation: questionnairePulse 0.6s ease-in-out;
+    box-shadow: 0 0 20px rgba(13, 110, 253, 0.3);
+    border: 2px solid #0d6efd;
+    border-radius: 8px;
+}
+
+
+
+
+
+/* Smooth scroll behavior untuk semua browser */
+html {
+    scroll-behavior: smooth;
+}
+
 #questionnaireModal .modal-body {
     padding: 2rem;
 }
@@ -186,6 +205,143 @@ html {
 #questionnaireModal .btn-link:hover {
     color: #0d6efd;
     text-decoration: underline;
+}
+
+/* FAQ Section Styling */
+#faq .accordion-item {
+    border: 1px solid #dee2e6;
+    border-radius: 8px;
+    margin-bottom: 1rem;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+    transition: all 0.3s ease;
+}
+
+#faq .accordion-item:hover {
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    transform: translateY(-2px);
+}
+
+#faq .accordion-button {
+    background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+    border: none;
+    border-radius: 8px 8px 0 0;
+    font-weight: 600;
+    color: #495057;
+    padding: 1.25rem;
+}
+
+#faq .accordion-button:not(.collapsed) {
+    background: linear-gradient(135deg, #0d6efd 0%, #0056b3 100%);
+    color: white;
+    box-shadow: 0 4px 8px rgba(13, 110, 253, 0.3);
+}
+
+#faq .accordion-button:focus {
+    box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.25);
+}
+
+#faq .accordion-body {
+    background: #ffffff;
+    border-radius: 0 0 8px 8px;
+    padding: 1.5rem;
+    line-height: 1.6;
+}
+
+#faq .badge {
+    font-size: 0.75rem;
+    padding: 0.375rem 0.75rem;
+}
+
+#faq .input-group {
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+#faq .form-control:focus {
+    border-color: #0d6efd;
+    box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.25);
+}
+
+#faq .form-select:focus {
+    border-color: #0d6efd;
+    box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.25);
+}
+
+#faq .btn-outline-secondary:hover {
+    background-color: #0d6efd;
+    border-color: #0d6efd;
+    color: white;
+}
+
+/* FAQ Search Results */
+#faq-no-results {
+    background: #f8f9fa;
+    border-radius: 8px;
+    border: 2px dashed #dee2e6;
+}
+
+#faq-no-results i {
+    color: #6c757d;
+}
+
+#faq-no-results p {
+    margin: 0;
+    font-size: 1.1rem;
+    color: #6c757d;
+}
+
+/* Section yang diprioritaskan di atas hero */
+.prioritized-section-above-hero {
+    position: relative;
+    background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+    border-bottom: 4px solid #0d6efd;
+    box-shadow: 0 4px 12px rgba(13, 110, 253, 0.15);
+    animation: slideDown 0.6s ease-out;
+    z-index: 10;
+    margin-bottom: 0;
+    order: -1; /* Pastikan berada di urutan paling atas */
+}
+
+@keyframes slideDown {
+    from {
+        transform: translateY(-100%);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+.prioritized-section-above-hero::before {
+    content: '⭐ Section yang Direkomendasikan';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    background: linear-gradient(90deg, #0d6efd, #0056b3);
+    color: white;
+    text-align: center;
+    padding: 0.5rem;
+    font-size: 0.875rem;
+    font-weight: 600;
+    z-index: 1;
+}
+
+.prioritized-section-above-hero .container {
+    padding-top: 3rem;
+}
+
+.prioritized-section-above-hero .section-title {
+    color: #0d6efd;
+    font-weight: 700;
+}
+
+.prioritized-section-above-hero .section-title::after {
+    content: ' ⭐';
+    color: #ffc107;
+    font-size: 0.8em;
 }
 
 /* Modal animation */

@@ -11,7 +11,7 @@ class ContentController extends Controller
 {
     public function index()
     {
-        $pageKeys = ['about_us', 'contact'];
+        $pageKeys = ['about_us', 'faq', 'contact'];
         $pages = collect($pageKeys)->mapWithKeys(function ($pageKey) {
             return [
                 $pageKey => [
@@ -27,15 +27,15 @@ class ContentController extends Controller
 
     public function edit($pageKey)
     {
-        $pageId = ContentPage::where('page_key', $pageKey)
+        $contentId = ContentPage::where('page_key', $pageKey)
             ->where('locale', 'id')
             ->first();
         
-        $pageEn = ContentPage::where('page_key', $pageKey)
+        $contentEn = ContentPage::where('page_key', $pageKey)
             ->where('locale', 'en')
             ->first();
 
-        return view('admin.content.edit', compact('pageId', 'pageEn', 'pageKey'));
+        return view('admin.content.edit', compact('contentId', 'contentEn', 'pageKey'));
     }
 
     public function update(Request $request, $pageKey)
@@ -103,6 +103,7 @@ class ContentController extends Controller
     {
         $titles = [
             'about_us' => 'Tentang Kami',
+            'faq' => 'Pertanyaan Umum',
             'contact' => 'Kontak'
         ];
 
