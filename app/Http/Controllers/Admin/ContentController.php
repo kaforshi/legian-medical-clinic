@@ -27,15 +27,15 @@ class ContentController extends Controller
 
     public function edit($pageKey)
     {
-        $contentId = ContentPage::where('page_key', $pageKey)
+        $pageId = ContentPage::where('page_key', $pageKey)
             ->where('locale', 'id')
             ->first();
         
-        $contentEn = ContentPage::where('page_key', $pageKey)
+        $pageEn = ContentPage::where('page_key', $pageKey)
             ->where('locale', 'en')
             ->first();
 
-        return view('admin.content.edit', compact('contentId', 'contentEn', 'pageKey'));
+        return view('admin.content.edit', compact('pageId', 'pageEn', 'pageKey'));
     }
 
     public function update(Request $request, $pageKey)

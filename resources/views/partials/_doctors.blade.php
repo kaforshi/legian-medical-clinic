@@ -12,9 +12,6 @@
                         <img src="{{ $doctor->photo_url }}" alt="{{ $doctor->name }}" class="rounded-circle shadow-lg mb-3" style="width: 150px; height: 150px; object-fit: cover;">
                         <h5 class="fw-bold mb-0">{{ $doctor->name }}</h5>
                         <p class="text-muted">{{ $doctor->specialization }}</p>
-                        @if($doctor->description)
-                            <p class="text-muted small">{{ Str::limit($doctor->description, 100) }}</p>
-                        @endif
                     </div>
                 </div>
                 @endforeach

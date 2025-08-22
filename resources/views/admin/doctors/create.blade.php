@@ -54,76 +54,11 @@
                         </div>
                     </div>
                     
-                    <div class="row">
-                        <div class="col-md-6">
-                            <div class="mb-3">
-                                <label for="email" class="form-label">Email</label>
-                                <input type="email" 
-                                       class="form-control @error('email') is-invalid @enderror" 
-                                       id="email" 
-                                       name="email" 
-                                       value="{{ old('email') }}">
-                                @error('email')
-                                    <div class="invalid-feedback">{{ $message }}</div>
-                                @enderror
-                            </div>
-                        </div>
-                        
-                        <div class="col-md-6">
-                            <div class="mb-3">
-                                <label for="phone" class="form-label">Telepon</label>
-                                <input type="text" 
-                                       class="form-control @error('phone') is-invalid @enderror" 
-                                       id="phone" 
-                                       name="phone" 
-                                       value="{{ old('phone') }}">
-                                @error('phone')
-                                    <div class="invalid-feedback">{{ $message }}</div>
-                                @enderror
-                            </div>
-                        </div>
-                    </div>
+
                     
-                    <div class="mb-3">
-                        <label for="education" class="form-label">Pendidikan</label>
-                        <input type="text" 
-                               class="form-control @error('education') is-invalid @enderror" 
-                               id="education" 
-                               name="education" 
-                               value="{{ old('education') }}">
-                        @error('education')
-                            <div class="invalid-feedback">{{ $message }}</div>
-                        @enderror
-                    </div>
+
                     
-                    <div class="mb-3">
-                        <label for="description" class="form-label">Deskripsi <span class="text-danger">*</span></label>
-                        <textarea class="form-control wysiwyg-editor @error('description') is-invalid @enderror" 
-                                  id="description" 
-                                  name="description" 
-                                  rows="4" 
-                                  required>{{ old('description') }}</textarea>
-                        @error('description')
-                            <div class="invalid-feedback">{{ $message }}</div>
-                        @enderror
-                        <small class="form-text text-muted">
-                            Gunakan toolbar di atas untuk formatting teks. Tidak perlu HTML.
-                        </small>
-                    </div>
-                    
-                    <div class="mb-3">
-                        <label for="experience" class="form-label">Pengalaman</label>
-                        <textarea class="form-control wysiwyg-editor @error('experience') is-invalid @enderror" 
-                                  id="experience" 
-                                  name="experience" 
-                                  rows="3">{{ old('experience') }}</textarea>
-                        @error('experience')
-                            <div class="invalid-feedback">{{ $message }}</div>
-                        @enderror
-                        <small class="form-text text-muted">
-                            Gunakan toolbar di atas untuk formatting teks. Tidak perlu HTML.
-                        </small>
-                    </div>
+
                     
                     <div class="mb-3">
                         <div class="form-check">

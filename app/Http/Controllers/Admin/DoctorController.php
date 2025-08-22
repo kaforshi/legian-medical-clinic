@@ -27,11 +27,6 @@ class DoctorController extends Controller
         $request->validate([
             'name' => 'required|string|max:255',
             'specialization' => 'required|string|max:255',
-            'description' => 'required|string',
-            'email' => 'nullable|email|max:255',
-            'phone' => 'nullable|string|max:20',
-            'education' => 'nullable|string|max:255',
-            'experience' => 'nullable|string',
             'photo' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
             'is_active' => 'boolean'
         ]);
@@ -72,11 +67,6 @@ class DoctorController extends Controller
         $request->validate([
             'name' => 'required|string|max:255',
             'specialization' => 'required|string|max:255',
-            'description' => 'required|string',
-            'email' => 'nullable|email|max:255',
-            'phone' => 'nullable|string|max:20',
-            'education' => 'nullable|string|max:255',
-            'experience' => 'nullable|string',
             'photo' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
             'is_active' => 'boolean'
         ]);

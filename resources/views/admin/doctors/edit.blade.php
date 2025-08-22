@@ -55,70 +55,11 @@
                         </div>
                     </div>
                     
-                    <div class="row">
-                        <div class="col-md-6">
-                            <div class="mb-3">
-                                <label for="email" class="form-label">Email</label>
-                                <input type="email" 
-                                       class="form-control @error('email') is-invalid @enderror" 
-                                       id="email" 
-                                       name="email" 
-                                       value="{{ old('email', $doctor->email) }}">
-                                @error('email')
-                                    <div class="invalid-feedback">{{ $message }}</div>
-                                @enderror
-                            </div>
-                        </div>
-                        
-                        <div class="col-md-6">
-                            <div class="mb-3">
-                                <label for="phone" class="form-label">Telepon</label>
-                                <input type="text" 
-                                       class="form-control @error('phone') is-invalid @enderror" 
-                                       id="phone" 
-                                       name="phone" 
-                                       value="{{ old('phone', $doctor->phone) }}">
-                                @error('phone')
-                                    <div class="invalid-feedback">{{ $message }}</div>
-                                @enderror
-                            </div>
-                        </div>
-                    </div>
+
                     
-                    <div class="mb-3">
-                        <label for="education" class="form-label">Pendidikan</label>
-                        <input type="text" 
-                               class="form-control @error('education') is-invalid @enderror" 
-                               id="education" 
-                               name="education" 
-                               value="{{ old('education', $doctor->education) }}">
-                        @error('education')
-                            <div class="invalid-feedback">{{ $message }}</div>
-                        @enderror
-                    </div>
+
                     
-                    <div class="mb-3">
-                        <label for="description" class="form-label">Deskripsi <span class="text-danger">*</span></label>
-                        <textarea class="form-control @error('description') is-invalid @enderror" 
-                                  id="description" 
-                                  name="description" 
-                                  rows="4" 
-                                  required>{{ old('description', $doctor->description) }}</textarea>
-                        @error('description')
-                            <div class="invalid-feedback">{{ $message }}</div>
-                        @enderror
-                    </div>
-                    
-                    <div class="mb-3">
-                        <label for="experience" class="form-label">Pengalaman</label>
-                        <textarea class="form-control @error('experience') is-invalid @enderror" 
-                                  id="experience" 
-                                  name="experience" 
-                                  rows="3">{{ old('experience', $doctor->experience) }}</textarea>
-                        @error('experience')
-                            <div class="invalid-feedback">{{ $message }}</div>
-                        @enderror
-                    </div>
+
                     
                     <div class="mb-3">
                         <div class="form-check">

@@ -25,7 +25,6 @@
                             <th>Foto</th>
                             <th>Nama</th>
                             <th>Spesialisasi</th>
-                            <th>Email</th>
                             <th>Status</th>
                             <th>Aksi</th>
                         </tr>
@@ -41,7 +40,6 @@
                             </td>
                             <td>{{ $doctor->name }}</td>
                             <td>{{ $doctor->specialization }}</td>
-                            <td>{{ $doctor->email ?? '-' }}</td>
                             <td>
                                 @if($doctor->is_active)
                                     <span class="badge bg-success">Aktif</span>
