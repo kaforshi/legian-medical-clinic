@@ -1,5 +1,6 @@
 body {
     font-family: 'Inter', sans-serif;
+    padding-top: 76px; /* Height of fixed navbar + some margin */
 }
 
 /* Smooth scroll behavior (fallback) */
@@ -79,17 +80,68 @@ html {
     opacity: 1;
 }
 
-/* Fallback hero styles */
+/* Hero background with image */
 .hero-bg {
     background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
     height: 100vh;
     min-height: 600px;
+    position: relative;
+}
+
+/* Hero overlay for better text readability */
+.hero-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
 }
 
 
 
 /* Responsive adjustments */
 @media (max-width: 768px) {
+    body {
+        padding-top: 66px; /* Smaller padding for mobile navbar */
+    }
+    
+    /* Mobile navbar adjustments */
+    .navbar-collapse .w-100 {
+        flex-direction: column !important;
+        align-items: center !important;
+        gap: 1rem;
+    }
+    
+    .navbar-spacer {
+        display: none !important;
+    }
+    
+    .navbar-nav {
+        flex-direction: column !important;
+        width: 100%;
+        text-align: center;
+        margin-bottom: 1rem;
+    }
+    
+    .navbar-nav .nav-link {
+        padding: 0.75rem 1rem;
+        border-bottom: 1px solid rgba(0,0,0,0.1);
+        width: 100%;
+    }
+    
+    .navbar-nav .nav-link:last-child {
+        border-bottom: none;
+    }
+    
     .hero-section,
     .hero-slide,
     #heroCarousel,
@@ -112,8 +164,42 @@ html {
     padding-left: 1rem;
 }
 
+/* Enhanced Fixed Navbar */
 .navbar {
-    transition: background-color 0.3s ease;
+    transition: all 0.3s ease;
+    z-index: 1030 !important;
+}
+
+/* Navbar center menu styling */
+.navbar-nav {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 1rem;
+}
+
+.navbar-nav .nav-link {
+    padding: 0.5rem 1rem;
+    font-weight: 500;
+    transition: all 0.3s ease;
+}
+
+.navbar-nav .nav-link:hover {
+    color: #0d6efd !important;
+    transform: translateY(-2px);
+}
+
+/* Fixed navbar styling */
+.navbar.fixed-top {
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+}
+
+/* Navbar scroll effect */
+.navbar-scrolled {
+    background-color: rgba(255, 255, 255, 0.95) !important;
+    box-shadow: 0 2px 20px rgba(0, 0, 0, 0.1) !important;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
 }
 
 .doctor-card img {
@@ -205,6 +291,59 @@ html {
 #questionnaireModal .btn-link:hover {
     color: #0d6efd;
     text-decoration: underline;
+}
+
+/* Language Switcher Styling */
+.language-switcher {
+    position: relative;
+}
+
+/* Questionnaire Language Switcher - sama seperti navbar */
+#questionnaire-language-switcher {
+    min-width: 160px;
+    border: 1px solid #dee2e6;
+    border-radius: 6px;
+    background: white;
+    font-size: 0.875rem;
+    padding: 0.375rem 0.75rem;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+}
+
+
+
+#questionnaire-language-switcher:focus {
+    border-color: #0d6efd;
+    box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.25);
+}
+
+#questionnaire-language-switcher:hover {
+    border-color: #adb5bd;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+/* Modal header styling */
+#questionnaireModal .modal-header {
+    background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+    border-bottom: 1px solid #dee2e6;
+    padding: 1rem 1.5rem 0.5rem;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#questionnaireModal .modal-header .language-switcher {
+    margin: 0;
+    display: flex;
+    justify-content: center;
+    width: auto;
+}
+
+/* Styling untuk option dalam dropdown */
+#questionnaire-language-switcher option {
+    padding: 0.5rem;
+    font-size: 0.875rem;
 }
 
 /* FAQ Section Styling */

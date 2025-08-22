@@ -6,11 +6,18 @@
         </div>
         
         @if(isset($faqs) && $faqs->count() > 0)
+            {{-- Debug Info (remove this after fixing) --}}
+            <!-- DEBUG: Current locale = {{ app()->getLocale() }} -->
+            <!-- DEBUG: Search FAQ message = {{ __('messages.searchFaq') }} -->
+            <!-- DEBUG: All Categories message = {{ __('messages.allCategories') }} -->
+            
             {{-- Search and Filter Section --}}
             <div class="row justify-content-center mb-4">
                 <div class="col-lg-6">
                     <div class="input-group">
-                        <input type="text" id="faq-search" class="form-control" placeholder="{{ __('messages.searchFaq') }}" aria-label="{{ __('messages.searchFaq') }}">
+                        <input type="text" id="faq-search" class="form-control" 
+                               placeholder="{{ app()->getLocale() === 'id' ? 'Cari FAQ...' : 'Search FAQ...' }}" 
+                               aria-label="{{ app()->getLocale() === 'id' ? 'Cari FAQ...' : 'Search FAQ...' }}">
                         <button class="btn btn-outline-secondary" type="button" id="faq-search-btn">
                             <i class="fas fa-search"></i>
                         </button>
@@ -18,7 +25,7 @@
                 </div>
                 <div class="col-lg-3">
                     <select id="faq-category-filter" class="form-select">
-                        <option value="">{{ __('messages.allCategories') }}</option>
+                        <option value="">{{ app()->getLocale() === 'id' ? 'Semua Kategori' : 'All Categories' }}</option>
                         @php
                             $categories = $faqs->pluck('category')->filter()->unique()->sort();
                         @endphp

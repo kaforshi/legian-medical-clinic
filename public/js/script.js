@@ -33,6 +33,29 @@ function setupSmoothScroll() {
     });
 }
 
+// Fungsi untuk setup fixed navbar scroll effect
+function setupFixedNavbar() {
+    const navbar = document.querySelector('.navbar');
+    
+    if (!navbar) {
+        console.log('Navbar not found, skipping navbar setup');
+        return;
+    }
+
+    console.log('Setting up fixed navbar with scroll effects');
+    
+    window.addEventListener('scroll', function() {
+        const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+        
+        // Add/remove scrolled class for visual effects
+        if (scrollTop > 50) {
+            navbar.classList.add('navbar-scrolled');
+        } else {
+            navbar.classList.remove('navbar-scrolled');
+        }
+    });
+}
+
 // Event listener utama
 document.addEventListener('DOMContentLoaded', function() {
     console.log('DOM loaded');
@@ -42,6 +65,9 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Setup FAQ search and filter
     setupFaqSearchAndFilter();
+    
+    // Setup fixed navbar
+    setupFixedNavbar();
 });
 
 // FAQ Search and Filter functionality
