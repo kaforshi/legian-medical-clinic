@@ -1,5 +1,5 @@
 <section id="home" class="hero-section">
-    <div class="hero-bg text-white d-flex align-items-center" style="background-image: url('{{ asset('images/hero.png') }}');">
+    <div class="hero-bg text-white d-flex align-items-center" style="background-image: url('{{ asset('images/hero.jpg') }}');">
         <div class="hero-overlay d-flex align-items-center">
             <div class="container text-center">
                 <h1 class="display-3 fw-bold mb-3">{{ __('messages.heroTitle') }}</h1>
