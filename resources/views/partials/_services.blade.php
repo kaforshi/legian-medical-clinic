@@ -17,8 +17,8 @@
                                     <i class="fas {{ $service->icon ?? 'fa-stethoscope' }}"></i>
                                 @endif
                             </div>
-                            <h5 class="card-title fw-bold">{{ $service->name }}</h5>
-                            <p class="card-text text-muted">{{ $service->description }}</p>
+                            <h5 class="card-title fw-bold">{{ $service->localized_name }}</h5>
+                            <div class="card-text text-muted">{!! $service->localized_description !!}</div>
                             @if($service->price)
                                 <p class="text-primary fw-bold">Rp {{ number_format($service->price, 0, ',', '.') }}</p>
                             @endif

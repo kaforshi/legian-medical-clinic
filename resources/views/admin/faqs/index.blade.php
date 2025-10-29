@@ -48,7 +48,9 @@
                                 </td>
                                 <td>{{ $faq->sort_order }}</td>
                                 <td>
-                                    @if($faq->is_active)
+                                    @if($faq->trashed())
+                                        <span class="badge bg-dark">Terhapus</span>
+                                    @elseif($faq->is_active)
                                         <span class="badge bg-success">Aktif</span>
                                     @else
                                         <span class="badge bg-danger">Nonaktif</span>

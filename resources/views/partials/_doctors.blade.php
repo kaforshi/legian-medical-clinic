@@ -10,8 +10,8 @@
                 <div class="col">
                     <div class="doctor-card">
                         <img src="{{ $doctor->photo_url }}" alt="{{ $doctor->name }}" class="rounded-circle shadow-lg mb-3" style="width: 150px; height: 150px; object-fit: cover;">
-                        <h5 class="fw-bold mb-0">{{ $doctor->name }}</h5>
-                        <p class="text-muted">{{ $doctor->specialization }}</p>
+                        <h5 class="fw-bold mb-0">{{ $doctor->localized_name }}</h5>
+                        <p class="text-muted">{{ $doctor->localized_specialization }}</p>
                     </div>
                 </div>
                 @endforeach

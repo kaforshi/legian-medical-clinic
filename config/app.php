@@ -98,6 +98,19 @@ return [
 
     /*
     |--------------------------------------------------------------------------
+    | Auto Translate
+    |--------------------------------------------------------------------------
+    |
+    | Enable automatic translation for multilingual content when one language
+    | is missing. When enabled, if admin only fills one language, the system
+    | will automatically translate it to the other language when displayed.
+    |
+    */
+
+    'auto_translate' => env('AUTO_TRANSLATE', true),
+
+    /*
+    |--------------------------------------------------------------------------
     | Encryption Key
     |--------------------------------------------------------------------------
     |

@@ -142,44 +142,44 @@
                 <div class="row">
                     <div class="col-md-6">
                         <div class="mb-3">
-                            <label for="meta_address" class="form-label">Alamat</label>
+                            <label for="address" class="form-label">Alamat</label>
                             <input type="text" 
                                    class="form-control" 
-                                   id="meta_address" 
-                                   name="meta_data[address]" 
-                                   value="{{ old('meta_data.address', $pageId->getMetaDataValue('address') ?? '') }}">
+                                   id="address" 
+                                   name="address" 
+                                   value="{{ old('address', $pageId?->getMetaDataValue('address') ?? '') }}">
                         </div>
                     </div>
                     <div class="col-md-6">
                         <div class="mb-3">
-                            <label for="meta_phone" class="form-label">Telepon</label>
+                            <label for="phone" class="form-label">Telepon</label>
                             <input type="text" 
                                    class="form-control" 
-                                   id="meta_phone" 
-                                   name="meta_data[phone]" 
-                                   value="{{ old('meta_data.phone', $pageId->getMetaDataValue('phone') ?? '') }}">
+                                   id="phone" 
+                                   name="phone" 
+                                   value="{{ old('phone', $pageId?->getMetaDataValue('phone') ?? '') }}">
                         </div>
                     </div>
                 </div>
                 <div class="row">
                     <div class="col-md-6">
                         <div class="mb-3">
-                            <label for="meta_email" class="form-label">Email</label>
+                            <label for="email" class="form-label">Email</label>
                             <input type="email" 
                                    class="form-control" 
-                                   id="meta_email" 
-                                   name="meta_data[email]" 
-                                   value="{{ old('meta_data.email', $pageId->getMetaDataValue('email') ?? '') }}">
+                                   id="email" 
+                                   name="email" 
+                                   value="{{ old('email', $pageId?->getMetaDataValue('email') ?? '') }}">
                         </div>
                     </div>
                     <div class="col-md-6">
                         <div class="mb-3">
-                            <label for="meta_hours" class="form-label">Jam Operasional</label>
+                            <label for="working_hours" class="form-label">Jam Operasional</label>
                             <input type="text" 
                                    class="form-control" 
-                                   id="meta_hours" 
-                                   name="meta_data[hours]" 
-                                   value="{{ old('meta_data.hours', $pageId->getMetaDataValue('hours') ?? '') }}">
+                                   id="working_hours" 
+                                   name="working_hours" 
+                                   value="{{ old('working_hours', $pageId?->getMetaDataValue('working_hours') ?? '') }}">
                         </div>
                     </div>
                 </div>

@@ -21,6 +21,11 @@ class LanguageController extends Controller
         // Set locale baru
         App::setLocale($locale);
         Session::put('locale', $locale);
+        
+        // Tidak perlu clear cache karena:
+        // 1. Cache key sudah include current locale, jadi setiap bahasa punya cache terpisah
+        // 2. Accessor akan dipanggil ulang dengan locale baru, menghasilkan cache key baru
+        // 3. Cache akan expired secara natural setelah 30 hari
 
         // Jika request AJAX, return JSON response
         if (request()->ajax()) {

@@ -12,7 +12,8 @@ class FaqController extends Controller
 {
     public function index()
     {
-        $faqs = Faq::orderBy('sort_order')->paginate(10);
+        // Include soft-deleted FAQs in admin panel
+        $faqs = Faq::withTrashed()->orderBy('sort_order')->paginate(10);
         return view('admin.faqs.index', compact('faqs'));
     }
 
@@ -33,7 +34,10 @@ class FaqController extends Controller
             'is_active' => 'boolean'
         ]);
 
-        $faq = Faq::create($request->all());
+        $data = $request->only(['question_id', 'question_en', 'answer_id', 'answer_en', 'category', 'sort_order']);
+        $data['is_active'] = $request->has('is_active');
+        
+        $faq = Faq::create($data);
 
         // Log activity
         ActivityLog::create([
@@ -65,7 +69,10 @@ class FaqController extends Controller
             'is_active' => 'boolean'
         ]);
 
-        $faq->update($request->all());
+        $data = $request->only(['question_id', 'question_en', 'answer_id', 'answer_en', 'category', 'sort_order']);
+        $data['is_active'] = $request->has('is_active');
+        
+        $faq->update($data);
 
         // Log activity
         ActivityLog::create([

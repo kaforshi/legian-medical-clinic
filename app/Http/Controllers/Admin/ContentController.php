@@ -53,6 +53,17 @@ class ContentController extends Controller
             'working_hours' => 'nullable|string|max:255'
         ]);
 
+        // Prepare meta_data for contact page
+        $metaData = null;
+        if ($pageKey === 'contact') {
+            $metaData = [
+                'address' => $request->address,
+                'phone' => $request->phone,
+                'email' => $request->email,
+                'working_hours' => $request->working_hours,
+            ];
+        }
+
         // Update Indonesian content
         $contentId = ContentPage::updateOrCreate(
             [
@@ -62,11 +73,7 @@ class ContentController extends Controller
             [
                 'title' => $request->title_id,
                 'content' => $request->content_id,
-                'meta_description' => $request->meta_description_id,
-                'address' => $request->address,
-                'phone' => $request->phone,
-                'email' => $request->email,
-                'working_hours' => $request->working_hours
+                'meta_data' => $metaData,
             ]
         );
 
@@ -79,11 +86,7 @@ class ContentController extends Controller
             [
                 'title' => $request->title_en,
                 'content' => $request->content_en,
-                'meta_description' => $request->meta_description_en,
-                'address' => $request->address,
-                'phone' => $request->phone,
-                'email' => $request->email,
-                'working_hours' => $request->working_hours
+                'meta_data' => $metaData,
             ]
         );
 

@@ -38,8 +38,22 @@
                                      class="img-thumbnail" 
                                      style="width: 60px; height: 60px; object-fit: cover;">
                             </td>
-                            <td>{{ $doctor->name }}</td>
-                            <td>{{ $doctor->specialization }}</td>
+                            <td>
+                                @if($doctor->name_id || $doctor->name_en)
+                                    <strong>ID:</strong> {{ $doctor->name_id ?: '-' }}<br>
+                                    <strong>EN:</strong> {{ $doctor->name_en ?: '-' }}
+                                @else
+                                    {{ $doctor->name ?: '-' }}
+                                @endif
+                            </td>
+                            <td>
+                                @if($doctor->specialization_id || $doctor->specialization_en)
+                                    <strong>ID:</strong> {{ $doctor->specialization_id ?: '-' }}<br>
+                                    <strong>EN:</strong> {{ $doctor->specialization_en ?: '-' }}
+                                @else
+                                    {{ $doctor->specialization ?: '-' }}
+                                @endif
+                            </td>
                             <td>
                                 @if($doctor->is_active)
                                     <span class="badge bg-success">Aktif</span>

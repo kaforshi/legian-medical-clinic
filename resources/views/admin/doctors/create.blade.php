@@ -23,42 +23,77 @@
             <div class="row">
                 <div class="col-md-8">
                     <div class="row">
+                        <!-- Bahasa Indonesia -->
                         <div class="col-md-6">
+                            <h6 class="text-primary mb-3">
+                                <i class="fas fa-flag"></i> Bahasa Indonesia
+                            </h6>
+                            
                             <div class="mb-3">
-                                <label for="name" class="form-label">Nama Dokter <span class="text-danger">*</span></label>
+                                <label for="name_id" class="form-label">Nama Dokter <span class="text-danger">*</span></label>
                                 <input type="text" 
-                                       class="form-control @error('name') is-invalid @enderror" 
-                                       id="name" 
-                                       name="name" 
-                                       value="{{ old('name') }}" 
-                                       required>
-                                @error('name')
+                                       class="form-control @error('name_id') is-invalid @enderror" 
+                                       id="name_id" 
+                                       name="name_id" 
+                                       value="{{ old('name_id') }}" 
+                                       required
+                                       maxlength="255">
+                                @error('name_id')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+                            </div>
+                            
+                            <div class="mb-3">
+                                <label for="specialization_id" class="form-label">Spesialisasi <span class="text-danger">*</span></label>
+                                <input type="text" 
+                                       class="form-control @error('specialization_id') is-invalid @enderror" 
+                                       id="specialization_id" 
+                                       name="specialization_id" 
+                                       value="{{ old('specialization_id') }}" 
+                                       required
+                                       maxlength="255">
+                                @error('specialization_id')
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
                             </div>
                         </div>
                         
+                        <!-- Bahasa Inggris -->
                         <div class="col-md-6">
+                            <h6 class="text-info mb-3">
+                                <i class="fas fa-flag"></i> English
+                            </h6>
+                            
                             <div class="mb-3">
-                                <label for="specialization" class="form-label">Spesialisasi <span class="text-danger">*</span></label>
+                                <label for="name_en" class="form-label">Doctor Name <span class="text-danger">*</span></label>
                                 <input type="text" 
-                                       class="form-control @error('specialization') is-invalid @enderror" 
-                                       id="specialization" 
-                                       name="specialization" 
-                                       value="{{ old('specialization') }}" 
-                                       required>
-                                @error('specialization')
+                                       class="form-control @error('name_en') is-invalid @enderror" 
+                                       id="name_en" 
+                                       name="name_en" 
+                                       value="{{ old('name_en') }}" 
+                                       required
+                                       maxlength="255">
+                                @error('name_en')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+                            </div>
+                            
+                            <div class="mb-3">
+                                <label for="specialization_en" class="form-label">Specialization <span class="text-danger">*</span></label>
+                                <input type="text" 
+                                       class="form-control @error('specialization_en') is-invalid @enderror" 
+                                       id="specialization_en" 
+                                       name="specialization_en" 
+                                       value="{{ old('specialization_en') }}" 
+                                       required
+                                       maxlength="255">
+                                @error('specialization_en')
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
                             </div>
                         </div>
                     </div>
                     
-
-                    
-
-                    
-
                     
                     <div class="mb-3">
                         <div class="form-check">

@@ -40,8 +40,22 @@
                                      class="img-thumbnail" 
                                      style="width: 50px; height: 50px; object-fit: cover;">
                             </td>
-                            <td>{{ $service->name }}</td>
-                            <td>{{ Str::limit($service->description, 100) }}</td>
+                            <td>
+                                @if($service->name_id || $service->name_en)
+                                    <strong>ID:</strong> {{ $service->name_id ?: '-' }}<br>
+                                    <strong>EN:</strong> {{ $service->name_en ?: '-' }}
+                                @else
+                                    {{ $service->name ?: '-' }}
+                                @endif
+                            </td>
+                            <td>
+                                @if($service->description_id || $service->description_en)
+                                    <strong>ID:</strong> {{ \Illuminate\Support\Str::limit(strip_tags($service->description_id ?: ''), 50) ?: '-' }}<br>
+                                    <strong>EN:</strong> {{ \Illuminate\Support\Str::limit(strip_tags($service->description_en ?: ''), 50) ?: '-' }}
+                                @else
+                                    {{ \Illuminate\Support\Str::limit(strip_tags($service->description ?: ''), 100) ?: '-' }}
+                                @endif
+                            </td>
                             <td>
                                 @if($service->price)
                                     Rp {{ number_format($service->price, 0, ',', '.') }}

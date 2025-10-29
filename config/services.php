@@ -35,4 +35,8 @@ return [
         ],
     ],
 
+    'google' => [
+        'translate_key' => env('GOOGLE_TRANSLATE_API_KEY'),
+    ],
+
 ];

@@ -11,7 +11,11 @@ class Service extends Model
 
     protected $fillable = [
         'name',
+        'name_id',
+        'name_en',
         'description',
+        'description_id',
+        'description_en',
         'icon',
         'price',
         'is_active',
@@ -29,6 +33,25 @@ class Service extends Model
             return asset('storage/' . $this->icon);
         }
         return asset('images/default-icon.png');
+    }
+
+    // Accessors for localized content
+    public function getLocalizedNameAttribute()
+    {
+        $locale = app()->getLocale();
+        if ($locale === 'id') {
+            return $this->name_id ?? $this->name ?? '';
+        }
+        return $this->name_en ?? $this->name ?? '';
+    }
+
+    public function getLocalizedDescriptionAttribute()
+    {
+        $locale = app()->getLocale();
+        if ($locale === 'id') {
+            return $this->description_id ?? $this->description ?? '';
+        }
+        return $this->description_en ?? $this->description ?? '';
     }
 
     public function scopeActive($query)

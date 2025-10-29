@@ -33,7 +33,10 @@ class ContentPage extends Model
 
     public function getMetaDataValue($key, $default = null)
     {
-        return $this->meta_data[$key] ?? $default;
+        if (!is_array($this->meta_data) || !isset($this->meta_data[$key])) {
+            return $default;
+        }
+        return $this->meta_data[$key];
     }
 }
 
