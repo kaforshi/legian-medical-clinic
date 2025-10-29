@@ -21,15 +21,12 @@
                     <li class="nav-item"><a class="nav-link" href="#faq">{{ __('messages.navFaq') }}</a></li>
                 </ul>
                 
-                {{-- Language switcher dan admin button di kanan --}}
+                {{-- Language switcher di kanan --}}
                 <div class="d-flex align-items-center gap-2" style="width: 200px; justify-content: flex-end;">
                     <select id="language-switcher" class="form-select form-select-sm" onchange="location = this.value;">
                         <option value="{{ route('lang.swap', 'id') }}" @if(app()->getLocale() == 'id') selected @endif>Indonesia (ID)</option>
                         <option value="{{ route('lang.swap', 'en') }}" @if(app()->getLocale() == 'en') selected @endif>English (EN)</option>
                     </select>
-                    <a href="{{ route('admin.login') }}" class="btn btn-outline-primary btn-sm" title="Admin Panel">
-                        <i class="fas fa-cog"></i>
-                    </a>
                 </div>
             </div>
         </div>
