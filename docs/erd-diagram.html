@@ -1,0 +1,493 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Entity Relationship Diagram - Legian Medical Clinic</title>
+    <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1600px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            overflow: hidden;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #4A90E2 0%, #2E5C8A 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+        
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+        
+        .header p {
+            font-size: 1.1em;
+            opacity: 0.9;
+        }
+        
+        .content {
+            padding: 40px;
+        }
+        
+        .diagram-container {
+            background: #f8f9fa;
+            border-radius: 10px;
+            padding: 30px;
+            margin-bottom: 30px;
+            border: 2px solid #e9ecef;
+            overflow-x: auto;
+        }
+        
+        .diagram-container h2 {
+            color: #2E5C8A;
+            margin-bottom: 20px;
+            font-size: 1.8em;
+        }
+        
+        .mermaid {
+            text-align: center;
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            min-width: 100%;
+        }
+        
+        .description {
+            background: #f8f9fa;
+            border-radius: 10px;
+            padding: 30px;
+            margin-top: 30px;
+            border-left: 4px solid #4A90E2;
+        }
+        
+        .description h3 {
+            color: #2E5C8A;
+            margin-bottom: 20px;
+            font-size: 1.5em;
+        }
+        
+        .description-section {
+            margin-bottom: 30px;
+        }
+        
+        .description-section h4 {
+            color: #4A90E2;
+            margin-bottom: 15px;
+            font-size: 1.2em;
+        }
+        
+        .description-section ul {
+            margin-left: 20px;
+            line-height: 1.8;
+        }
+        
+        .description-section ul li {
+            margin-bottom: 8px;
+        }
+        
+        .description-section table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+        }
+        
+        .description-section table th,
+        .description-section table td {
+            padding: 10px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        
+        .description-section table th {
+            background-color: #4A90E2;
+            color: white;
+        }
+        
+        .description-section table tr:hover {
+            background-color: #f5f5f5;
+        }
+        
+        .info-box {
+            background: #e7f3ff;
+            border-left: 4px solid #4A90E2;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 5px;
+        }
+        
+        .info-box strong {
+            color: #2E5C8A;
+        }
+        
+        .entity-box {
+            background: #fff;
+            border: 2px solid #4A90E2;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 15px 0;
+        }
+        
+        .entity-box h5 {
+            color: #2E5C8A;
+            font-size: 1.3em;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #4A90E2;
+        }
+        
+        .entity-box ul {
+            list-style: none;
+            margin-left: 0;
+        }
+        
+        .entity-box ul li {
+            padding: 5px 0;
+            border-bottom: 1px dotted #ddd;
+        }
+        
+        .entity-box ul li:last-child {
+            border-bottom: none;
+        }
+        
+        .pk {
+            color: #C92A2A;
+            font-weight: bold;
+        }
+        
+        .fk {
+            color: #2E7D4E;
+            font-weight: bold;
+        }
+        
+        .uk {
+            color: #D97706;
+            font-weight: bold;
+        }
+        
+        .footer {
+            background: #2c3e50;
+            color: white;
+            padding: 20px;
+            text-align: center;
+        }
+        
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 1.8em;
+            }
+            
+            .content {
+                padding: 20px;
+            }
+            
+            .diagram-container {
+                padding: 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🗄️ Entity Relationship Diagram (ERD)</h1>
+            <p>Legian Medical Clinic Website Database Structure</p>
+        </div>
+        
+        <div class="content">
+            <div class="diagram-container">
+                <h2>Entity Relationship Diagram</h2>
+                <div class="mermaid">
+erDiagram
+    ADMIN_USERS ||--o{ ACTIVITY_LOGS : "memiliki"
+    ADMIN_USERS ||--o{ ADMIN_PASSWORD_RESET_TOKENS : "memiliki"
+    
+    ADMIN_USERS {
+        bigint id PK
+        string name
+        string email UK
+        string username UK
+        string password
+        enum role
+        boolean is_active
+        timestamp last_login_at
+        string remember_token
+        timestamps created_at
+        timestamps updated_at
+    }
+    
+    DOCTORS {
+        bigint id PK
+        string name
+        string name_id
+        string name_en
+        string specialization
+        string specialization_id
+        string specialization_en
+        string photo
+        boolean is_active
+        timestamps created_at
+        timestamps updated_at
+    }
+    
+    SERVICES {
+        bigint id PK
+        string name
+        string name_id
+        string name_en
+        text description
+        text description_id
+        text description_en
+        string icon
+        decimal price
+        boolean is_active
+        integer sort_order
+        timestamps created_at
+        timestamps updated_at
+    }
+    
+    CONTENT_PAGES {
+        bigint id PK
+        string page_key
+        string locale
+        string title
+        longtext content
+        json meta_data
+        timestamps created_at
+        timestamps updated_at
+    }
+    
+    FAQS {
+        bigint id PK
+        text question_id
+        text question_en
+        longtext answer_id
+        longtext answer_en
+        string category
+        integer sort_order
+        boolean is_active
+        timestamps created_at
+        timestamps updated_at
+        timestamp deleted_at
+    }
+    
+    ACTIVITY_LOGS {
+        bigint id PK
+        bigint admin_user_id FK
+        string action
+        string model_type
+        bigint model_id
+        text description
+        json old_values
+        json new_values
+        string ip_address
+        string user_agent
+        timestamps created_at
+        timestamps updated_at
+    }
+    
+    ADMIN_PASSWORD_RESET_TOKENS {
+        string email PK
+        string token
+        timestamp created_at
+    }
+    
+    USERS {
+        bigint id PK
+        string name
+        string email UK
+        timestamp email_verified_at
+        string password
+        string remember_token
+        timestamps created_at
+        timestamps updated_at
+    }
+    
+    PASSWORD_RESET_TOKENS {
+        string email PK
+        string token
+        timestamp created_at
+    }
+    
+    SESSIONS {
+        string id PK
+        bigint user_id FK
+        string ip_address
+        text user_agent
+        longtext payload
+        integer last_activity
+    }
+                </div>
+            </div>
+            
+            <div class="description">
+                <h3>📋 Deskripsi Entitas</h3>
+                
+                <div class="entity-box">
+                    <h5>1. ADMIN_USERS</h5>
+                    <p><strong>Deskripsi:</strong> Tabel untuk menyimpan data admin yang mengelola website.</p>
+                    <ul>
+                        <li><span class="pk">Primary Key:</span> id</li>
+                        <li><span class="uk">Unique Keys:</span> email, username</li>
+                        <li><strong>Relasi:</strong> One-to-Many dengan ACTIVITY_LOGS dan ADMIN_PASSWORD_RESET_TOKENS</li>
+                        <li><strong>Field Khusus:</strong> role (super_admin, admin), is_active, last_login_at</li>
+                    </ul>
+                </div>
+                
+                <div class="entity-box">
+                    <h5>2. DOCTORS</h5>
+                    <p><strong>Deskripsi:</strong> Tabel untuk menyimpan informasi dokter.</p>
+                    <ul>
+                        <li><span class="pk">Primary Key:</span> id</li>
+                        <li><strong>Fitur Multilanguage:</strong> name_id, name_en, specialization_id, specialization_en</li>
+                        <li><strong>Field Khusus:</strong> photo (path foto), is_active (status aktif/non-aktif)</li>
+                    </ul>
+                </div>
+                
+                <div class="entity-box">
+                    <h5>3. SERVICES</h5>
+                    <p><strong>Deskripsi:</strong> Tabel untuk menyimpan informasi layanan medis.</p>
+                    <ul>
+                        <li><span class="pk">Primary Key:</span> id</li>
+                        <li><strong>Fitur Multilanguage:</strong> name_id, name_en, description_id, description_en</li>
+                        <li><strong>Field Khusus:</strong> icon (path icon), price (harga), sort_order (urutan tampilan)</li>
+                    </ul>
+                </div>
+                
+                <div class="entity-box">
+                    <h5>4. CONTENT_PAGES</h5>
+                    <p><strong>Deskripsi:</strong> Tabel untuk menyimpan konten halaman (About Us, Contact, dll).</p>
+                    <ul>
+                        <li><span class="pk">Primary Key:</span> id</li>
+                        <li><span class="uk">Unique Constraint:</span> (page_key, locale) - Setiap halaman memiliki versi per bahasa</li>
+                        <li><strong>Field Khusus:</strong> page_key (identifier halaman), locale (id, en), meta_data (JSON)</li>
+                    </ul>
+                </div>
+                
+                <div class="entity-box">
+                    <h5>5. FAQS</h5>
+                    <p><strong>Deskripsi:</strong> Tabel untuk menyimpan Frequently Asked Questions.</p>
+                    <ul>
+                        <li><span class="pk">Primary Key:</span> id</li>
+                        <li><strong>Fitur Multilanguage:</strong> question_id, question_en, answer_id, answer_en</li>
+                        <li><strong>Soft Deletes:</strong> Menggunakan deleted_at</li>
+                        <li><strong>Field Khusus:</strong> category (kategori FAQ), sort_order (urutan tampilan)</li>
+                    </ul>
+                </div>
+                
+                <div class="entity-box">
+                    <h5>6. ACTIVITY_LOGS</h5>
+                    <p><strong>Deskripsi:</strong> Tabel untuk menyimpan log aktivitas admin.</p>
+                    <ul>
+                        <li><span class="pk">Primary Key:</span> id</li>
+                        <li><span class="fk">Foreign Key:</span> admin_user_id → ADMIN_USERS.id (CASCADE DELETE)</li>
+                        <li><strong>Field Khusus:</strong> action (create, update, delete, login, logout), model_type, model_id, old_values, new_values (JSON)</li>
+                    </ul>
+                </div>
+                
+                <div class="entity-box">
+                    <h5>7. ADMIN_PASSWORD_RESET_TOKENS</h5>
+                    <p><strong>Deskripsi:</strong> Tabel untuk menyimpan token reset password admin.</p>
+                    <ul>
+                        <li><span class="pk">Primary Key:</span> email</li>
+                        <li><strong>Relasi:</strong> Many-to-One dengan ADMIN_USERS (melalui email)</li>
+                    </ul>
+                </div>
+                
+                <div class="entity-box">
+                    <h5>8. USERS</h5>
+                    <p><strong>Deskripsi:</strong> Tabel default Laravel untuk user (mungkin tidak digunakan dalam aplikasi ini).</p>
+                    <ul>
+                        <li><span class="pk">Primary Key:</span> id</li>
+                        <li><span class="uk">Unique Key:</span> email</li>
+                    </ul>
+                </div>
+                
+                <div class="entity-box">
+                    <h5>9. PASSWORD_RESET_TOKENS</h5>
+                    <p><strong>Deskripsi:</strong> Tabel default Laravel untuk token reset password user.</p>
+                    <ul>
+                        <li><span class="pk">Primary Key:</span> email</li>
+                    </ul>
+                </div>
+                
+                <div class="entity-box">
+                    <h5>10. SESSIONS</h5>
+                    <p><strong>Deskripsi:</strong> Tabel default Laravel untuk menyimpan session user.</p>
+                    <ul>
+                        <li><span class="pk">Primary Key:</span> id</li>
+                        <li><span class="fk">Foreign Key:</span> user_id → USERS.id</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="description">
+                <h3>🔗 Relasi Antar Entitas</h3>
+                
+                <div class="description-section">
+                    <h4>1. ADMIN_USERS → ACTIVITY_LOGS (One-to-Many)</h4>
+                    <ul>
+                        <li>Satu admin dapat memiliki banyak activity log</li>
+                        <li>Foreign key: <code>activity_logs.admin_user_id</code> → <code>admin_users.id</code></li>
+                        <li>Cascade delete: Jika admin dihapus, activity log juga dihapus</li>
+                    </ul>
+                </div>
+                
+                <div class="description-section">
+                    <h4>2. ADMIN_USERS → ADMIN_PASSWORD_RESET_TOKENS (One-to-Many)</h4>
+                    <ul>
+                        <li>Satu admin dapat memiliki banyak token reset password</li>
+                        <li>Relasi melalui <code>email</code></li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="info-box">
+                <h4>💡 Catatan Penting</h4>
+                <ul>
+                    <li><strong>Multilanguage Support:</strong> Tabel DOCTORS, SERVICES, dan FAQS mendukung multilanguage (Indonesia & Inggris). Tabel CONTENT_PAGES menggunakan kombinasi page_key dan locale untuk multilanguage.</li>
+                    <li><strong>Soft Deletes:</strong> Tabel FAQS menggunakan soft deletes (tidak benar-benar dihapus dari database).</li>
+                    <li><strong>Activity Logging:</strong> Semua aktivitas admin dicatat di ACTIVITY_LOGS dengan informasi detail perubahan.</li>
+                    <li><strong>Status Aktif:</strong> Tabel DOCTORS, SERVICES, FAQS, dan ADMIN_USERS memiliki field is_active untuk mengontrol visibilitas/status.</li>
+                    <li><strong>Sorting:</strong> Tabel SERVICES dan FAQS memiliki field sort_order untuk mengatur urutan tampilan.</li>
+                </ul>
+            </div>
+        </div>
+        
+        <div class="footer">
+            <p>&copy; 2024 Legian Medical Clinic - Entity Relationship Diagram</p>
+        </div>
+    </div>
+    
+    <script>
+        mermaid.initialize({ 
+            startOnLoad: true,
+            theme: 'default',
+            er: {
+                useMaxWidth: true,
+                fontSize: 12
+            }
+        });
+    </script>
+</body>
+</html>
+
