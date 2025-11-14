@@ -65,16 +65,14 @@
                                         <i class="fas fa-edit"></i>
                                     </a>
                                     @if($user->id !== Auth::guard('admin')->id())
-                                        <form action="{{ route('admin.users.destroy', $user) }}" 
-                                              method="POST" 
-                                              onsubmit="return confirm('Apakah Anda yakin ingin menghapus user ini?')"
-                                              style="display: inline;">
-                                            @csrf
-                                            @method('DELETE')
-                                            <button type="submit" class="btn btn-sm btn-danger">
-                                                <i class="fas fa-trash"></i>
-                                            </button>
-                                        </form>
+                                        <button type="button" 
+                                                class="btn btn-sm btn-danger"
+                                                onclick="deleteItemAjax('{{ route('admin.users.destroy', $user) }}', {
+                                                    confirmMessage: 'Apakah Anda yakin ingin menghapus user ini?',
+                                                    button: this
+                                                })">
+                                            <i class="fas fa-trash"></i>
+                                        </button>
                                     @else
                                         <button type="button" class="btn btn-sm btn-danger" disabled title="Tidak dapat menghapus akun sendiri">
                                             <i class="fas fa-trash"></i>

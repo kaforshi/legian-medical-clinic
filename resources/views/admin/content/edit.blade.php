@@ -188,10 +188,26 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 });
 
-// Form submission handler
-document.querySelector('form').addEventListener('submit', function(e) {
-    // Trigger TinyMCE to save content to textareas
-    tinymce.triggerSave();
+// Form submission handler with AJAX
+document.addEventListener('DOMContentLoaded', function() {
+    const form = document.querySelector('form');
+    if (form) {
+        submitFormAjax(form, {
+            onSuccess: function(data) {
+                if (data.redirect) {
+                    setTimeout(() => {
+                        window.location.href = data.redirect;
+                    }, 1000);
+                }
+            }
+        });
+        
+        form.addEventListener('submit', function(e) {
+            if (typeof tinymce !== 'undefined') {
+                tinymce.triggerSave();
+            }
+        });
+    }
 });
 </script>
 @endpush

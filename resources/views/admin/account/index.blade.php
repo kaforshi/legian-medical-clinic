@@ -181,3 +181,39 @@
 </div>
 @endsection
 
+@push('scripts')
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Handle username form
+    const usernameForm = document.querySelector('form[action*="update-username"]');
+    if (usernameForm) {
+        submitFormAjax(usernameForm, {
+            onSuccess: function(data) {
+                if (data.logout && data.redirect) {
+                    showToast(data.message, 'success');
+                    setTimeout(() => {
+                        window.location.href = data.redirect;
+                    }, 1500);
+                }
+            }
+        });
+    }
+    
+    // Handle password form
+    const passwordForm = document.querySelector('form[action*="update-password"]');
+    if (passwordForm) {
+        submitFormAjax(passwordForm, {
+            onSuccess: function(data) {
+                if (data.logout && data.redirect) {
+                    showToast(data.message, 'success');
+                    setTimeout(() => {
+                        window.location.href = data.redirect;
+                    }, 1500);
+                }
+            }
+        });
+    }
+});
+</script>
+@endpush
+

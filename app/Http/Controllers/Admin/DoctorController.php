@@ -36,19 +36,8 @@ class DoctorController extends Controller
                 'specialization_id' => 'Spesialisasi',
             ]);
             
-            // Auto translate to English
-            $nameEn = $translationService->translateToEnglish($request->name_id);
+            // Auto translate to English (only specialization, not name)
             $specializationEn = $translationService->translateToEnglish($request->specialization_id);
-            
-            $data = [
-                'name_id' => $request->name_id,
-                'name_en' => $nameEn,
-                'name' => $request->name_id, // Fallback for backward compatibility
-                'specialization_id' => $request->specialization_id,
-                'specialization_en' => $specializationEn,
-                'specialization' => $request->specialization_id, // Fallback for backward compatibility
-                'is_active' => $request->has('is_active') ? 1 : 0
-            ];
             
             // Manual photo validation to avoid fileinfo issue
             if ($request->hasFile('photo')) {
@@ -75,11 +64,11 @@ class DoctorController extends Controller
 
             $data = [
                 'name_id' => $request->name_id,
-                'name_en' => $request->name_en,
-                'name' => $request->name_id ?? $request->name_en, // Fallback for backward compatibility
+                'name_en' => $request->name_id, // Name tidak di-translate, tetap sama
+                'name' => $request->name_id, // Fallback for backward compatibility
                 'specialization_id' => $request->specialization_id,
-                'specialization_en' => $request->specialization_en,
-                'specialization' => $request->specialization_id ?? $request->specialization_en, // Fallback for backward compatibility
+                'specialization_en' => $specializationEn, // Use translated value
+                'specialization' => $request->specialization_id, // Fallback for backward compatibility
                 'is_active' => $request->has('is_active') ? 1 : 0
             ];
 
@@ -139,12 +128,33 @@ class DoctorController extends Controller
                 'user_agent' => $request->userAgent(),
             ]);
 
+            if ($request->ajax() || $request->wantsJson()) {
+                return response()->json([
+                    'success' => true,
+                    'message' => 'Dokter berhasil ditambahkan.',
+                    'redirect' => route('admin.doctors.index')
+                ]);
+            }
+            
             return redirect()->route('admin.doctors.index')
                             ->with('success', 'Dokter berhasil ditambahkan.');
         } catch (\Illuminate\Validation\ValidationException $e) {
+            if ($request->ajax() || $request->wantsJson()) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Validasi gagal',
+                    'errors' => $e->errors()
+                ], 422);
+            }
             return redirect()->back()->withErrors($e->errors())->withInput();
         } catch (\Exception $e) {
             \Log::error('Error creating doctor: ' . $e->getMessage());
+            if ($request->ajax() || $request->wantsJson()) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Terjadi kesalahan: ' . $e->getMessage()
+                ], 500);
+            }
             return redirect()->back()->withErrors(['error' => 'Terjadi kesalahan: ' . $e->getMessage()])->withInput();
         }
     }
@@ -167,8 +177,7 @@ class DoctorController extends Controller
                 'specialization_id' => 'Spesialisasi',
             ]);
             
-            // Auto translate to English
-            $nameEn = $translationService->translateToEnglish($request->name_id);
+            // Auto translate to English (only specialization, not name)
             $specializationEn = $translationService->translateToEnglish($request->specialization_id);
             
             // Manual photo validation to avoid fileinfo issue
@@ -197,7 +206,7 @@ class DoctorController extends Controller
             $oldValues = $doctor->toArray();
             $data = [
                 'name_id' => $request->name_id,
-                'name_en' => $nameEn,
+                'name_en' => $request->name_id, // Name tidak di-translate, tetap sama
                 'name' => $request->name_id, // Fallback for backward compatibility
                 'specialization_id' => $request->specialization_id,
                 'specialization_en' => $specializationEn,
@@ -262,12 +271,33 @@ class DoctorController extends Controller
                 'user_agent' => $request->userAgent(),
             ]);
 
+            if ($request->ajax() || $request->wantsJson()) {
+                return response()->json([
+                    'success' => true,
+                    'message' => 'Data dokter berhasil diperbarui.',
+                    'redirect' => route('admin.doctors.index')
+                ]);
+            }
+            
             return redirect()->route('admin.doctors.index')
                             ->with('success', 'Data dokter berhasil diperbarui.');
         } catch (\Illuminate\Validation\ValidationException $e) {
+            if ($request->ajax() || $request->wantsJson()) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Validasi gagal',
+                    'errors' => $e->errors()
+                ], 422);
+            }
             return redirect()->back()->withErrors($e->errors())->withInput();
         } catch (\Exception $e) {
             \Log::error('Error updating doctor: ' . $e->getMessage());
+            if ($request->ajax() || $request->wantsJson()) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Terjadi kesalahan: ' . $e->getMessage()
+                ], 500);
+            }
             return redirect()->back()->withErrors(['error' => 'Terjadi kesalahan: ' . $e->getMessage()])->withInput();
         }
     }
@@ -294,6 +324,14 @@ class DoctorController extends Controller
             'user_agent' => $request->userAgent(),
         ]);
 
+        if ($request->ajax() || $request->wantsJson()) {
+            return response()->json([
+                'success' => true,
+                'message' => 'Dokter berhasil dihapus.',
+                'redirect' => route('admin.doctors.index')
+            ]);
+        }
+        
         return redirect()->route('admin.doctors.index')
                         ->with('success', 'Dokter berhasil dihapus.');
     }

@@ -53,12 +53,34 @@ class AccountController extends Controller
             $request->session()->invalidate();
             $request->session()->regenerateToken();
 
+            if ($request->ajax() || $request->wantsJson()) {
+                return response()->json([
+                    'success' => true,
+                    'message' => 'Username berhasil diperbarui. Silakan login kembali dengan username baru.',
+                    'redirect' => route('admin.login'),
+                    'logout' => true
+                ]);
+            }
+
             return redirect()->route('admin.login')
                             ->with('success', 'Username berhasil diperbarui. Silakan login kembali dengan username baru.');
         } catch (\Illuminate\Validation\ValidationException $e) {
+            if ($request->ajax() || $request->wantsJson()) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Validasi gagal',
+                    'errors' => $e->errors()
+                ], 422);
+            }
             return redirect()->back()->withErrors($e->errors())->withInput();
         } catch (\Exception $e) {
             \Log::error('Error updating username: ' . $e->getMessage());
+            if ($request->ajax() || $request->wantsJson()) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Terjadi kesalahan: ' . $e->getMessage()
+                ], 500);
+            }
             return redirect()->back()->withErrors(['error' => 'Terjadi kesalahan: ' . $e->getMessage()])->withInput();
         }
     }
@@ -79,6 +101,13 @@ class AccountController extends Controller
 
             // Verify current password
             if (!Hash::check($request->current_password, $user->password)) {
+                if ($request->ajax() || $request->wantsJson()) {
+                    return response()->json([
+                        'success' => false,
+                        'message' => 'Password saat ini tidak cocok.',
+                        'errors' => ['current_password' => ['Password saat ini tidak cocok.']]
+                    ], 422);
+                }
                 return redirect()->back()
                                 ->withErrors(['current_password' => 'Password saat ini tidak cocok.'])
                                 ->withInput();
@@ -104,12 +133,34 @@ class AccountController extends Controller
             $request->session()->invalidate();
             $request->session()->regenerateToken();
 
+            if ($request->ajax() || $request->wantsJson()) {
+                return response()->json([
+                    'success' => true,
+                    'message' => 'Password berhasil diperbarui. Silakan login kembali dengan password baru.',
+                    'redirect' => route('admin.login'),
+                    'logout' => true
+                ]);
+            }
+
             return redirect()->route('admin.login')
                             ->with('success', 'Password berhasil diperbarui. Silakan login kembali dengan password baru.');
         } catch (\Illuminate\Validation\ValidationException $e) {
+            if ($request->ajax() || $request->wantsJson()) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Validasi gagal',
+                    'errors' => $e->errors()
+                ], 422);
+            }
             return redirect()->back()->withErrors($e->errors())->withInput();
         } catch (\Exception $e) {
             \Log::error('Error updating password: ' . $e->getMessage());
+            if ($request->ajax() || $request->wantsJson()) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Terjadi kesalahan: ' . $e->getMessage()
+                ], 500);
+            }
             return redirect()->back()->withErrors(['error' => 'Terjadi kesalahan: ' . $e->getMessage()])->withInput();
         }
     }

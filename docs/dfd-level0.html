@@ -1,0 +1,449 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DFD Level 0 - Legian Medical Clinic</title>
+    <script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+        .container {
+            max-width: 1600px;
+            margin: 0 auto;
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+        }
+        h1 {
+            color: #333;
+            text-align: center;
+            margin-bottom: 10px;
+        }
+        .subtitle {
+            text-align: center;
+            color: #666;
+            margin-bottom: 30px;
+        }
+        .mermaid {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 20px 0;
+            overflow-x: auto;
+        }
+        .info-section {
+            margin-top: 40px;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 8px;
+            border-left: 4px solid #667eea;
+        }
+        .info-section h2 {
+            color: #667eea;
+            margin-top: 0;
+        }
+        .process {
+            margin: 15px 0;
+            padding: 15px;
+            background: white;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        .process h3 {
+            color: #1976d2;
+            margin-top: 0;
+        }
+        .data-flow {
+            background: #e3f2fd;
+            padding: 10px;
+            border-radius: 5px;
+            margin-top: 10px;
+        }
+        .data-flow strong {
+            color: #1976d2;
+        }
+        .legend {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin: 20px 0;
+            padding: 15px;
+            background: #f8f9fa;
+            border-radius: 8px;
+        }
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .legend-color {
+            width: 20px;
+            height: 20px;
+            border-radius: 4px;
+            border: 2px solid #333;
+        }
+        .data-store {
+            margin: 15px 0;
+            padding: 15px;
+            background: #fff9c4;
+            border-radius: 5px;
+            border-left: 4px solid #f57f17;
+        }
+        .data-store h3 {
+            color: #f57f17;
+            margin-top: 0;
+        }
+        /* Custom styling for Data Store to look like two parallel lines (DFD notation) */
+        .mermaid svg .node rect[id*="flowchart-D"] {
+            border-top: 5px solid #f57f17 !important;
+            border-bottom: 5px solid #f57f17 !important;
+            border-left: 0 !important;
+            border-right: 0 !important;
+            background: #fff9c4 !important;
+        }
+        /* Alternative styling for data store nodes */
+        .mermaid svg g[id*="D"] rect {
+            border-top: 5px solid #f57f17 !important;
+            border-bottom: 5px solid #f57f17 !important;
+            border-left: 0 !important;
+            border-right: 0 !important;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>📊 DFD Level 0</h1>
+        <p class="subtitle">Sistem Website Legian Medical Clinic</p>
+        
+        <div class="legend">
+            <div class="legend-item">
+                <div class="legend-color" style="background: #e3f2fd; border-color: #1976d2;"></div>
+                <span><strong>Proses</strong></span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-color" style="background: #ffebee; border-color: #c62828;"></div>
+                <span><strong>Super Admin</strong></span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-color" style="background: #fff3e0; border-color: #e65100;"></div>
+                <span><strong>Admin</strong></span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-color" style="background: #f3e5f5; border-color: #4a148c;"></div>
+                <span><strong>Pengunjung Website</strong></span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-color" style="background: #e8f5e9; border-color: #1b5e20;"></div>
+                <span><strong>Layanan Eksternal</strong></span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-color" style="background: #fff9c4; border-color: #f57f17;"></div>
+                <span><strong>Data Store</strong></span>
+            </div>
+        </div>
+
+        <div class="mermaid">
+graph TB
+    %% External Entities
+    SuperAdmin["Super Admin"]
+    Admin["Admin"]
+    Visitor["Pengunjung Website"]
+    GoogleAPI["Google Translate API"]
+    
+    %% Processes
+    P1["P1.0<br/>Login"]
+    P2["P2.0<br/>Manajemen Dokter"]
+    P3["P3.0<br/>Manajemen Layanan"]
+    P4["P4.0<br/>Manajemen FAQ"]
+    P5["P5.0<br/>Manajemen Konten"]
+    P6["P6.0<br/>Manajemen User"]
+    P7["P7.0<br/>Pengaturan Akun"]
+    P8["P8.0<br/>Auto-Translation"]
+    P9["P9.0<br/>Tampilkan Website"]
+    
+    %% Data Stores (using parallel lines notation)
+    D1["D1<br/>admin_users"]
+    D2["D2<br/>doctors"]
+    D3["D3<br/>services"]
+    D4["D4<br/>faqs"]
+    D5["D5<br/>content_pages"]
+    D6["D6<br/>activity_logs"]
+    D7["D7<br/>sessions"]
+    
+    %% P1.0 Login Flows
+    SuperAdmin -->|"data login super admin"| P1
+    P1 -->|"info login"| SuperAdmin
+    Admin -->|"data login admin"| P1
+    P1 -->|"info login"| Admin
+    P1 <-->|"data login"| D1
+    P1 -->|"data session"| D7
+    P1 -->|"data log aktivitas"| D6
+    
+    %% P2.0 Manajemen Dokter Flows
+    SuperAdmin -->|"data dokter"| P2
+    P2 -->|"info dokter"| SuperAdmin
+    Admin -->|"data dokter"| P2
+    P2 -->|"info dokter"| Admin
+    P2 <-->|"data dokter"| D2
+    P2 -->|"data log aktivitas"| D6
+    P2 -->|"data teks bahasa Indonesia"| P8
+    P8 -->|"info teks terjemahan"| P2
+    
+    %% P3.0 Manajemen Layanan Flows
+    SuperAdmin -->|"data layanan"| P3
+    P3 -->|"info layanan"| SuperAdmin
+    Admin -->|"data layanan"| P3
+    P3 -->|"info layanan"| Admin
+    P3 <-->|"data layanan"| D3
+    P3 -->|"data log aktivitas"| D6
+    P3 -->|"data teks bahasa Indonesia"| P8
+    P8 -->|"info teks terjemahan"| P3
+    
+    %% P4.0 Manajemen FAQ Flows
+    SuperAdmin -->|"data FAQ"| P4
+    P4 -->|"info FAQ"| SuperAdmin
+    Admin -->|"data FAQ"| P4
+    P4 -->|"info FAQ"| Admin
+    P4 <-->|"data FAQ"| D4
+    P4 -->|"data log aktivitas"| D6
+    P4 -->|"data teks bahasa Indonesia"| P8
+    P8 -->|"info teks terjemahan"| P4
+    
+    %% P5.0 Manajemen Konten Flows
+    SuperAdmin -->|"data konten halaman"| P5
+    P5 -->|"info konten halaman"| SuperAdmin
+    Admin -->|"data konten halaman"| P5
+    P5 -->|"info konten halaman"| Admin
+    P5 <-->|"data konten halaman"| D5
+    P5 -->|"data log aktivitas"| D6
+    P5 -->|"data teks bahasa Indonesia"| P8
+    P8 -->|"info teks terjemahan"| P5
+    
+    %% P6.0 Manajemen User Flows (Super Admin only)
+    SuperAdmin -->|"data user admin"| P6
+    P6 -->|"info user admin"| SuperAdmin
+    P6 <-->|"data user admin"| D1
+    P6 -->|"data log aktivitas"| D6
+    
+    %% P7.0 Pengaturan Akun Flows
+    SuperAdmin -->|"data pengaturan akun"| P7
+    P7 -->|"info pengaturan akun"| SuperAdmin
+    Admin -->|"data pengaturan akun"| P7
+    P7 -->|"info pengaturan akun"| Admin
+    P7 <-->|"data admin user"| D1
+    P7 -->|"data log aktivitas"| D6
+    
+    %% P8.0 Auto-Translation Flows
+    P8 -->|"data teks bahasa Indonesia"| GoogleAPI
+    GoogleAPI -->|"info teks terjemahan"| P8
+    
+    %% P9.0 Tampilkan Website Flows
+    Visitor -->|"data request halaman"| P9
+    Visitor -->|"data pilihan bahasa"| P9
+    Visitor -->|"data response kuesioner"| P9
+    P9 -->|"info konten website"| Visitor
+    P9 -->|"info dokter"| Visitor
+    P9 -->|"info layanan"| Visitor
+    P9 -->|"info FAQ"| Visitor
+    P9 -->|"info konten halaman"| Visitor
+    P9 -->|"info layout prioritas"| Visitor
+    P9 -->|"data request"| D2
+    P9 -->|"data request"| D3
+    P9 -->|"data request"| D4
+    P9 -->|"data request"| D5
+    P9 <-->|"data session"| D7
+    
+    style P1 fill:#e3f2fd,stroke:#1976d2,stroke-width:2px
+    style P2 fill:#e3f2fd,stroke:#1976d2,stroke-width:2px
+    style P3 fill:#e3f2fd,stroke:#1976d2,stroke-width:2px
+    style P4 fill:#e3f2fd,stroke:#1976d2,stroke-width:2px
+    style P5 fill:#e3f2fd,stroke:#1976d2,stroke-width:2px
+    style P6 fill:#e3f2fd,stroke:#1976d2,stroke-width:2px
+    style P7 fill:#e3f2fd,stroke:#1976d2,stroke-width:2px
+    style P8 fill:#e3f2fd,stroke:#1976d2,stroke-width:2px
+    style P9 fill:#e3f2fd,stroke:#1976d2,stroke-width:2px
+    style SuperAdmin fill:#ffebee,stroke:#c62828,stroke-width:2px
+    style Admin fill:#fff3e0,stroke:#e65100,stroke-width:2px
+    style Visitor fill:#f3e5f5,stroke:#4a148c,stroke-width:2px
+    style GoogleAPI fill:#e8f5e9,stroke:#1b5e20,stroke-width:2px
+    style D1 fill:#fff9c4,stroke:#f57f17,stroke-width:3px
+    style D2 fill:#fff9c4,stroke:#f57f17,stroke-width:3px
+    style D3 fill:#fff9c4,stroke:#f57f17,stroke-width:3px
+    style D4 fill:#fff9c4,stroke:#f57f17,stroke-width:3px
+    style D5 fill:#fff9c4,stroke:#f57f17,stroke-width:3px
+    style D6 fill:#fff9c4,stroke:#f57f17,stroke-width:3px
+    style D7 fill:#fff9c4,stroke:#f57f17,stroke-width:3px
+        </div>
+
+        <div class="info-section">
+            <h2>🔄 Proses-Proses Utama</h2>
+            
+            <div class="process">
+                <h3>P1.0 Login</h3>
+                <p><strong>Deskripsi:</strong> Proses autentikasi untuk Super Admin dan Admin.</p>
+                <div class="data-flow">
+                    <strong>Input:</strong> data login super admin, data login admin<br>
+                    <strong>Output:</strong> info login, data session, data log aktivitas<br>
+                    <strong>Data Store:</strong> D1 (admin_users), D7 (sessions), D6 (activity_logs)
+                </div>
+            </div>
+
+            <div class="process">
+                <h3>P2.0 Manajemen Dokter</h3>
+                <p><strong>Deskripsi:</strong> Proses CRUD untuk mengelola data dokter.</p>
+                <div class="data-flow">
+                    <strong>Input:</strong> data dokter, info teks terjemahan (dari P8.0)<br>
+                    <strong>Output:</strong> info dokter, data log aktivitas, data teks bahasa Indonesia (ke P8.0)<br>
+                    <strong>Data Store:</strong> D2 (doctors), D6 (activity_logs)
+                </div>
+            </div>
+
+            <div class="process">
+                <h3>P3.0 Manajemen Layanan</h3>
+                <p><strong>Deskripsi:</strong> Proses CRUD untuk mengelola data layanan medis.</p>
+                <div class="data-flow">
+                    <strong>Input:</strong> data layanan, info teks terjemahan (dari P8.0)<br>
+                    <strong>Output:</strong> info layanan, data log aktivitas, data teks bahasa Indonesia (ke P8.0)<br>
+                    <strong>Data Store:</strong> D3 (services), D6 (activity_logs)
+                </div>
+            </div>
+
+            <div class="process">
+                <h3>P4.0 Manajemen FAQ</h3>
+                <p><strong>Deskripsi:</strong> Proses CRUD untuk mengelola data FAQ.</p>
+                <div class="data-flow">
+                    <strong>Input:</strong> data FAQ, info teks terjemahan (dari P8.0)<br>
+                    <strong>Output:</strong> info FAQ, data log aktivitas, data teks bahasa Indonesia (ke P8.0)<br>
+                    <strong>Data Store:</strong> D4 (faqs), D6 (activity_logs)
+                </div>
+            </div>
+
+            <div class="process">
+                <h3>P5.0 Manajemen Konten</h3>
+                <p><strong>Deskripsi:</strong> Proses CRUD untuk mengelola konten halaman.</p>
+                <div class="data-flow">
+                    <strong>Input:</strong> data konten halaman, info teks terjemahan (dari P8.0)<br>
+                    <strong>Output:</strong> info konten halaman, data log aktivitas, data teks bahasa Indonesia (ke P8.0)<br>
+                    <strong>Data Store:</strong> D5 (content_pages), D6 (activity_logs)
+                </div>
+            </div>
+
+            <div class="process">
+                <h3>P6.0 Manajemen User</h3>
+                <p><strong>Deskripsi:</strong> Proses CRUD untuk mengelola user admin (hanya Super Admin).</p>
+                <div class="data-flow">
+                    <strong>Input:</strong> data user admin (dari Super Admin)<br>
+                    <strong>Output:</strong> info user admin, data log aktivitas<br>
+                    <strong>Data Store:</strong> D1 (admin_users), D6 (activity_logs)
+                </div>
+            </div>
+
+            <div class="process">
+                <h3>P7.0 Pengaturan Akun</h3>
+                <p><strong>Deskripsi:</strong> Proses untuk mengubah username dan password akun yang sedang login.</p>
+                <div class="data-flow">
+                    <strong>Input:</strong> data pengaturan akun<br>
+                    <strong>Output:</strong> info pengaturan akun, data log aktivitas<br>
+                    <strong>Data Store:</strong> D1 (admin_users), D6 (activity_logs)
+                </div>
+            </div>
+
+            <div class="process">
+                <h3>P8.0 Auto-Translation</h3>
+                <p><strong>Deskripsi:</strong> Proses untuk menerjemahkan teks bahasa Indonesia ke bahasa Inggris secara otomatis.</p>
+                <div class="data-flow">
+                    <strong>Input:</strong> data teks bahasa Indonesia (dari P2, P3, P4, P5), info teks terjemahan (dari Google API)<br>
+                    <strong>Output:</strong> info teks terjemahan (ke P2, P3, P4, P5), data teks bahasa Indonesia (ke Google API)
+                </div>
+            </div>
+
+            <div class="process">
+                <h3>P9.0 Tampilkan Website</h3>
+                <p><strong>Deskripsi:</strong> Proses untuk menampilkan konten website kepada pengunjung.</p>
+                <div class="data-flow">
+                    <strong>Input:</strong> data request halaman, data pilihan bahasa, data response kuesioner<br>
+                    <strong>Output:</strong> info konten website, info dokter, info layanan, info FAQ, info konten halaman, info layout prioritas<br>
+                    <strong>Data Store:</strong> D2 (doctors), D3 (services), D4 (faqs), D5 (content_pages), D7 (sessions)
+                </div>
+            </div>
+        </div>
+
+        <div class="info-section">
+            <h2>💾 Data Store</h2>
+            
+            <div class="data-store">
+                <h3>D1. admin_users</h3>
+                <p>Menyimpan data admin user (Super Admin dan Admin).</p>
+                <p><strong>Digunakan oleh:</strong> P1.0, P6.0, P7.0</p>
+            </div>
+
+            <div class="data-store">
+                <h3>D2. doctors</h3>
+                <p>Menyimpan data dokter.</p>
+                <p><strong>Digunakan oleh:</strong> P2.0, P9.0</p>
+            </div>
+
+            <div class="data-store">
+                <h3>D3. services</h3>
+                <p>Menyimpan data layanan medis.</p>
+                <p><strong>Digunakan oleh:</strong> P3.0, P9.0</p>
+            </div>
+
+            <div class="data-store">
+                <h3>D4. faqs</h3>
+                <p>Menyimpan data FAQ.</p>
+                <p><strong>Digunakan oleh:</strong> P4.0, P9.0</p>
+            </div>
+
+            <div class="data-store">
+                <h3>D5. content_pages</h3>
+                <p>Menyimpan konten halaman (Tentang Kami, Kontak, dll).</p>
+                <p><strong>Digunakan oleh:</strong> P5.0, P9.0</p>
+            </div>
+
+            <div class="data-store">
+                <h3>D6. activity_logs</h3>
+                <p>Menyimpan log aktivitas admin.</p>
+                <p><strong>Digunakan oleh:</strong> P1.0, P2.0, P3.0, P4.0, P5.0, P6.0, P7.0</p>
+            </div>
+
+            <div class="data-store">
+                <h3>D7. sessions</h3>
+                <p>Menyimpan data session untuk autentikasi dan lokalisasi bahasa.</p>
+                <p><strong>Digunakan oleh:</strong> P1.0, P9.0</p>
+            </div>
+        </div>
+
+        <div class="info-section">
+            <h2>⚠️ Catatan Penting</h2>
+            <ul>
+                <li><strong>P6.0 Manajemen User</strong> hanya dapat diakses oleh Super Admin</li>
+                <li><strong>P8.0 Auto-Translation</strong> bekerja secara otomatis saat admin menyimpan data dalam bahasa Indonesia</li>
+                <li><strong>P9.0 Tampilkan Website</strong> membaca data dari multiple data stores untuk menampilkan konten yang dilokalisasi</li>
+                <li>Semua proses manajemen (P2-P7) mencatat aktivitas ke D6 (activity_logs)</li>
+                <li>P2, P3, P4, P5 mengirim data ke P8 untuk auto-translation sebelum menyimpan ke database</li>
+            </ul>
+        </div>
+    </div>
+
+    <script>
+        mermaid.initialize({ 
+            startOnLoad: true,
+            theme: 'default',
+            flowchart: {
+                useMaxWidth: true,
+                htmlLabels: true,
+                curve: 'basis'
+            }
+        });
+    </script>
+</body>
+</html>
+

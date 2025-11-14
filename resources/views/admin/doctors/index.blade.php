@@ -67,16 +67,14 @@
                                        class="btn btn-sm btn-warning">
                                         <i class="fas fa-edit"></i>
                                     </a>
-                                    <form action="{{ route('admin.doctors.destroy', $doctor) }}" 
-                                          method="POST" 
-                                          onsubmit="return confirm('Apakah Anda yakin ingin menghapus dokter ini?')"
-                                          style="display: inline;">
-                                        @csrf
-                                        @method('DELETE')
-                                        <button type="submit" class="btn btn-sm btn-danger">
-                                            <i class="fas fa-trash"></i>
-                                        </button>
-                                    </form>
+                                    <button type="button" 
+                                            class="btn btn-sm btn-danger"
+                                            onclick="deleteItemAjax('{{ route('admin.doctors.destroy', $doctor) }}', {
+                                                confirmMessage: 'Apakah Anda yakin ingin menghapus dokter ini?',
+                                                button: this
+                                            })">
+                                        <i class="fas fa-trash"></i>
+                                    </button>
                                 </div>
                             </td>
                         </tr>

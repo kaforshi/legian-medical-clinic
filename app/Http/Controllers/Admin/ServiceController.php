@@ -139,12 +139,33 @@ class ServiceController extends Controller
                 'user_agent' => $request->userAgent()
             ]);
 
+            if ($request->ajax() || $request->wantsJson()) {
+                return response()->json([
+                    'success' => true,
+                    'message' => 'Layanan berhasil ditambahkan',
+                    'redirect' => route('admin.services.index')
+                ]);
+            }
+            
             return redirect()->route('admin.services.index')
                 ->with('success', 'Layanan berhasil ditambahkan');
         } catch (\Illuminate\Validation\ValidationException $e) {
+            if ($request->ajax() || $request->wantsJson()) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Validasi gagal',
+                    'errors' => $e->errors()
+                ], 422);
+            }
             return redirect()->back()->withErrors($e->errors())->withInput();
         } catch (\Exception $e) {
             Log::error('Error creating service: ' . $e->getMessage());
+            if ($request->ajax() || $request->wantsJson()) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Terjadi kesalahan: ' . $e->getMessage()
+                ], 500);
+            }
             return redirect()->back()->withErrors(['error' => 'Terjadi kesalahan: ' . $e->getMessage()])->withInput();
         }
     }
@@ -262,17 +283,38 @@ class ServiceController extends Controller
                 'user_agent' => $request->userAgent()
             ]);
 
+            if ($request->ajax() || $request->wantsJson()) {
+                return response()->json([
+                    'success' => true,
+                    'message' => 'Layanan berhasil diperbarui',
+                    'redirect' => route('admin.services.index')
+                ]);
+            }
+            
             return redirect()->route('admin.services.index')
                 ->with('success', 'Layanan berhasil diperbarui');
         } catch (\Illuminate\Validation\ValidationException $e) {
+            if ($request->ajax() || $request->wantsJson()) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Validasi gagal',
+                    'errors' => $e->errors()
+                ], 422);
+            }
             return redirect()->back()->withErrors($e->errors())->withInput();
         } catch (\Exception $e) {
             Log::error('Error updating service: ' . $e->getMessage());
+            if ($request->ajax() || $request->wantsJson()) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Terjadi kesalahan: ' . $e->getMessage()
+                ], 500);
+            }
             return redirect()->back()->withErrors(['error' => 'Terjadi kesalahan: ' . $e->getMessage()])->withInput();
         }
     }
 
-    public function destroy(Service $service)
+    public function destroy(Request $request, Service $service)
     {
         // Delete icon if exists
         if ($service->icon) {
@@ -289,6 +331,14 @@ class ServiceController extends Controller
             'ip_address' => request()->ip(),
             'user_agent' => request()->userAgent()
         ]);
+
+        if ($request->ajax() || $request->wantsJson()) {
+            return response()->json([
+                'success' => true,
+                'message' => 'Layanan berhasil dihapus',
+                'redirect' => route('admin.services.index')
+            ]);
+        }
 
         return redirect()->route('admin.services.index')
             ->with('success', 'Layanan berhasil dihapus');

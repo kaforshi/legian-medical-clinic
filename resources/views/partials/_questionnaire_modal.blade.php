@@ -17,16 +17,17 @@
             <div class="modal-body p-4 p-md-5 text-center">
                 <h2 class="modal-title fw-bold mb-3" id="questionnaireModalLabel">{{ __('messages.questionnaireTitle') }}</h2>
                 <p class="text-muted mb-4">{{ __('messages.questionnaireSubtitle') }}</p>
-                <form id="questionnaireForm" method="GET" action="{{ route('home') }}">
+                <form id="questionnaireForm" method="POST" action="{{ route('questionnaire.submit') }}">
+                    @csrf
                     <div class="d-grid gap-3">
                         {{-- Tombol untuk kontak resmi --}}
-                        <button type="submit" name="section" value="contact" class="btn btn-primary btn-lg text-center p-3">{{ __('messages.q1') }}</button>
+                        <button type="button" name="section" value="contact" class="btn btn-primary btn-lg text-center p-3 questionnaire-btn">{{ __('messages.q1') }}</button>
                         {{-- Tombol untuk lokasi --}}
-                        <button type="submit" name="section" value="contact" class="btn btn-primary btn-lg text-center p-3">{{ __('messages.q2') }}</button>
+                        <button type="button" name="section" value="contact" class="btn btn-primary btn-lg text-center p-3 questionnaire-btn">{{ __('messages.q2') }}</button>
                         {{-- Tombol untuk informasi --}}
-                        <button type="submit" name="section" value="about" class="btn btn-primary btn-lg text-center p-3">{{ __('messages.q3') }}</button>
+                        <button type="button" name="section" value="about" class="btn btn-primary btn-lg text-center p-3 questionnaire-btn">{{ __('messages.q3') }}</button>
                         {{-- Tombol untuk layanan --}}
-                        <button type="submit" name="section" value="services" class="btn btn-primary btn-lg text-center p-3">{{ __('messages.q4') }}</button>
+                        <button type="button" name="section" value="services" class="btn btn-primary btn-lg text-center p-3 questionnaire-btn">{{ __('messages.q4') }}</button>
                     </div>
                 </form>
                 <button type="button" class="btn btn-link mt-4" data-bs-dismiss="modal">{{ __('messages.skipButton') }}</button>
@@ -148,8 +149,71 @@ function getLocalizedText(key, lang) {
     return texts[lang]?.[key] || texts['en'][key] || key;
 }
 
-// Restore language preference when modal opens
+// Handle questionnaire button clicks with AJAX
 document.addEventListener('DOMContentLoaded', function() {
+    const questionnaireButtons = document.querySelectorAll('.questionnaire-btn');
+    questionnaireButtons.forEach(button => {
+        button.addEventListener('click', function() {
+            const section = this.value;
+            const button = this;
+            
+            // Show loading
+            const originalText = button.innerHTML;
+            button.disabled = true;
+            button.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span>Memproses...';
+            
+            // Submit via AJAX
+            axios.post('{{ route("questionnaire.submit") }}', {
+                section: section
+            }, {
+                headers: {
+                    'X-Requested-With': 'XMLHttpRequest',
+                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
+                }
+            })
+            .then(response => {
+                if (response.data.success) {
+                    // Set flag bahwa kuesioner baru saja dijawab
+                    sessionStorage.setItem('justAnswered', 'true');
+                    
+                    // Close modal
+                    const modal = bootstrap.Modal.getInstance(document.getElementById('questionnaireModal'));
+                    if (modal) {
+                        modal.hide();
+                    }
+                    
+                    // Show success message
+                    if (typeof showToast === 'function') {
+                        showToast('Kuesioner berhasil disubmit!', 'success');
+                    }
+                    
+                    // Reload page to show prioritized section after short delay
+                    // Tambahkan parameter untuk mencegah kuesioner muncul di reload ini
+                    setTimeout(() => {
+                        window.location.href = window.location.pathname + '?answered=1';
+                    }, 800);
+                } else {
+                    button.disabled = false;
+                    button.innerHTML = originalText;
+                    if (typeof showToast === 'function') {
+                        showToast('Terjadi kesalahan saat memproses kuesioner.', 'error');
+                    }
+                }
+            })
+            .catch(error => {
+                console.error('Error submitting questionnaire:', error);
+                button.disabled = false;
+                button.innerHTML = originalText;
+                if (typeof showToast === 'function') {
+                    showToast('Terjadi kesalahan saat memproses kuesioner.', 'error');
+                } else {
+                    alert('Terjadi kesalahan saat memproses kuesioner.');
+                }
+            });
+        });
+    });
+    
+    // Restore language preference when modal opens
     const savedLang = localStorage.getItem('preferredLanguage');
     if (savedLang && (savedLang === 'id' || savedLang === 'en')) {
         // Update dropdown selection

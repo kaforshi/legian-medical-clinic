@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Diagram Konteks - Legian Medical Clinic</title>
+    <script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+        }
+        h1 {
+            color: #333;
+            text-align: center;
+            margin-bottom: 10px;
+        }
+        .subtitle {
+            text-align: center;
+            color: #666;
+            margin-bottom: 30px;
+        }
+        .mermaid {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 20px 0;
+        }
+        .info-section {
+            margin-top: 40px;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 8px;
+            border-left: 4px solid #667eea;
+        }
+        .info-section h2 {
+            color: #667eea;
+            margin-top: 0;
+        }
+        .entity {
+            margin: 15px 0;
+            padding: 15px;
+            background: white;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        .entity h3 {
+            color: #667eea;
+            margin-top: 0;
+        }
+        .data-flow {
+            background: #e3f2fd;
+            padding: 10px;
+            border-radius: 5px;
+            margin-top: 10px;
+        }
+        .data-flow strong {
+            color: #1976d2;
+        }
+        .legend {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin: 20px 0;
+            padding: 15px;
+            background: #f8f9fa;
+            border-radius: 8px;
+        }
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .legend-color {
+            width: 20px;
+            height: 20px;
+            border-radius: 4px;
+            border: 2px solid #333;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>📊 Diagram Konteks Sistem</h1>
+        <p class="subtitle">Sistem Website Legian Medical Clinic</p>
+        
+        <div class="legend">
+            <div class="legend-item">
+                <div class="legend-color" style="background: #e1f5ff; border-color: #01579b;"></div>
+                <span><strong>Sistem Utama</strong></span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-color" style="background: #ffebee; border-color: #c62828;"></div>
+                <span><strong>Super Admin</strong></span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-color" style="background: #fff3e0; border-color: #e65100;"></div>
+                <span><strong>Admin</strong></span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-color" style="background: #f3e5f5; border-color: #4a148c;"></div>
+                <span><strong>Pengunjung Website</strong></span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-color" style="background: #e8f5e9; border-color: #1b5e20;"></div>
+                <span><strong>Layanan Eksternal</strong></span>
+            </div>
+        </div>
+
+        <div class="mermaid">
+graph TB
+    System(("Sistem Website<br/>Legian Medical Clinic"))
+    
+    SuperAdmin["Super Admin"]
+    Admin["Admin"]
+    Visitor["Pengunjung Website"]
+    GoogleAPI["Google Translate API"]
+    
+    %% Super Admin Input Flows
+    SuperAdmin -->|"data login super admin"| System
+    SuperAdmin -->|"data dokter"| System
+    SuperAdmin -->|"data layanan"| System
+    SuperAdmin -->|"data FAQ"| System
+    SuperAdmin -->|"data konten halaman"| System
+    SuperAdmin -->|"data user admin"| System
+    SuperAdmin -->|"data pengaturan akun"| System
+    
+    %% Super Admin Output Flows
+    System -->|"info login"| SuperAdmin
+    System -->|"info dokter"| SuperAdmin
+    System -->|"info layanan"| SuperAdmin
+    System -->|"info FAQ"| SuperAdmin
+    System -->|"info konten halaman"| SuperAdmin
+    System -->|"info user admin"| SuperAdmin
+    System -->|"info dashboard"| SuperAdmin
+    System -->|"info log aktivitas"| SuperAdmin
+    
+    %% Admin Input Flows
+    Admin -->|"data login admin"| System
+    Admin -->|"data dokter"| System
+    Admin -->|"data layanan"| System
+    Admin -->|"data FAQ"| System
+    Admin -->|"data konten halaman"| System
+    Admin -->|"data pengaturan akun"| System
+    
+    %% Admin Output Flows
+    System -->|"info login"| Admin
+    System -->|"info dokter"| Admin
+    System -->|"info layanan"| Admin
+    System -->|"info FAQ"| Admin
+    System -->|"info konten halaman"| Admin
+    System -->|"info dashboard"| Admin
+    System -->|"info log aktivitas"| Admin
+    
+    %% Visitor Input Flows
+    Visitor -->|"data request halaman"| System
+    Visitor -->|"data pilihan bahasa"| System
+    Visitor -->|"data response kuesioner"| System
+    
+    %% Visitor Output Flows
+    System -->|"info konten website"| Visitor
+    System -->|"info dokter"| Visitor
+    System -->|"info layanan"| Visitor
+    System -->|"info FAQ"| Visitor
+    System -->|"info konten halaman"| Visitor
+    System -->|"info layout prioritas"| Visitor
+    
+    %% Google API Flows
+    System -->|"data teks bahasa Indonesia"| GoogleAPI
+    GoogleAPI -->|"info teks terjemahan"| System
+    
+    style System fill:#e1f5ff,stroke:#01579b,stroke-width:4px
+    style SuperAdmin fill:#ffebee,stroke:#c62828,stroke-width:2px
+    style Admin fill:#fff3e0,stroke:#e65100,stroke-width:2px
+    style Visitor fill:#f3e5f5,stroke:#4a148c,stroke-width:2px
+    style GoogleAPI fill:#e8f5e9,stroke:#1b5e20,stroke-width:2px
+        </div>
+
+        <div class="info-section">
+            <h2>📋 Entitas Eksternal</h2>
+            
+            <div class="entity">
+                <h3>1. Super Admin</h3>
+                <p><strong>Deskripsi:</strong> Pengguna dengan akses penuh ke admin panel, termasuk manajemen user admin.</p>
+                <div class="data-flow">
+                    <strong>Aktivitas:</strong> Login, CRUD Dokter, CRUD Layanan, CRUD FAQ, CRUD Halaman Konten, Kelola User Admin, Pengaturan Akun
+                </div>
+                <div class="data-flow">
+                    <strong>Alur Data:</strong><br>
+                    Input: Kredensial login, data operasi CRUD (dokter, layanan, FAQ, konten, user admin)<br>
+                    Output: Dashboard, konfirmasi operasi, data yang dikelola, info user admin
+                </div>
+            </div>
+
+            <div class="entity">
+                <h3>2. Admin</h3>
+                <p><strong>Deskripsi:</strong> Pengguna dengan akses terbatas ke admin panel, tidak dapat mengelola user admin.</p>
+                <div class="data-flow">
+                    <strong>Aktivitas:</strong> Login, CRUD Dokter, CRUD Layanan, CRUD FAQ, CRUD Halaman Konten, Pengaturan Akun
+                </div>
+                <div class="data-flow">
+                    <strong>Alur Data:</strong><br>
+                    Input: Kredensial login, data operasi CRUD (dokter, layanan, FAQ, konten)<br>
+                    Output: Dashboard, konfirmasi operasi, data yang dikelola
+                </div>
+            </div>
+
+            <div class="entity">
+                <h3>3. Pengunjung Website (Public Visitor)</h3>
+                <p><strong>Deskripsi:</strong> Pengunjung yang mengakses website publik untuk melihat informasi klinik.</p>
+                <div class="data-flow">
+                    <strong>Aktivitas:</strong> Lihat website, ganti bahasa, isi kuesioner
+                </div>
+                <div class="data-flow">
+                    <strong>Alur Data:</strong><br>
+                    Input: Request halaman, pilihan bahasa, response kuesioner<br>
+                    Output: Konten website yang dilokalisasi sesuai bahasa
+                </div>
+            </div>
+
+            <div class="entity">
+                <h3>4. Google Translate API (Layanan Eksternal)</h3>
+                <p><strong>Deskripsi:</strong> Layanan eksternal untuk auto-translation dari bahasa Indonesia ke bahasa Inggris.</p>
+                <div class="data-flow">
+                    <strong>Alur Data:</strong><br>
+                    Input: Teks bahasa Indonesia<br>
+                    Output: Teks bahasa Inggris
+                </div>
+            </div>
+        </div>
+
+        <div class="info-section">
+            <h2>💾 Penyimpanan Data (Internal)</h2>
+            <p>Sistem menggunakan database untuk menyimpan:</p>
+            <ul>
+                <li><strong>admin_users</strong> - Data admin user</li>
+                <li><strong>doctors</strong> - Data dokter</li>
+                <li><strong>services</strong> - Data layanan medis</li>
+                <li><strong>faqs</strong> - Data FAQ</li>
+                <li><strong>content_pages</strong> - Konten halaman (Tentang Kami, Kontak, dll)</li>
+                <li><strong>activity_logs</strong> - Log aktivitas admin</li>
+                <li><strong>sessions</strong> - Data session</li>
+            </ul>
+        </div>
+
+        <div class="info-section">
+            <h2>⚠️ Catatan Penting</h2>
+            <ul>
+                <li><strong>Autentikasi:</strong> Admin harus login terlebih dahulu sebelum mengakses admin panel</li>
+                <li><strong>Otorisasi:</strong> Super Admin memiliki akses penuh, Admin memiliki akses terbatas</li>
+                <li><strong>Auto-Translation:</strong> Hanya admin yang input bahasa Indonesia, sistem otomatis translate ke bahasa Inggris</li>
+                <li><strong>Lokalisasi:</strong> Website publik menampilkan konten sesuai bahasa yang dipilih pengunjung</li>
+                <li><strong>Pencatatan Aktivitas:</strong> Semua aktivitas admin dicatat untuk audit trail</li>
+            </ul>
+        </div>
+    </div>
+
+    <script>
+        mermaid.initialize({ 
+            startOnLoad: true,
+            theme: 'default',
+            flowchart: {
+                useMaxWidth: true,
+                htmlLabels: true,
+                curve: 'basis'
+            }
+        });
+    </script>
+</body>
+</html>
+

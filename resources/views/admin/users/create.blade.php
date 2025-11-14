@@ -140,3 +140,22 @@
 </div>
 @endsection
 
+@push('scripts')
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const form = document.querySelector('form');
+    if (form) {
+        submitFormAjax(form, {
+            onSuccess: function(data) {
+                if (data.redirect) {
+                    setTimeout(() => {
+                        window.location.href = data.redirect;
+                    }, 1000);
+                }
+            }
+        });
+    }
+});
+</script>
+@endpush
+

@@ -189,6 +189,10 @@
 
     <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Axios -->
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <!-- AJAX Utilities -->
+    <script src="{{ asset('js/ajax-utils.js') }}"></script>
     
             <!-- TinyMCE WYSIWYG Editor -->
         <script src="https://cdn.tiny.cloud/1/m7i7n4eozehb6qki7xbf1sh0fyahr4r9op1f5sqth0mnq1mh/tinymce/6/tinymce.min.js" referrerpolicy="origin"></script>

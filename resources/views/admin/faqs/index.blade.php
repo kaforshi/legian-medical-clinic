@@ -64,31 +64,23 @@
                                             <i class="fas fa-edit"></i>
                                         </a>
                                         
-                                        <form action="{{ route('admin.faqs.toggle-status', $faq) }}" 
-                                              method="POST" 
-                                              class="d-inline">
-                                            @csrf
-                                            @method('PATCH')
-                                            <button type="submit" 
-                                                    class="btn btn-sm btn-outline-{{ $faq->is_active ? 'warning' : 'success' }}" 
-                                                    title="{{ $faq->is_active ? 'Nonaktifkan' : 'Aktifkan' }}"
-                                                    onclick="return confirm('Yakin ingin {{ $faq->is_active ? 'menonaktifkan' : 'mengaktifkan' }} FAQ ini?')">
-                                                <i class="fas fa-{{ $faq->is_active ? 'eye-slash' : 'eye' }}"></i>
-                                            </button>
-                                        </form>
+                                        <button type="button" 
+                                                class="btn btn-sm btn-outline-{{ $faq->is_active ? 'warning' : 'success' }} toggle-status-btn" 
+                                                title="{{ $faq->is_active ? 'Nonaktifkan' : 'Aktifkan' }}"
+                                                data-url="{{ route('admin.faqs.toggle-status', $faq) }}"
+                                                data-is-active="{{ $faq->is_active ? '1' : '0' }}">
+                                            <i class="fas fa-{{ $faq->is_active ? 'eye-slash' : 'eye' }}"></i>
+                                        </button>
                                         
-                                        <form action="{{ route('admin.faqs.destroy', $faq) }}" 
-                                              method="POST" 
-                                              class="d-inline"
-                                              onsubmit="return confirm('Yakin ingin menghapus FAQ ini?')">
-                                            @csrf
-                                            @method('DELETE')
-                                            <button type="submit" 
-                                                    class="btn btn-sm btn-outline-danger" 
-                                                    title="Hapus">
-                                                <i class="fas fa-trash"></i>
-                                            </button>
-                                        </form>
+                                        <button type="button" 
+                                                class="btn btn-sm btn-outline-danger" 
+                                                title="Hapus"
+                                                onclick="deleteItemAjax('{{ route('admin.faqs.destroy', $faq) }}', {
+                                                    confirmMessage: 'Yakin ingin menghapus FAQ ini?',
+                                                    button: this
+                                                })">
+                                            <i class="fas fa-trash"></i>
+                                        </button>
                                     </div>
                                 </td>
                             </tr>
@@ -112,5 +104,47 @@
         @endif
     </div>
 </div>
+
+@push('scripts')
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Handle toggle status buttons
+    document.querySelectorAll('.toggle-status-btn').forEach(function(btn) {
+        btn.addEventListener('click', function() {
+            const url = this.getAttribute('data-url');
+            const isActive = this.getAttribute('data-is-active') === '1';
+            
+            toggleStatusAjax(url, {
+                button: this,
+                onSuccess: function(data) {
+                    // Update button appearance
+                    if (data.is_active) {
+                        btn.className = 'btn btn-sm btn-outline-warning toggle-status-btn';
+                        btn.title = 'Nonaktifkan';
+                        btn.innerHTML = '<i class="fas fa-eye-slash"></i>';
+                        btn.setAttribute('data-is-active', '1');
+                    } else {
+                        btn.className = 'btn btn-sm btn-outline-success toggle-status-btn';
+                        btn.title = 'Aktifkan';
+                        btn.innerHTML = '<i class="fas fa-eye"></i>';
+                        btn.setAttribute('data-is-active', '0');
+                    }
+                    // Update status badge in table
+                    const row = btn.closest('tr');
+                    const statusCell = row.querySelector('td:nth-child(6)');
+                    if (statusCell) {
+                        if (data.is_active) {
+                            statusCell.innerHTML = '<span class="badge bg-success">Aktif</span>';
+                        } else {
+                            statusCell.innerHTML = '<span class="badge bg-danger">Nonaktif</span>';
+                        }
+                    }
+                }
+            });
+        });
+    });
+});
+</script>
+@endpush
 @endsection
 

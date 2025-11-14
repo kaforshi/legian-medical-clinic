@@ -10,8 +10,14 @@ require __DIR__.'/admin.php';
 // Route untuk mengganti bahasa (harus di atas route lain)
 Route::get('lang/{locale}', [LanguageController::class, 'swap'])->name('lang.swap')->where('locale', 'id|en');
 
+// Route untuk mendapatkan konten dalam bahasa tertentu (API)
+Route::get('api/content/{locale}', [PageController::class, 'getContentByLocale'])->name('api.content')->where('locale', 'id|en');
+
 // Route untuk clear priority section
 Route::post('/clear-priority', [PageController::class, 'clearPriority'])->name('clear.priority');
+
+// Route untuk questionnaire submission (POST)
+Route::post('/questionnaire', [PageController::class, 'submitQuestionnaire'])->name('questionnaire.submit');
 
 // Route untuk halaman utama, dengan parameter {section} yang opsional
 // Parameter ini digunakan untuk menentukan section mana yang akan diprioritaskan

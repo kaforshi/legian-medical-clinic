@@ -68,12 +68,33 @@ class AdminUserController extends Controller
                 'user_agent' => $request->userAgent(),
             ]);
 
+            if ($request->ajax() || $request->wantsJson()) {
+                return response()->json([
+                    'success' => true,
+                    'message' => 'User admin berhasil ditambahkan.',
+                    'redirect' => route('admin.users.index')
+                ]);
+            }
+            
             return redirect()->route('admin.users.index')
                             ->with('success', 'User admin berhasil ditambahkan.');
         } catch (\Illuminate\Validation\ValidationException $e) {
+            if ($request->ajax() || $request->wantsJson()) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Validasi gagal',
+                    'errors' => $e->errors()
+                ], 422);
+            }
             return redirect()->back()->withErrors($e->errors())->withInput();
         } catch (\Exception $e) {
             \Log::error('Error creating admin user: ' . $e->getMessage());
+            if ($request->ajax() || $request->wantsJson()) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Terjadi kesalahan: ' . $e->getMessage()
+                ], 500);
+            }
             return redirect()->back()->withErrors(['error' => 'Terjadi kesalahan: ' . $e->getMessage()])->withInput();
         }
     }
@@ -137,12 +158,33 @@ class AdminUserController extends Controller
                 'user_agent' => $request->userAgent(),
             ]);
 
+            if ($request->ajax() || $request->wantsJson()) {
+                return response()->json([
+                    'success' => true,
+                    'message' => 'Data user admin berhasil diperbarui.',
+                    'redirect' => route('admin.users.index')
+                ]);
+            }
+            
             return redirect()->route('admin.users.index')
                             ->with('success', 'Data user admin berhasil diperbarui.');
         } catch (\Illuminate\Validation\ValidationException $e) {
+            if ($request->ajax() || $request->wantsJson()) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Validasi gagal',
+                    'errors' => $e->errors()
+                ], 422);
+            }
             return redirect()->back()->withErrors($e->errors())->withInput();
         } catch (\Exception $e) {
             \Log::error('Error updating admin user: ' . $e->getMessage());
+            if ($request->ajax() || $request->wantsJson()) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Terjadi kesalahan: ' . $e->getMessage()
+                ], 500);
+            }
             return redirect()->back()->withErrors(['error' => 'Terjadi kesalahan: ' . $e->getMessage()])->withInput();
         }
     }
@@ -151,6 +193,12 @@ class AdminUserController extends Controller
     {
         // Prevent deleting own account
         if ($user->id === Auth::guard('admin')->id()) {
+            if ($request->ajax() || $request->wantsJson()) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Anda tidak dapat menghapus akun sendiri.'
+                ], 403);
+            }
             return redirect()->route('admin.users.index')
                             ->with('error', 'Anda tidak dapat menghapus akun sendiri.');
         }
@@ -169,6 +217,14 @@ class AdminUserController extends Controller
             'ip_address' => $request->ip(),
             'user_agent' => $request->userAgent(),
         ]);
+
+        if ($request->ajax() || $request->wantsJson()) {
+            return response()->json([
+                'success' => true,
+                'message' => 'User admin berhasil dihapus.',
+                'redirect' => route('admin.users.index')
+            ]);
+        }
 
         return redirect()->route('admin.users.index')
                         ->with('success', 'User admin berhasil dihapus.');

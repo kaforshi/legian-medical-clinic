@@ -103,6 +103,14 @@ class ContentController extends Controller
             'user_agent' => $request->userAgent()
         ]);
 
+        if ($request->ajax() || $request->wantsJson()) {
+            return response()->json([
+                'success' => true,
+                'message' => 'Konten berhasil diperbarui',
+                'redirect' => route('admin.content.index')
+            ]);
+        }
+        
         return redirect()->route('admin.content.index')
             ->with('success', 'Konten berhasil diperbarui');
     }

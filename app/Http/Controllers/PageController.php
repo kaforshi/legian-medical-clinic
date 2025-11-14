@@ -18,28 +18,19 @@ class PageController extends Controller
             app()->setLocale(session('locale'));
         }
 
-        // Handle questionnaire submission
-        if ($request->has('section')) {
-            $section = $request->section;
-            // Set session untuk menandai kuesioner sudah dijawab
-            session(['questionnaireAnswered' => true]);
-            session(['questionnaireSection' => $section]);
-            
-            // Log untuk debugging
-            \Log::info('Questionnaire answered', [
-                'section' => $section,
-                'session_answered' => session('questionnaireAnswered')
-            ]);
-            
-            // Redirect ke halaman yang sama tanpa parameter untuk menghindari refresh yang berulang
-            return redirect()->route('home')->with([
-                'questionnaireSection' => $section,
-                'questionnaireAnswered' => true
-            ]);
-        }
-
+        // Reset layout: Clear section yang diprioritaskan saat refresh (kecuali jika baru saja submit)
+        // Cek apakah ini reload setelah submit (ada parameter answered)
+        $isReloadAfterSubmit = $request->has('answered') && $request->get('answered') === '1';
+        
         // Ambil section yang diprioritaskan dari session atau flash data
-        $prioritizedSection = session('questionnaireSection') ?? $request->session()->get('questionnaireSection');
+        // Hanya gunakan jika ini reload setelah submit, jika tidak reset ke null
+        $prioritizedSection = null;
+        if ($isReloadAfterSubmit) {
+            $prioritizedSection = session('questionnaireSection') ?? $request->session()->get('questionnaireSection');
+        } else {
+            // Reset: clear session questionnaireSection saat refresh normal
+            $request->session()->forget('questionnaireSection');
+        }
 
         // Urutan default section
         $sections = ['about', 'services', 'doctors', 'contact', 'faq'];
@@ -67,6 +58,49 @@ class PageController extends Controller
         return view('index', $data);
     }
 
+    public function submitQuestionnaire(Request $request)
+    {
+        try {
+            $request->validate([
+                'section' => 'required|string|in:about,services,doctors,contact,faq'
+            ]);
+
+            $section = $request->section;
+            
+            // Set session untuk section yang diprioritaskan (tidak menyimpan status "sudah dijawab")
+            // Ini memungkinkan kuesioner muncul lagi saat refresh
+            $request->session()->put('questionnaireSection', $section);
+            
+            // Simpan session secara eksplisit
+            $request->session()->save();
+            
+            // Log untuk debugging
+            \Log::info('Questionnaire answered', [
+                'section' => $section,
+                'session_id' => $request->session()->getId()
+            ]);
+            
+            // Return JSON response for AJAX requests
+            return response()->json([
+                'success' => true,
+                'message' => 'Kuesioner berhasil disubmit',
+                'section' => $section
+            ]);
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Validasi gagal',
+                'errors' => $e->errors()
+            ], 422);
+        } catch (\Exception $e) {
+            \Log::error('Error submitting questionnaire: ' . $e->getMessage());
+            return response()->json([
+                'success' => false,
+                'message' => 'Terjadi kesalahan: ' . $e->getMessage()
+            ], 500);
+        }
+    }
+
     public function clearPriority(Request $request)
     {
         // Clear questionnaire session data
@@ -80,9 +114,112 @@ class PageController extends Controller
 
 
 
-    private function getContentPages()
+    public function getContentByLocale(Request $request, $locale)
     {
-        $locale = app()->getLocale();
+        // Validate locale
+        if (!in_array($locale, ['id', 'en'])) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Invalid locale'
+            ], 400);
+        }
+
+        // Set locale temporarily
+        $oldLocale = app()->getLocale();
+        app()->setLocale($locale);
+
+        try {
+            // Get all content in the requested locale
+            $data = [
+                'messages' => $this->getMessages($locale),
+                'doctors' => Doctor::where('is_active', true)->get()->map(function($doctor) use ($locale) {
+                    // Temporarily set locale to get correct localized values
+                    $oldLocale = app()->getLocale();
+                    app()->setLocale($locale);
+                    $localizedName = $doctor->localized_name;
+                    $localizedSpec = $doctor->localized_specialization;
+                    app()->setLocale($oldLocale);
+                    
+                    return [
+                        'id' => $doctor->id,
+                        'name_id' => $doctor->name_id,
+                        'name_en' => $doctor->name_en,
+                        'localized_name' => $localizedName,
+                        'specialization_id' => $doctor->specialization_id,
+                        'specialization_en' => $doctor->specialization_en,
+                        'localized_specialization' => $localizedSpec,
+                    ];
+                }),
+                'services' => Service::where('is_active', true)->orderBy('sort_order')->get()->map(function($service) use ($locale) {
+                    // Temporarily set locale to get correct localized values
+                    $oldLocale = app()->getLocale();
+                    app()->setLocale($locale);
+                    $localizedName = $service->localized_name;
+                    $localizedDesc = $service->localized_description;
+                    app()->setLocale($oldLocale);
+                    
+                    return [
+                        'id' => $service->id,
+                        'name_id' => $service->name_id,
+                        'name_en' => $service->name_en,
+                        'localized_name' => $localizedName,
+                        'description_id' => $service->description_id,
+                        'description_en' => $service->description_en,
+                        'localized_description' => $localizedDesc,
+                    ];
+                }),
+                'faqs' => Faq::active()->ordered()->get()->map(function($faq) use ($locale) {
+                    // Temporarily set locale to get correct localized values
+                    $oldLocale = app()->getLocale();
+                    app()->setLocale($locale);
+                    $localizedQuestion = $faq->localized_question;
+                    $localizedAnswer = $faq->localized_answer;
+                    app()->setLocale($oldLocale);
+                    
+                    return [
+                        'id' => $faq->id,
+                        'question_id' => $faq->question_id,
+                        'question_en' => $faq->question_en,
+                        'localized_question' => $localizedQuestion,
+                        'answer_id' => $faq->answer_id,
+                        'answer_en' => $faq->answer_en,
+                        'localized_answer' => $localizedAnswer,
+                        'category' => $faq->category,
+                    ];
+                }),
+                'content' => $this->getContentPagesForApi($locale),
+            ];
+
+            // Restore old locale
+            app()->setLocale($oldLocale);
+
+            return response()->json([
+                'success' => true,
+                'data' => $data
+            ]);
+        } catch (\Exception $e) {
+            app()->setLocale($oldLocale);
+            return response()->json([
+                'success' => false,
+                'message' => 'Error fetching content: ' . $e->getMessage()
+            ], 500);
+        }
+    }
+
+    private function getMessages($locale)
+    {
+        $messagesPath = lang_path($locale . '/messages.php');
+        if (file_exists($messagesPath)) {
+            return require $messagesPath;
+        }
+        return [];
+    }
+
+    private function getContentPages($locale = null)
+    {
+        if (!$locale) {
+            $locale = app()->getLocale();
+        }
         $pages = ['about_us', 'faq', 'contact'];
         $content = [];
 
@@ -90,6 +227,29 @@ class PageController extends Controller
             $content[$page] = ContentPage::where('page_key', $page)
                                         ->where('locale', $locale)
                                         ->first();
+        }
+
+        return $content;
+    }
+
+    private function getContentPagesForApi($locale)
+    {
+        $pages = ['about_us', 'faq', 'contact'];
+        $content = [];
+
+        foreach ($pages as $page) {
+            $contentPage = ContentPage::where('page_key', $page)
+                                        ->where('locale', $locale)
+                                        ->first();
+            if ($contentPage) {
+                $content[$page] = [
+                    'title' => $contentPage->title,
+                    'content' => $contentPage->content,
+                    'meta_data' => $contentPage->meta_data ?? [],
+                ];
+            } else {
+                $content[$page] = null;
+            }
         }
 
         return $content;

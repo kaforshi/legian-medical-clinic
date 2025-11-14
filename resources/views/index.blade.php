@@ -10,19 +10,10 @@
     <!-- DEBUG: questionnaireSection = {{ session('questionnaireSection') ?? 'NULL' }} -->
 
     {{-- Tampilkan section yang diprioritaskan TEPAT di atas hero jika ada --}}
-    @if(isset($prioritizedSection) && $prioritizedSection && (session('questionnaireAnswered') || session()->has('questionnaireSection')))
+    @if(isset($prioritizedSection) && $prioritizedSection)
         <div class="prioritized-section-above-hero">
-            <div style="background: red; color: white; padding: 10px; text-align: center;">
-                🎯 PRIORITY SECTION: {{ strtoupper($prioritizedSection) }} - DI ATAS HERO
-            </div>
             @include('partials._' . $prioritizedSection)
         </div>
-    @else
-        <!-- DEBUG: Condition not met for priority section -->
-        <!-- prioritizedSection exists: {{ isset($prioritizedSection) ? 'YES' : 'NO' }} -->
-        <!-- prioritizedSection has value: {{ $prioritizedSection ? 'YES' : 'NO' }} -->
-        <!-- questionnaireAnswered: {{ session('questionnaireAnswered') ? 'YES' : 'NO' }} -->
-        <!-- has questionnaireSection: {{ session()->has('questionnaireSection') ? 'YES' : 'NO' }} -->
     @endif
 
     {{-- Selalu tampilkan hero section --}}
@@ -33,7 +24,7 @@
     @foreach ($sections as $index => $section)
         @php
             // Skip section yang sudah ditampilkan di atas hero
-            $isPrioritized = $section === $prioritizedSection && session('questionnaireAnswered');
+            $isPrioritized = $section === $prioritizedSection;
             $sectionClass = $isPrioritized ? 'prioritized-section' : '';
         @endphp
         @if(!$isPrioritized)

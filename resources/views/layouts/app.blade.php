@@ -29,6 +29,9 @@
     @include('partials._footer')
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script src="{{ asset('js/ajax-utils.js') }}"></script>
+    <script src="{{ asset('js/language-switcher.js') }}"></script>
     <script src="{{ asset('js/script.js') }}"></script>
     
     {{-- Script untuk modal kuesioner --}}
@@ -37,56 +40,70 @@
         document.addEventListener('DOMContentLoaded', function() {
             console.log('Direct script: DOM loaded');
             
-            // Cek apakah kuesioner sudah dijawab dari session dan sessionStorage
-            const sessionAnswered = {{ session('questionnaireAnswered') ? 'true' : 'false' }};
-            const flashAnswered = {{ session()->has('questionnaireAnswered') ? 'true' : 'false' }};
-            const storageAnswered = sessionStorage.getItem('questionnaireAnswered');
-            const answered = sessionAnswered === 'true' || flashAnswered === 'true' || storageAnswered === 'true';
+            // Cek apakah kuesioner baru saja dijawab (dari URL parameter atau sessionStorage)
+            const urlParams = new URLSearchParams(window.location.search);
+            const justAnswered = urlParams.get('answered') === '1' || sessionStorage.getItem('justAnswered') === 'true';
             
-            console.log('Direct script: Session answered:', sessionAnswered);
-            console.log('Direct script: Flash answered:', flashAnswered);
-            console.log('Direct script: Storage answered:', storageAnswered);
-            console.log('Direct script: Final answered status:', answered);
-            
-            // Jika session mengatakan sudah dijawab, simpan juga ke sessionStorage
-            if (sessionAnswered === 'true' || flashAnswered === 'true') {
-                sessionStorage.setItem('questionnaireAnswered', 'true');
-                console.log('Direct script: Synced session/flash to sessionStorage');
+            // Jika baru saja dijawab, jangan tampilkan kuesioner di reload ini
+            if (justAnswered) {
+                console.log('Direct script: Questionnaire just answered, skipping this reload');
+                sessionStorage.removeItem('justAnswered'); // Clear flag
+                // Remove answered parameter from URL
+                if (urlParams.has('answered')) {
+                    urlParams.delete('answered');
+                    const newUrl = window.location.pathname + (urlParams.toString() ? '?' + urlParams.toString() : '');
+                    window.history.replaceState({}, '', newUrl);
+                }
+                return;
             }
             
-            if (!answered) {
-                console.log('Direct script: Will show questionnaire in 2 seconds...');
-                
-                setTimeout(function() {
-                    const modal = document.getElementById('questionnaireModal');
-                    if (modal) {
-                        console.log('Direct script: Modal found, showing...');
-                        
-                        if (typeof bootstrap !== 'undefined') {
-                            try {
-                                const bootstrapModal = new bootstrap.Modal(modal);
-                                bootstrapModal.show();
-                                console.log('Direct script: Modal shown with Bootstrap');
-                            } catch (error) {
-                                console.error('Direct script: Bootstrap error:', error);
-                                // Fallback CSS
-                                modal.style.display = 'block';
-                                modal.classList.add('show');
-                                document.body.classList.add('modal-open');
-                            }
-                        } else {
-                            console.log('Direct script: Bootstrap not available, using CSS');
+            // Reset layout saat refresh: Clear priority section jika tidak ada parameter answered
+            // Ini memastikan layout kembali ke default saat refresh normal
+            if (!urlParams.has('answered')) {
+                axios.post('/clear-priority', {}, {
+                    headers: {
+                        'X-Requested-With': 'XMLHttpRequest',
+                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
+                    }
+                })
+                .then(response => {
+                    console.log('Layout reset on refresh');
+                })
+                .catch(error => {
+                    console.error('Error resetting layout:', error);
+                });
+            }
+            
+            // Kuesioner akan muncul setiap kali halaman di-refresh (kecuali setelah baru dijawab)
+            console.log('Direct script: Will show questionnaire in 2 seconds...');
+            
+            setTimeout(function() {
+                const modal = document.getElementById('questionnaireModal');
+                if (modal) {
+                    console.log('Direct script: Modal found, showing...');
+                    
+                    if (typeof bootstrap !== 'undefined') {
+                        try {
+                            const bootstrapModal = new bootstrap.Modal(modal);
+                            bootstrapModal.show();
+                            console.log('Direct script: Modal shown with Bootstrap');
+                        } catch (error) {
+                            console.error('Direct script: Bootstrap error:', error);
+                            // Fallback CSS
                             modal.style.display = 'block';
                             modal.classList.add('show');
                             document.body.classList.add('modal-open');
                         }
                     } else {
-                        console.error('Direct script: Modal element not found!');
+                        console.log('Direct script: Bootstrap not available, using CSS');
+                        modal.style.display = 'block';
+                        modal.classList.add('show');
+                        document.body.classList.add('modal-open');
                     }
-                }, 2000);
-            } else {
-                console.log('Direct script: Questionnaire already answered, skipping');
-            }
+                } else {
+                    console.error('Direct script: Modal element not found!');
+                }
+            }, 2000);
             
             // Setup event handler untuk tombol skip
             setupSkipButtonHandler();
@@ -102,13 +119,26 @@
                 skipButton.addEventListener('click', function() {
                     console.log('Skip button clicked');
                     
-                    // Simpan status bahwa kuesioner sudah dijawab
-                    sessionStorage.setItem('questionnaireAnswered', 'true');
+                    // Set flag bahwa kuesioner baru saja di-skip
+                    sessionStorage.setItem('justAnswered', 'true');
                     
-                    // Hapus backdrop dan class modal-open jika ada
-                    cleanupModalBackdrop();
-                    
-                    console.log('Questionnaire skipped and cleaned up');
+                    // Reset layout: Clear priority section via AJAX
+                    axios.post('/clear-priority', {}, {
+                        headers: {
+                            'X-Requested-With': 'XMLHttpRequest',
+                            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
+                        }
+                    })
+                    .then(response => {
+                        console.log('Priority section cleared, reloading page...');
+                        // Reload halaman untuk memastikan layout benar-benar reset
+                        window.location.reload();
+                    })
+                    .catch(error => {
+                        console.error('Error clearing priority:', error);
+                        // Tetap reload meskipun ada error
+                        window.location.reload();
+                    });
                 });
             }
         }
@@ -146,9 +176,7 @@
                 form.addEventListener('submit', function(e) {
                     console.log('Questionnaire form submitted');
                     
-                    // Simpan status bahwa kuesioner sudah dijawab
-                    sessionStorage.setItem('questionnaireAnswered', 'true');
-                    
+                    // Tidak perlu menyimpan status, karena kuesioner akan muncul lagi saat refresh
                     // Biarkan form submit secara normal
                     console.log('Form will submit normally');
                 });

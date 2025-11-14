@@ -35,11 +35,8 @@ class Doctor extends Model
     // Accessors for localized content
     public function getLocalizedNameAttribute()
     {
-        $locale = app()->getLocale();
-        if ($locale === 'id') {
-            return $this->name_id ?? $this->name ?? '';
-        }
-        return $this->name_en ?? $this->name ?? '';
+        // Nama dokter tidak di-translate, tetap sama untuk semua bahasa
+        return $this->name_id ?? $this->name ?? '';
     }
 
     public function getLocalizedSpecializationAttribute()
