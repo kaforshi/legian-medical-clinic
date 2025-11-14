@@ -113,6 +113,15 @@
                                  Manajemen FAQ
                              </a>
                          </li>
+                         @if(Auth::guard('admin')->check() && Auth::guard('admin')->user()->isSuperAdmin())
+                         <li class="nav-item">
+                             <a class="nav-link {{ request()->routeIs('admin.users.*') ? 'active' : '' }}" 
+                                href="{{ route('admin.users.index') }}">
+                                 <i class="fas fa-users"></i>
+                                 Manajemen User
+                             </a>
+                         </li>
+                         @endif
 
                     </ul>
                 </div>

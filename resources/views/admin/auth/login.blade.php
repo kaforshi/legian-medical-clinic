@@ -121,22 +121,6 @@
                             <button type="submit" class="btn btn-primary btn-login">
                                 <i class="fas fa-sign-in-alt"></i> Login
                             </button>
-
-                            <div class="mt-3 text-center">
-                                <a href="{{ route('admin.password.request') }}" class="text-decoration-none">
-                                    <small>Lupa password?</small>
-                                </a>
-                            </div>
-
-                            <hr class="my-4">
-
-                            <div class="text-center">
-                                <p class="mb-0">Belum punya akun? 
-                                    <a href="{{ route('admin.register') }}" class="text-decoration-none">
-                                        <strong>Daftar di sini</strong>
-                                    </a>
-                                </p>
-                            </div>
                         </form>
                     </div>
                 </div>

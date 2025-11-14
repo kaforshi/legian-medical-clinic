@@ -33,4 +33,20 @@ class AdminUser extends Authenticatable
     {
         return $this->hasMany(ActivityLog::class);
     }
+
+    /**
+     * Check if user is super admin
+     */
+    public function isSuperAdmin(): bool
+    {
+        return $this->role === 'super_admin';
+    }
+
+    /**
+     * Check if user is admin (not super admin)
+     */
+    public function isAdmin(): bool
+    {
+        return $this->role === 'admin';
+    }
 }
