@@ -43,7 +43,8 @@ class AuthController extends Controller
         Auth::guard('admin')->login($admin);
         
         // Update last login
-        $admin->update(['last_login_at' => now()]);
+        $admin->last_login_at = now();
+        $admin->save();
 
         // Log activity
         ActivityLog::create([
