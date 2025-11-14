@@ -56,22 +56,6 @@ php artisan serve
 - URL: `/admin/login`
 - Default credentials: Check `database/seeders/AdminUserSeeder.php`
 
-## Konfigurasi Email
-
-Untuk fitur reset password via email, konfigurasi email di file `.env`. Lihat dokumentasi lengkap di [EMAIL_CONFIGURATION.md](docs/EMAIL_CONFIGURATION.md)
-
-**Quick Setup (Gmail):**
-```env
-MAIL_MAILER=smtp
-MAIL_HOST=smtp.gmail.com
-MAIL_PORT=587
-MAIL_USERNAME=your-email@gmail.com
-MAIL_PASSWORD=your-app-password
-MAIL_ENCRYPTION=tls
-MAIL_FROM_ADDRESS="your-email@gmail.com"
-MAIL_FROM_NAME="Legian Medical Clinic"
-```
-
 ## Teknologi
 
 - Laravel 11 (PHP)
