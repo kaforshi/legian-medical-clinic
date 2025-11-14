@@ -10,19 +10,6 @@ require __DIR__.'/admin.php';
 // Route untuk mengganti bahasa (harus di atas route lain)
 Route::get('lang/{locale}', [LanguageController::class, 'swap'])->name('lang.swap')->where('locale', 'id|en');
 
-// Route test sederhana untuk memverifikasi locale
-Route::get('test-locale', function() {
-    return response()->json([
-        'current_locale' => app()->getLocale(),
-        'session_locale' => session('locale'),
-        'available_locales' => ['en', 'id'],
-        'test_translation' => [
-            'en' => __('messages.navHome'),
-            'id' => app('translator')->getFromJson('messages.navHome', [], 'id')
-        ]
-    ]);
-});
-
 // Route untuk clear priority section
 Route::post('/clear-priority', [PageController::class, 'clearPriority'])->name('clear.priority');
 

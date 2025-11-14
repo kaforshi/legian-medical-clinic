@@ -17,11 +17,6 @@ class DoctorController extends Controller
         return view('admin.doctors.index', compact('doctors'));
     }
 
-    public function show(Doctor $doctor)
-    {
-        return redirect()->route('admin.doctors.edit', $doctor);
-    }
-
     public function create()
     {
         return view('admin.doctors.create');

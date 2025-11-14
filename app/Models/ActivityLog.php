@@ -30,15 +30,5 @@ class ActivityLog extends Model
     {
         return $this->belongsTo(AdminUser::class);
     }
-
-    public function scopeRecent($query, $days = 7)
-    {
-        return $query->where('created_at', '>=', now()->subDays($days));
-    }
-
-    public function scopeByAction($query, $action)
-    {
-        return $query->where('action', $action);
-    }
 }
 

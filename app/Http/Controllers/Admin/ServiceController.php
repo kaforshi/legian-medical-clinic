@@ -16,11 +16,6 @@ class ServiceController extends Controller
         return view('admin.services.index', compact('services'));
     }
 
-    public function show(Service $service)
-    {
-        return redirect()->route('admin.services.edit', $service);
-    }
-
     public function create()
     {
         return view('admin.services.create');

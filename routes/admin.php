@@ -34,10 +34,10 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.'], function () {
         Route::get('dashboard', [DashboardController::class, 'index'])->name('dashboard');
         
         // Doctor management
-        Route::resource('doctors', DoctorController::class);
+        Route::resource('doctors', DoctorController::class)->except(['show']);
         
         // Service management
-        Route::resource('services', ServiceController::class);
+        Route::resource('services', ServiceController::class)->except(['show']);
         
                         // Content management
                 Route::get('content', [ContentController::class, 'index'])->name('content.index');
@@ -45,7 +45,7 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.'], function () {
                 Route::put('content/{pageKey}', [ContentController::class, 'update'])->name('content.update');
                 
                 // FAQ management
-                Route::resource('faqs', FaqController::class);
+                Route::resource('faqs', FaqController::class)->except(['show']);
                 Route::patch('faqs/{faq}/toggle-status', [FaqController::class, 'toggleStatus'])->name('faqs.toggle-status');
         
 

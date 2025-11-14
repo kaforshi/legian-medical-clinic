@@ -81,16 +81,14 @@ MAIL_FROM_NAME="Legian Medical Clinic"
 
 ## Struktur Database
 
-Sistem menggunakan 9 tables:
+Sistem menggunakan 7 tables:
 - admin_users
 - doctors
 - services
 - content_pages
 - faqs
 - activity_logs
-- users
 - sessions
-- password_reset_tokens
 
 Detail lengkap: [DATABASE_SCHEMA.md](docs/DATABASE_SCHEMA.md)
 
