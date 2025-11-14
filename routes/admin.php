@@ -8,6 +8,7 @@ use App\Http\Controllers\Admin\ServiceController;
 use App\Http\Controllers\Admin\ContentController;
 use App\Http\Controllers\Admin\FaqController;
 use App\Http\Controllers\Admin\AdminUserController;
+use App\Http\Controllers\Admin\AccountController;
 
 
 
@@ -23,6 +24,11 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.'], function () {
     Route::middleware('admin')->group(function () {
         Route::post('logout', [AuthController::class, 'logout'])->name('logout');
         Route::get('dashboard', [DashboardController::class, 'index'])->name('dashboard');
+        
+        // Account settings (for logged in user)
+        Route::get('account', [AccountController::class, 'index'])->name('account.index');
+        Route::put('account/username', [AccountController::class, 'updateUsername'])->name('account.update-username');
+        Route::put('account/password', [AccountController::class, 'updatePassword'])->name('account.update-password');
         
         // Doctor management
         Route::resource('doctors', DoctorController::class)->except(['show']);

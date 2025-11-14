@@ -167,6 +167,12 @@
                                 </button>
                                 <ul class="dropdown-menu">
                                     <li>
+                                        <a class="dropdown-item" href="{{ route('admin.account.index') }}">
+                                            <i class="fas fa-cog"></i> Pengaturan Akun
+                                        </a>
+                                    </li>
+                                    <li><hr class="dropdown-divider"></li>
+                                    <li>
                                         <form action="{{ route('admin.logout') }}" method="POST" class="d-inline">
                                             @csrf
                                             <button type="submit" class="dropdown-item">
