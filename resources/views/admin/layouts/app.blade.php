@@ -137,27 +137,6 @@
                         </button>
                         
                         <div class="ms-auto d-flex align-items-center">
-                            <!-- Language Switcher -->
-                            <div class="dropdown me-3">
-                                <button class="btn btn-outline-primary dropdown-toggle" type="button" 
-                                        data-bs-toggle="dropdown">
-                                    <i class="fas fa-globe"></i>
-                                    {{ app()->getLocale() === 'id' ? 'ID' : 'EN' }}
-                                </button>
-                                <ul class="dropdown-menu">
-                                    <li>
-                                        <a class="dropdown-item" href="{{ route('admin.dashboard') }}?lang=id">
-                                            <i class="fas fa-flag"></i> Bahasa Indonesia
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a class="dropdown-item" href="{{ route('admin.dashboard') }}?lang=en">
-                                            <i class="fas fa-flag"></i> English
-                                        </a>
-                                    </li>
-                                </ul>
-                            </div>
-                            
                             <!-- User Menu -->
                             <div class="dropdown">
                                 <button class="btn btn-outline-secondary dropdown-toggle" type="button" 

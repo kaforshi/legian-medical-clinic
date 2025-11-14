@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Faq;
 use App\Models\ActivityLog;
+use App\Services\TranslationService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -22,19 +23,28 @@ class FaqController extends Controller
         return view('admin.faqs.create');
     }
 
-    public function store(Request $request)
+    public function store(Request $request, TranslationService $translationService)
     {
         $request->validate([
             'question_id' => 'required|string|max:500',
-            'question_en' => 'required|string|max:500',
             'answer_id' => 'required|string',
-            'answer_en' => 'required|string',
             'category' => 'nullable|string|max:100',
             'sort_order' => 'nullable|integer|min:0',
             'is_active' => 'boolean'
         ]);
 
-        $data = $request->only(['question_id', 'question_en', 'answer_id', 'answer_en', 'category', 'sort_order']);
+        // Auto translate to English
+        $questionEn = $translationService->translateToEnglish($request->question_id);
+        $answerEn = $translationService->translateToEnglish($request->answer_id);
+
+        $data = [
+            'question_id' => $request->question_id,
+            'question_en' => $questionEn,
+            'answer_id' => $request->answer_id,
+            'answer_en' => $answerEn,
+            'category' => $request->category,
+            'sort_order' => $request->sort_order ?? 0,
+        ];
         $data['is_active'] = $request->has('is_active');
         
         $faq = Faq::create($data);
@@ -57,19 +67,28 @@ class FaqController extends Controller
         return view('admin.faqs.edit', compact('faq'));
     }
 
-    public function update(Request $request, Faq $faq)
+    public function update(Request $request, Faq $faq, TranslationService $translationService)
     {
         $request->validate([
             'question_id' => 'required|string|max:500',
-            'question_en' => 'required|string|max:500',
             'answer_id' => 'required|string',
-            'answer_en' => 'required|string',
             'category' => 'nullable|string|max:100',
             'sort_order' => 'nullable|integer|min:0',
             'is_active' => 'boolean'
         ]);
 
-        $data = $request->only(['question_id', 'question_en', 'answer_id', 'answer_en', 'category', 'sort_order']);
+        // Auto translate to English
+        $questionEn = $translationService->translateToEnglish($request->question_id);
+        $answerEn = $translationService->translateToEnglish($request->answer_id);
+
+        $data = [
+            'question_id' => $request->question_id,
+            'question_en' => $questionEn,
+            'answer_id' => $request->answer_id,
+            'answer_en' => $answerEn,
+            'category' => $request->category,
+            'sort_order' => $request->sort_order ?? 0,
+        ];
         $data['is_active'] = $request->has('is_active');
         
         $faq->update($data);

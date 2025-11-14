@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Services\TranslationService;
 use Illuminate\Http\Request;
 use App\Models\ContentPage;
 use Illuminate\Support\Facades\Log;
@@ -38,20 +39,24 @@ class ContentController extends Controller
         return view('admin.content.edit', compact('pageId', 'pageEn', 'pageKey'));
     }
 
-    public function update(Request $request, $pageKey)
+    public function update(Request $request, $pageKey, TranslationService $translationService)
     {
         $request->validate([
             'title_id' => 'required|string|max:255',
             'content_id' => 'required|string',
             'meta_description_id' => 'nullable|string|max:500',
-            'title_en' => 'required|string|max:255',
-            'content_en' => 'required|string',
-            'meta_description_en' => 'nullable|string|max:500',
             'address' => 'nullable|string|max:500',
             'phone' => 'nullable|string|max:50',
             'email' => 'nullable|email|max:255',
             'working_hours' => 'nullable|string|max:255'
         ]);
+
+        // Auto translate to English
+        $titleEn = $translationService->translateToEnglish($request->title_id);
+        $contentEn = $translationService->translateToEnglish($request->content_id);
+        $metaDescriptionEn = $request->meta_description_id 
+            ? $translationService->translateToEnglish($request->meta_description_id) 
+            : null;
 
         // Prepare meta_data for contact page
         $metaData = null;
@@ -77,15 +82,15 @@ class ContentController extends Controller
             ]
         );
 
-        // Update English content
-        $contentEn = ContentPage::updateOrCreate(
+        // Update English content (auto translated)
+        $contentEnRecord = ContentPage::updateOrCreate(
             [
                 'page_key' => $pageKey,
                 'locale' => 'en'
             ],
             [
-                'title' => $request->title_en,
-                'content' => $request->content_en,
+                'title' => $titleEn,
+                'content' => $contentEn,
                 'meta_data' => $metaData,
             ]
         );

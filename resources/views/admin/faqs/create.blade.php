@@ -18,84 +18,42 @@
         <form action="{{ route('admin.faqs.store') }}" method="POST">
             @csrf
             
-            <div class="row">
-                <!-- Bahasa Indonesia -->
-                <div class="col-md-6">
-                    <h6 class="text-primary mb-3">
-                        <i class="fas fa-flag"></i> Bahasa Indonesia
-                    </h6>
-                    
-                    <div class="mb-3">
-                        <label for="question_id" class="form-label">Pertanyaan <span class="text-danger">*</span></label>
-                        <input type="text" 
-                               class="form-control @error('question_id') is-invalid @enderror" 
-                               id="question_id" 
-                               name="question_id" 
-                               value="{{ old('question_id') }}" 
-                               required 
-                               maxlength="500">
-                        @error('question_id')
-                            <div class="invalid-feedback">{{ $message }}</div>
-                        @enderror
-                        <small class="form-text text-muted">
-                            Maksimal 500 karakter
-                        </small>
-                    </div>
-                    
-                    <div class="mb-3">
-                        <label for="answer_id" class="form-label">Jawaban <span class="text-danger">*</span></label>
-                        <textarea class="form-control wysiwyg-editor @error('answer_id') is-invalid @enderror" 
-                                  id="answer_id" 
-                                  name="answer_id" 
-                                  rows="8" 
-                                  required>{{ old('answer_id') }}</textarea>
-                        @error('answer_id')
-                            <div class="invalid-feedback">{{ $message }}</div>
-                        @enderror
-                        <small class="form-text text-muted">
-                            Gunakan toolbar di atas untuk formatting teks. Tidak perlu HTML.
-                        </small>
-                    </div>
-                </div>
-                
-                <!-- Bahasa Inggris -->
-                <div class="col-md-6">
-                    <h6 class="text-primary mb-3">
-                        <i class="fas fa-flag"></i> English
-                    </h6>
-                    
-                    <div class="mb-3">
-                        <label for="question_en" class="form-label">Question <span class="text-danger">*</span></label>
-                        <input type="text" 
-                               class="form-control @error('question_en') is-invalid @enderror" 
-                               id="question_en" 
-                               name="question_en" 
-                               value="{{ old('question_en') }}" 
-                               required 
-                               maxlength="500">
-                        @error('question_en')
-                            <div class="invalid-feedback">{{ $message }}</div>
-                        @enderror
-                        <small class="form-text text-muted">
-                            Maximum 500 characters
-                        </small>
-                    </div>
-                    
-                    <div class="mb-3">
-                        <label for="answer_en" class="form-label">Answer <span class="text-danger">*</span></label>
-                        <textarea class="form-control wysiwyg-editor @error('answer_en') is-invalid @enderror" 
-                                  id="answer_en" 
-                                  name="answer_en" 
-                                  rows="8" 
-                                  required>{{ old('answer_en') }}</textarea>
-                        @error('answer_en')
-                            <div class="invalid-feedback">{{ $message }}</div>
-                        @enderror
-                        <small class="form-text text-muted">
-                            Use the toolbar above for text formatting. No HTML required.
-                        </small>
-                    </div>
-                </div>
+            <div class="alert alert-info mb-4">
+                <i class="fas fa-info-circle"></i> 
+                <strong>Info:</strong> Hanya perlu mengisi dalam bahasa Indonesia. 
+                Terjemahan ke bahasa Inggris akan dilakukan secara otomatis.
+            </div>
+            
+            <div class="mb-3">
+                <label for="question_id" class="form-label">Pertanyaan <span class="text-danger">*</span></label>
+                <input type="text" 
+                       class="form-control @error('question_id') is-invalid @enderror" 
+                       id="question_id" 
+                       name="question_id" 
+                       value="{{ old('question_id') }}" 
+                       required 
+                       maxlength="500">
+                @error('question_id')
+                    <div class="invalid-feedback">{{ $message }}</div>
+                @enderror
+                <small class="form-text text-muted">
+                    Maksimal 500 karakter
+                </small>
+            </div>
+            
+            <div class="mb-3">
+                <label for="answer_id" class="form-label">Jawaban <span class="text-danger">*</span></label>
+                <textarea class="form-control wysiwyg-editor @error('answer_id') is-invalid @enderror" 
+                          id="answer_id" 
+                          name="answer_id" 
+                          rows="8" 
+                          required>{{ old('answer_id') }}</textarea>
+                @error('answer_id')
+                    <div class="invalid-feedback">{{ $message }}</div>
+                @enderror
+                <small class="form-text text-muted">
+                    Gunakan toolbar di atas untuk formatting teks.
+                </small>
             </div>
             
             <!-- Pengaturan Umum -->

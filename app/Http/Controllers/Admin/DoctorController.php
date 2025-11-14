@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Doctor;
 use App\Models\ActivityLog;
+use App\Services\TranslationService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Auth;
@@ -22,22 +23,32 @@ class DoctorController extends Controller
         return view('admin.doctors.create');
     }
 
-    public function store(Request $request)
+    public function store(Request $request, TranslationService $translationService)
     {
         try {
-            // Basic validation for required fields
+            // Basic validation for required fields (only Indonesian)
             $request->validate([
                 'name_id' => 'required|string|max:255',
-                'name_en' => 'required|string|max:255',
                 'specialization_id' => 'required|string|max:255',
-                'specialization_en' => 'required|string|max:255',
                 'is_active' => 'boolean'
             ], [], [
-                'name_id' => 'Nama (Indonesia)',
-                'name_en' => 'Nama (English)',
-                'specialization_id' => 'Spesialisasi (Indonesia)',
-                'specialization_en' => 'Spesialisasi (English)',
+                'name_id' => 'Nama Dokter',
+                'specialization_id' => 'Spesialisasi',
             ]);
+            
+            // Auto translate to English
+            $nameEn = $translationService->translateToEnglish($request->name_id);
+            $specializationEn = $translationService->translateToEnglish($request->specialization_id);
+            
+            $data = [
+                'name_id' => $request->name_id,
+                'name_en' => $nameEn,
+                'name' => $request->name_id, // Fallback for backward compatibility
+                'specialization_id' => $request->specialization_id,
+                'specialization_en' => $specializationEn,
+                'specialization' => $request->specialization_id, // Fallback for backward compatibility
+                'is_active' => $request->has('is_active') ? 1 : 0
+            ];
             
             // Manual photo validation to avoid fileinfo issue
             if ($request->hasFile('photo')) {
@@ -143,22 +154,22 @@ class DoctorController extends Controller
         return view('admin.doctors.edit', compact('doctor'));
     }
 
-    public function update(Request $request, Doctor $doctor)
+    public function update(Request $request, Doctor $doctor, TranslationService $translationService)
     {
         try {
-            // Basic validation for required fields
+            // Basic validation for required fields (only Indonesian)
             $request->validate([
                 'name_id' => 'required|string|max:255',
-                'name_en' => 'required|string|max:255',
                 'specialization_id' => 'required|string|max:255',
-                'specialization_en' => 'required|string|max:255',
                 'is_active' => 'boolean'
             ], [], [
-                'name_id' => 'Nama (Indonesia)',
-                'name_en' => 'Nama (English)',
-                'specialization_id' => 'Spesialisasi (Indonesia)',
-                'specialization_en' => 'Spesialisasi (English)',
+                'name_id' => 'Nama Dokter',
+                'specialization_id' => 'Spesialisasi',
             ]);
+            
+            // Auto translate to English
+            $nameEn = $translationService->translateToEnglish($request->name_id);
+            $specializationEn = $translationService->translateToEnglish($request->specialization_id);
             
             // Manual photo validation to avoid fileinfo issue
             if ($request->hasFile('photo')) {
@@ -186,11 +197,11 @@ class DoctorController extends Controller
             $oldValues = $doctor->toArray();
             $data = [
                 'name_id' => $request->name_id,
-                'name_en' => $request->name_en,
-                'name' => $request->name_id ?? $request->name_en, // Fallback for backward compatibility
+                'name_en' => $nameEn,
+                'name' => $request->name_id, // Fallback for backward compatibility
                 'specialization_id' => $request->specialization_id,
-                'specialization_en' => $request->specialization_en,
-                'specialization' => $request->specialization_id ?? $request->specialization_en, // Fallback for backward compatibility
+                'specialization_en' => $specializationEn,
+                'specialization' => $request->specialization_id, // Fallback for backward compatibility
                 'is_active' => $request->has('is_active') ? 1 : 0
             ];
 

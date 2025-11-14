@@ -15,15 +15,6 @@ class DashboardController extends Controller
 {
     public function index(Request $request)
     {
-        // Handle language switching
-        if ($request->has('lang')) {
-            $locale = $request->get('lang');
-            if (in_array($locale, ['id', 'en'])) {
-                app()->setLocale($locale);
-                session(['locale' => $locale]);
-            }
-        }
-
         $stats = [
             'total_doctors' => Doctor::count(),
             'active_doctors' => Doctor::where('is_active', true)->count(),

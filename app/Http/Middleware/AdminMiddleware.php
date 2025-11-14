@@ -5,6 +5,7 @@ namespace App\Http\Middleware;
 use Closure;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\App;
 
 class AdminMiddleware
 {
@@ -17,6 +18,9 @@ class AdminMiddleware
      */
     public function handle(Request $request, Closure $next)
     {
+        // Force admin panel to use Indonesian language
+        App::setLocale('id');
+        
         // Check if user is authenticated as admin
         if (!Auth::guard('admin')->check()) {
             return redirect()->route('admin.login')

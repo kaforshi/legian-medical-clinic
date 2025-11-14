@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Services\TranslationService;
 use Illuminate\Http\Request;
 use App\Models\Service;
 use Illuminate\Support\Facades\Storage;
@@ -21,24 +22,36 @@ class ServiceController extends Controller
         return view('admin.services.create');
     }
 
-    public function store(Request $request)
+    public function store(Request $request, TranslationService $translationService)
     {
         try {
-            // Basic validation for required fields
+            // Basic validation for required fields (only Indonesian)
             $request->validate([
                 'name_id' => 'required|string|max:255',
-                'name_en' => 'required|string|max:255',
                 'description_id' => 'required|string',
-                'description_en' => 'required|string',
                 'price' => 'nullable|numeric|min:0',
                 'sort_order' => 'nullable|integer|min:0',
                 'is_active' => 'boolean'
             ], [], [
-                'name_id' => 'Nama (Indonesia)',
-                'name_en' => 'Nama (English)',
-                'description_id' => 'Deskripsi (Indonesia)',
-                'description_en' => 'Deskripsi (English)',
+                'name_id' => 'Nama Layanan',
+                'description_id' => 'Deskripsi',
             ]);
+            
+            // Auto translate to English
+            $nameEn = $translationService->translateToEnglish($request->name_id);
+            $descriptionEn = $translationService->translateToEnglish($request->description_id);
+            
+            $data = [
+                'name_id' => $request->name_id,
+                'name_en' => $nameEn,
+                'name' => $request->name_id, // Fallback for backward compatibility
+                'description_id' => $request->description_id,
+                'description_en' => $descriptionEn,
+                'description' => $request->description_id, // Fallback for backward compatibility
+                'price' => $request->price,
+                'sort_order' => $request->sort_order,
+                'is_active' => $request->has('is_active') ? 1 : 0
+            ];
             
             // Manual icon validation to avoid fileinfo issue
             if ($request->hasFile('icon')) {
@@ -65,11 +78,11 @@ class ServiceController extends Controller
 
             $data = [
                 'name_id' => $request->name_id,
-                'name_en' => $request->name_en,
-                'name' => $request->name_id ?? $request->name_en, // Fallback for backward compatibility
+                'name_en' => $nameEn,
+                'name' => $request->name_id, // Fallback for backward compatibility
                 'description_id' => $request->description_id,
-                'description_en' => $request->description_en,
-                'description' => $request->description_id ?? $request->description_en, // Fallback for backward compatibility
+                'description_en' => $descriptionEn,
+                'description' => $request->description_id, // Fallback for backward compatibility
                 'price' => $request->price,
                 'sort_order' => $request->sort_order,
                 'is_active' => $request->has('is_active') ? 1 : 0
@@ -141,24 +154,24 @@ class ServiceController extends Controller
         return view('admin.services.edit', compact('service'));
     }
 
-    public function update(Request $request, Service $service)
+    public function update(Request $request, Service $service, TranslationService $translationService)
     {
         try {
-            // Basic validation for required fields
+            // Basic validation for required fields (only Indonesian)
             $request->validate([
                 'name_id' => 'required|string|max:255',
-                'name_en' => 'required|string|max:255',
                 'description_id' => 'required|string',
-                'description_en' => 'required|string',
                 'price' => 'nullable|numeric|min:0',
                 'sort_order' => 'nullable|integer|min:0',
                 'is_active' => 'boolean'
             ], [], [
-                'name_id' => 'Nama (Indonesia)',
-                'name_en' => 'Nama (English)',
-                'description_id' => 'Deskripsi (Indonesia)',
-                'description_en' => 'Deskripsi (English)',
+                'name_id' => 'Nama Layanan',
+                'description_id' => 'Deskripsi',
             ]);
+            
+            // Auto translate to English
+            $nameEn = $translationService->translateToEnglish($request->name_id);
+            $descriptionEn = $translationService->translateToEnglish($request->description_id);
             
             // Manual icon validation to avoid fileinfo issue
             if ($request->hasFile('icon')) {
@@ -185,11 +198,11 @@ class ServiceController extends Controller
 
             $data = [
                 'name_id' => $request->name_id,
-                'name_en' => $request->name_en,
-                'name' => $request->name_id ?? $request->name_en, // Fallback for backward compatibility
+                'name_en' => $nameEn,
+                'name' => $request->name_id, // Fallback for backward compatibility
                 'description_id' => $request->description_id,
-                'description_en' => $request->description_en,
-                'description' => $request->description_id ?? $request->description_en, // Fallback for backward compatibility
+                'description_en' => $descriptionEn,
+                'description' => $request->description_id, // Fallback for backward compatibility
                 'price' => $request->price,
                 'sort_order' => $request->sort_order,
                 'is_active' => $request->has('is_active') ? 1 : 0

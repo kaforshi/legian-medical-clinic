@@ -36,103 +36,49 @@
             @csrf
             @method('PUT')
             
-            <ul class="nav nav-tabs" id="contentTabs" role="tablist">
-                <li class="nav-item" role="presentation">
-                    <button class="nav-link active" id="indonesian-tab" data-bs-toggle="tab" data-bs-target="#indonesian" type="button" role="tab">
-                        <i class="fas fa-flag"></i> Bahasa Indonesia
-                    </button>
-                </li>
-                <li class="nav-item" role="presentation">
-                    <button class="nav-link" id="english-tab" data-bs-toggle="tab" data-bs-target="#english" type="button" role="tab">
-                        <i class="fas fa-flag"></i> English
-                    </button>
-                </li>
-            </ul>
+            <div class="alert alert-info mb-4">
+                <i class="fas fa-info-circle"></i> 
+                <strong>Info:</strong> Hanya perlu mengisi dalam bahasa Indonesia. 
+                Terjemahan ke bahasa Inggris akan dilakukan secara otomatis saat menyimpan.
+            </div>
             
-            <div class="tab-content mt-3" id="contentTabsContent">
-                <!-- Indonesian Content -->
-                <div class="tab-pane fade show active" id="indonesian" role="tabpanel">
-                    <div class="mb-3">
-                        <label for="title_id" class="form-label">Judul (Bahasa Indonesia) <span class="text-danger">*</span></label>
-                        <input type="text" 
-                               class="form-control @error('title_id') is-invalid @enderror" 
-                               id="title_id" 
-                               name="title_id" 
-                               value="{{ old('title_id', $pageId->title ?? '') }}" 
-                               required>
-                        @error('title_id')
-                            <div class="invalid-feedback">{{ $message }}</div>
-                        @enderror
-                    </div>
-                    
-                    <div class="mb-3">
-                        <label for="content_id" class="form-label">Konten (Bahasa Indonesia) <span class="text-danger">*</span></label>
-                        <textarea class="form-control wysiwyg-editor @error('content_id') is-invalid @enderror" 
-                                  id="content_id" 
-                                  name="content_id" 
-                                  rows="15" 
-                                  required>{{ old('content_id', $pageId->content ?? '') }}</textarea>
-                        @error('content_id')
-                            <div class="invalid-feedback">{{ $message }}</div>
-                        @enderror
-                        <small class="form-text text-muted">
-                            Gunakan toolbar di atas untuk formatting teks. Anda tidak perlu mengetahui HTML.
-                        </small>
-                    </div>
-                    
-                    <div class="mb-3">
-                        <label for="meta_description_id" class="form-label">Meta Description (Bahasa Indonesia)</label>
-                        <textarea class="form-control" 
-                                  id="meta_description_id" 
-                                  name="meta_description_id" 
-                                  rows="3">{{ old('meta_description_id', $pageId->meta_description ?? '') }}</textarea>
-                        <small class="form-text text-muted">
-                            Deskripsi singkat untuk SEO (maksimal 500 karakter).
-                        </small>
-                    </div>
-                </div>
-                
-                <!-- English Content -->
-                <div class="tab-pane fade" id="english" role="tabpanel">
-                    <div class="mb-3">
-                        <label for="title_en" class="form-label">Title (English) <span class="text-danger">*</span></label>
-                        <input type="text" 
-                               class="form-control @error('title_en') is-invalid @enderror" 
-                               id="title_en" 
-                               name="title_en" 
-                               value="{{ old('title_en', $pageEn->title ?? '') }}" 
-                               required>
-                        @error('title_en')
-                            <div class="invalid-feedback">{{ $message }}</div>
-                        @enderror
-                    </div>
-                    
-                    <div class="mb-3">
-                        <label for="content_en" class="form-label">Content (English) <span class="text-danger">*</span></label>
-                        <textarea class="form-control wysiwyg-editor @error('content_en') is-invalid @enderror" 
-                                  id="content_en" 
-                                  name="content_en" 
-                                  rows="15" 
-                                  required>{{ old('content_en', $pageEn->content ?? '') }}</textarea>
-                        @error('content_en')
-                            <div class="invalid-feedback">{{ $message }}</div>
-                        @enderror
-                        <small class="form-text text-muted">
-                            Use the toolbar above for text formatting. No HTML knowledge required.
-                        </small>
-                    </div>
-                    
-                    <div class="mb-3">
-                        <label for="meta_description_en" class="form-label">Meta Description (English)</label>
-                        <textarea class="form-control" 
-                                  id="meta_description_en" 
-                                  name="meta_description_en" 
-                                  rows="3">{{ old('meta_description_en', $pageEn->meta_description ?? '') }}</textarea>
-                        <small class="form-text text-muted">
-                            Brief description for SEO (maximum 500 characters).
-                        </small>
-                    </div>
-                </div>
+            <div class="mb-3">
+                <label for="title_id" class="form-label">Judul <span class="text-danger">*</span></label>
+                <input type="text" 
+                       class="form-control @error('title_id') is-invalid @enderror" 
+                       id="title_id" 
+                       name="title_id" 
+                       value="{{ old('title_id', $pageId->title ?? '') }}" 
+                       required>
+                @error('title_id')
+                    <div class="invalid-feedback">{{ $message }}</div>
+                @enderror
+            </div>
+            
+            <div class="mb-3">
+                <label for="content_id" class="form-label">Konten <span class="text-danger">*</span></label>
+                <textarea class="form-control wysiwyg-editor @error('content_id') is-invalid @enderror" 
+                          id="content_id" 
+                          name="content_id" 
+                          rows="15" 
+                          required>{{ old('content_id', $pageId->content ?? '') }}</textarea>
+                @error('content_id')
+                    <div class="invalid-feedback">{{ $message }}</div>
+                @enderror
+                <small class="form-text text-muted">
+                    Gunakan toolbar di atas untuk formatting teks. Anda tidak perlu mengetahui HTML.
+                </small>
+            </div>
+            
+            <div class="mb-3">
+                <label for="meta_description_id" class="form-label">Meta Description</label>
+                <textarea class="form-control" 
+                          id="meta_description_id" 
+                          name="meta_description_id" 
+                          rows="3">{{ old('meta_description_id', $pageId->meta_description ?? '') }}</textarea>
+                <small class="form-text text-muted">
+                    Deskripsi singkat untuk SEO (maksimal 500 karakter).
+                </small>
             </div>
             
             <!-- Meta Data for Contact Page -->

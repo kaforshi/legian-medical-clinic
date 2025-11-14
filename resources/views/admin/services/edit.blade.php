@@ -23,78 +23,39 @@
             
             <div class="row">
                 <div class="col-md-8">
-                    <div class="row">
-                        <!-- Bahasa Indonesia -->
-                        <div class="col-md-6">
-                            <h6 class="text-primary mb-3">
-                                <i class="fas fa-flag"></i> Bahasa Indonesia
-                            </h6>
-                            
-                            <div class="mb-3">
-                                <label for="name_id" class="form-label">Nama Layanan <span class="text-danger">*</span></label>
-                                <input type="text" 
-                                       class="form-control @error('name_id') is-invalid @enderror" 
-                                       id="name_id" 
-                                       name="name_id" 
-                                       value="{{ old('name_id', $service->name_id) }}" 
-                                       required
-                                       maxlength="255">
-                                @error('name_id')
-                                    <div class="invalid-feedback">{{ $message }}</div>
-                                @enderror
-                            </div>
-                            
-                            <div class="mb-3">
-                                <label for="description_id" class="form-label">Deskripsi <span class="text-danger">*</span></label>
-                                <textarea class="form-control wysiwyg-editor @error('description_id') is-invalid @enderror" 
-                                          id="description_id" 
-                                          name="description_id" 
-                                          rows="8"
-                                          required>{{ old('description_id', $service->description_id) }}</textarea>
-                                @error('description_id')
-                                    <div class="invalid-feedback">{{ $message }}</div>
-                                @enderror
-                                <small class="form-text text-muted">
-                                    Gunakan toolbar di atas untuk formatting teks.
-                                </small>
-                            </div>
-                        </div>
-                        
-                        <!-- Bahasa Inggris -->
-                        <div class="col-md-6">
-                            <h6 class="text-info mb-3">
-                                <i class="fas fa-flag"></i> English
-                            </h6>
-                            
-                            <div class="mb-3">
-                                <label for="name_en" class="form-label">Service Name <span class="text-danger">*</span></label>
-                                <input type="text" 
-                                       class="form-control @error('name_en') is-invalid @enderror" 
-                                       id="name_en" 
-                                       name="name_en" 
-                                       value="{{ old('name_en', $service->name_en) }}" 
-                                       required
-                                       maxlength="255">
-                                @error('name_en')
-                                    <div class="invalid-feedback">{{ $message }}</div>
-                                @enderror
-                            </div>
-                            
-                            <div class="mb-3">
-                                <label for="description_en" class="form-label">Description <span class="text-danger">*</span></label>
-                                <textarea class="form-control wysiwyg-editor @error('description_en') is-invalid @enderror" 
-                                          id="description_en" 
-                                          name="description_en" 
-                                          rows="8"
-                                          required>{{ old('description_en', $service->description_en) }}</textarea>
-                                @error('description_en')
-                                    <div class="invalid-feedback">{{ $message }}</div>
-                                @enderror
-                                <small class="form-text text-muted">
-                                    Use the toolbar above for text formatting.
-                                </small>
-                            </div>
-                        </div>
+                    <div class="alert alert-info">
+                        <i class="fas fa-info-circle"></i> 
+                        <strong>Info:</strong> Hanya perlu mengisi dalam bahasa Indonesia. 
+                        Terjemahan ke bahasa Inggris akan dilakukan secara otomatis saat menyimpan.
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label for="name_id" class="form-label">Nama Layanan <span class="text-danger">*</span></label>
+                        <input type="text" 
+                               class="form-control @error('name_id') is-invalid @enderror" 
+                               id="name_id" 
+                               name="name_id" 
+                               value="{{ old('name_id', $service->name_id) }}" 
+                               required
+                               maxlength="255">
+                        @error('name_id')
+                            <div class="invalid-feedback">{{ $message }}</div>
+                        @enderror
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label for="description_id" class="form-label">Deskripsi <span class="text-danger">*</span></label>
+                        <textarea class="form-control wysiwyg-editor @error('description_id') is-invalid @enderror" 
+                                  id="description_id" 
+                                  name="description_id" 
+                                  rows="8"
+                                  required>{{ old('description_id', $service->description_id) }}</textarea>
+                        @error('description_id')
+                            <div class="invalid-feedback">{{ $message }}</div>
+                        @enderror
+                        <small class="form-text text-muted">
+                            Gunakan toolbar di atas untuk formatting teks.
+                        </small>
                     </div>
                     
                     
