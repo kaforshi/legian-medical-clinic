@@ -1,6 +1,7 @@
 @extends('admin.layouts.app')
 
 @section('title', 'Edit User')
+@section('page-title', 'Edit User')
 
 @section('content')
 <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">

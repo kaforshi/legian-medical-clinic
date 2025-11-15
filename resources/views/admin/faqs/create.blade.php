@@ -1,6 +1,7 @@
 @extends('admin.layouts.app')
 
 @section('title', 'Tambah FAQ')
+@section('page-title', 'Tambah FAQ')
 
 @section('content')
 <div class="d-flex justify-content-between align-items-center mb-4">

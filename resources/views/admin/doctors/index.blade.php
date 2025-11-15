@@ -1,32 +1,27 @@
 @extends('admin.layouts.app')
 
 @section('title', 'Manajemen Dokter')
+@section('page-title', 'Manajemen Dokter')
 
 @section('content')
-<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-    <h1 class="h2">Manajemen Dokter</h1>
-    <div class="btn-toolbar mb-2 mb-md-0">
+<div class="card-modern mb-4">
+    <div class="card-modern-header d-flex justify-content-between align-items-center">
+        <h5 class="mb-0 fw-semibold">Daftar Dokter</h5>
         <a href="{{ route('admin.doctors.create') }}" class="btn btn-primary">
             <i class="fas fa-plus"></i> Tambah Dokter
         </a>
     </div>
-</div>
-
-<div class="card shadow">
-    <div class="card-header">
-        <h6 class="m-0 font-weight-bold text-primary">Daftar Dokter</h6>
-    </div>
-    <div class="card-body">
+    <div class="card-modern-body">
         @if($doctors->count() > 0)
             <div class="table-responsive">
-                <table class="table table-bordered" width="100%" cellspacing="0">
-                    <thead>
+                <table class="table table-hover align-middle">
+                    <thead class="table-light">
                         <tr>
-                            <th>Foto</th>
+                            <th style="width: 80px;">Foto</th>
                             <th>Nama</th>
                             <th>Spesialisasi</th>
-                            <th>Status</th>
-                            <th>Aksi</th>
+                            <th style="width: 100px;">Status</th>
+                            <th style="width: 120px;">Aksi</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -34,24 +29,20 @@
                         <tr>
                             <td>
                                 <img src="{{ $doctor->photo_url }}" 
-                                     alt="{{ $doctor->name }}" 
-                                     class="img-thumbnail" 
-                                     style="width: 60px; height: 60px; object-fit: cover;">
+                                     alt="{{ $doctor->name_id ?: $doctor->name }}" 
+                                     class="rounded-circle" 
+                                     style="width: 50px; height: 50px; object-fit: cover;">
                             </td>
                             <td>
-                                @if($doctor->name_id || $doctor->name_en)
-                                    <strong>ID:</strong> {{ $doctor->name_id ?: '-' }}<br>
-                                    <strong>EN:</strong> {{ $doctor->name_en ?: '-' }}
-                                @else
-                                    {{ $doctor->name ?: '-' }}
+                                <div class="fw-medium">{{ $doctor->name_id ?: $doctor->name ?: '-' }}</div>
+                                @if($doctor->name_en && $doctor->name_en !== $doctor->name_id)
+                                    <small class="text-muted">{{ $doctor->name_en }}</small>
                                 @endif
                             </td>
                             <td>
-                                @if($doctor->specialization_id || $doctor->specialization_en)
-                                    <strong>ID:</strong> {{ $doctor->specialization_id ?: '-' }}<br>
-                                    <strong>EN:</strong> {{ $doctor->specialization_en ?: '-' }}
-                                @else
-                                    {{ $doctor->specialization ?: '-' }}
+                                <div>{{ $doctor->specialization_id ?: '-' }}</div>
+                                @if($doctor->specialization_en && $doctor->specialization_en !== $doctor->specialization_id)
+                                    <small class="text-muted">{{ $doctor->specialization_en }}</small>
                                 @endif
                             </td>
                             <td>
@@ -62,13 +53,14 @@
                                 @endif
                             </td>
                             <td>
-                                <div class="btn-group" role="group">
+                                <div class="btn-group btn-group-sm" role="group">
                                     <a href="{{ route('admin.doctors.edit', $doctor) }}" 
-                                       class="btn btn-sm btn-warning">
+                                       class="btn btn-outline-primary" title="Edit">
                                         <i class="fas fa-edit"></i>
                                     </a>
                                     <button type="button" 
-                                            class="btn btn-sm btn-danger"
+                                            class="btn btn-outline-danger"
+                                            title="Hapus"
                                             onclick="deleteItemAjax('{{ route('admin.doctors.destroy', $doctor) }}', {
                                                 confirmMessage: 'Apakah Anda yakin ingin menghapus dokter ini?',
                                                 button: this
@@ -83,11 +75,11 @@
                 </table>
             </div>
             
-            <div class="d-flex justify-content-center">
+            <div class="d-flex justify-content-center mt-4">
                 {{ $doctors->links() }}
             </div>
         @else
-            <div class="text-center py-4">
+            <div class="text-center py-5">
                 <i class="fas fa-user-md fa-3x text-muted mb-3"></i>
                 <h5 class="text-muted">Belum ada data dokter</h5>
                 <p class="text-muted">Mulai dengan menambahkan dokter pertama Anda.</p>

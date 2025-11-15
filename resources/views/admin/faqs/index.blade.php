@@ -1,32 +1,28 @@
 @extends('admin.layouts.app')
 
 @section('title', 'Manajemen FAQ')
+@section('page-title', 'Manajemen FAQ')
 
 @section('content')
-<div class="d-flex justify-content-between align-items-center mb-4">
-    <h1 class="h3 mb-0">Manajemen FAQ</h1>
-    <a href="{{ route('admin.faqs.create') }}" class="btn btn-primary">
-        <i class="fas fa-plus"></i> Tambah FAQ
-    </a>
-</div>
-
-<div class="card">
-    <div class="card-header">
-        <h5 class="mb-0">Daftar FAQ</h5>
+<div class="card-modern mb-4">
+    <div class="card-modern-header d-flex justify-content-between align-items-center">
+        <h5 class="mb-0 fw-semibold">Daftar FAQ</h5>
+        <a href="{{ route('admin.faqs.create') }}" class="btn btn-primary">
+            <i class="fas fa-plus"></i> Tambah FAQ
+        </a>
     </div>
-    <div class="card-body">
+    <div class="card-modern-body">
         @if($faqs->count() > 0)
             <div class="table-responsive">
-                <table class="table table-hover">
-                    <thead>
+                <table class="table table-hover align-middle">
+                    <thead class="table-light">
                         <tr>
-                            <th width="5%">No</th>
-                            <th width="25%">Pertanyaan (ID)</th>
-                            <th width="25%">Pertanyaan (EN)</th>
-                            <th width="15%">Kategori</th>
-                            <th width="10%">Urutan</th>
-                            <th width="10%">Status</th>
-                            <th width="10%">Aksi</th>
+                            <th style="width: 50px;">No</th>
+                            <th>Pertanyaan</th>
+                            <th style="width: 120px;">Kategori</th>
+                            <th style="width: 80px;">Urutan</th>
+                            <th style="width: 100px;">Status</th>
+                            <th style="width: 150px;">Aksi</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -34,14 +30,10 @@
                             <tr>
                                 <td>{{ $index + 1 }}</td>
                                 <td>
-                                    <div class="text-truncate" style="max-width: 200px;" title="{{ $faq->question_id }}">
-                                        {{ $faq->question_id }}
-                                    </div>
-                                </td>
-                                <td>
-                                    <div class="text-truncate" style="max-width: 200px;" title="{{ $faq->question_en }}">
-                                        {{ $faq->question_en }}
-                                    </div>
+                                    <div class="fw-medium">{{ $faq->question_id ?: '-' }}</div>
+                                    @if($faq->question_en && $faq->question_en !== $faq->question_id)
+                                        <small class="text-muted">{{ $faq->question_en }}</small>
+                                    @endif
                                 </td>
                                 <td>
                                     <span class="badge bg-secondary">{{ $faq->category ?: 'General' }}</span>
@@ -57,15 +49,15 @@
                                     @endif
                                 </td>
                                 <td>
-                                    <div class="btn-group" role="group">
+                                    <div class="btn-group btn-group-sm" role="group">
                                         <a href="{{ route('admin.faqs.edit', $faq) }}" 
-                                           class="btn btn-sm btn-outline-primary" 
+                                           class="btn btn-outline-primary" 
                                            title="Edit">
                                             <i class="fas fa-edit"></i>
                                         </a>
                                         
                                         <button type="button" 
-                                                class="btn btn-sm btn-outline-{{ $faq->is_active ? 'warning' : 'success' }} toggle-status-btn" 
+                                                class="btn btn-outline-{{ $faq->is_active ? 'warning' : 'success' }} toggle-status-btn" 
                                                 title="{{ $faq->is_active ? 'Nonaktifkan' : 'Aktifkan' }}"
                                                 data-url="{{ route('admin.faqs.toggle-status', $faq) }}"
                                                 data-is-active="{{ $faq->is_active ? '1' : '0' }}">
@@ -73,7 +65,7 @@
                                         </button>
                                         
                                         <button type="button" 
-                                                class="btn btn-sm btn-outline-danger" 
+                                                class="btn btn-outline-danger" 
                                                 title="Hapus"
                                                 onclick="deleteItemAjax('{{ route('admin.faqs.destroy', $faq) }}', {
                                                     confirmMessage: 'Yakin ingin menghapus FAQ ini?',
@@ -89,11 +81,11 @@
                 </table>
             </div>
             
-            <div class="d-flex justify-content-center">
+            <div class="d-flex justify-content-center mt-4">
                 {{ $faqs->links() }}
             </div>
         @else
-            <div class="text-center py-4">
+            <div class="text-center py-5">
                 <i class="fas fa-question-circle fa-3x text-muted mb-3"></i>
                 <h5 class="text-muted">Belum ada FAQ</h5>
                 <p class="text-muted">Mulai dengan menambahkan FAQ pertama Anda.</p>

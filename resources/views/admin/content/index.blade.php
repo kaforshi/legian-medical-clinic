@@ -1,23 +1,21 @@
 @extends('admin.layouts.app')
 
 @section('title', 'Manajemen Konten')
+@section('page-title', 'Manajemen Konten')
 
 @section('content')
-<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-    <h1 class="h2">Manajemen Konten</h1>
-</div>
 
-<div class="row">
+<div class="row g-4 mb-4">
     @foreach(['about_us', 'contact'] as $pageKey)
     @php
         $pageId = $pages[$pageKey]['id'];
         $pageEn = $pages[$pageKey]['en'];
         $pageTitle = $pages[$pageKey]['title'];
     @endphp
-    <div class="col-md-6 mb-4">
-        <div class="card shadow h-100">
-            <div class="card-header d-flex justify-content-between align-items-center">
-                <h5 class="mb-0">
+    <div class="col-md-6">
+        <div class="card-modern h-100">
+            <div class="card-modern-header d-flex justify-content-between align-items-center">
+                <h5 class="mb-0 fw-semibold">
                     @if($pageKey === 'about_us')
                         <i class="fas fa-info-circle text-primary"></i> About Us
                     @else
@@ -28,7 +26,7 @@
                     <i class="fas fa-edit"></i> Edit
                 </a>
             </div>
-            <div class="card-body">
+            <div class="card-modern-body">
                 @if($pageId || $pageEn)
                     <div class="mb-3">
                         <small class="text-muted">Bahasa Indonesia:</small>
@@ -66,16 +64,16 @@
     @endforeach
 </div>
 
-<div class="card shadow mb-4">
-    <div class="card-header d-flex justify-content-between align-items-center">
-        <h5 class="mb-0">
+<div class="card-modern mb-4">
+    <div class="card-modern-header d-flex justify-content-between align-items-center">
+        <h5 class="mb-0 fw-semibold">
             <i class="fas fa-question-circle text-warning"></i> FAQ (Pertanyaan Umum)
         </h5>
         <a href="{{ route('admin.faqs.index') }}" class="btn btn-sm btn-warning">
             <i class="fas fa-cog"></i> Kelola FAQ
         </a>
     </div>
-    <div class="card-body">
+    <div class="card-modern-body">
         @php
             $faqCount = \App\Models\Faq::count();
             $activeFaqCount = \App\Models\Faq::where('is_active', true)->count();
@@ -96,13 +94,13 @@
     </div>
 </div>
 
-<div class="card shadow">
-    <div class="card-header">
-        <h6 class="m-0 font-weight-bold text-primary">Detail Status Konten</h6>
+<div class="card-modern">
+    <div class="card-modern-header">
+        <h5 class="mb-0 fw-semibold">Detail Status Konten</h5>
     </div>
-    <div class="card-body">
+    <div class="card-modern-body">
         <div class="table-responsive">
-            <table class="table table-bordered table-hover">
+            <table class="table table-hover align-middle">
                 <thead class="table-light">
                     <tr>
                         <th width="15%">Halaman</th>
