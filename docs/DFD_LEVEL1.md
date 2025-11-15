@@ -478,6 +478,77 @@ graph TB
 
 ---
 
+### P10.0 Manajemen Hero Slides
+
+```mermaid
+graph TB
+    %% External Entities
+    SuperAdmin["Super Admin"]
+    Admin["Admin"]
+    
+    %% Sub-processes
+    P101["P10.1<br/>Tambah Data<br/>Hero Slide"]
+    P102["P10.2<br/>Ubah Data<br/>Hero Slide"]
+    P103["P10.3<br/>Hapus Data<br/>Hero Slide"]
+    P104["P10.4<br/>Validasi Data<br/>Hero Slide"]
+    
+    %% Data Stores
+    D8["D8<br/>hero_slides"]
+    D6["D6<br/>activity_logs"]
+    
+    %% External Process
+    P8["P8.0<br/>Auto-Translation"]
+    
+    %% Flows from External Entities
+    SuperAdmin -->|"info data hero slide"| P101
+    SuperAdmin -->|"info data hero slide"| P102
+    SuperAdmin -->|"info data hero slide"| P103
+    Admin -->|"info data hero slide"| P101
+    Admin -->|"info data hero slide"| P102
+    Admin -->|"info data hero slide"| P103
+    
+    %% Flows between processes
+    P101 -->|"info data hero slide"| P104
+    P102 -->|"info data hero slide"| P104
+    P103 -->|"info data hero slide"| P104
+    P104 -->|"data hero slide update"| P101
+    P104 -->|"data hero slide update"| P102
+    P104 -->|"data hero slide update"| P103
+    
+    %% Flows to Data Store
+    P104 -->|"info data hero slide"| D8
+    D8 -->|"data hero slide update"| P104
+    
+    %% Flows to Activity Log
+    P104 -->|"data log aktivitas"| D6
+    
+    %% Flows to Auto-Translation
+    P104 -->|"data teks bahasa Indonesia"| P8
+    P8 -->|"info teks terjemahan"| P104
+    
+    %% Flows back to External Entities
+    P101 -->|"data hero slide update"| SuperAdmin
+    P101 -->|"data hero slide update"| Admin
+    P102 -->|"data hero slide update"| SuperAdmin
+    P102 -->|"data hero slide update"| Admin
+    P103 -->|"data hero slide update"| SuperAdmin
+    P103 -->|"data hero slide update"| Admin
+    P104 -->|"data hero slide update"| SuperAdmin
+    P104 -->|"data hero slide update"| Admin
+    
+    style P101 fill:#e3f2fd,stroke:#1976d2,stroke-width:2px
+    style P102 fill:#e3f2fd,stroke:#1976d2,stroke-width:2px
+    style P103 fill:#e3f2fd,stroke:#1976d2,stroke-width:2px
+    style P104 fill:#e3f2fd,stroke:#1976d2,stroke-width:2px
+    style SuperAdmin fill:#ffebee,stroke:#c62828,stroke-width:2px
+    style Admin fill:#fff3e0,stroke:#e65100,stroke-width:2px
+    style D8 fill:#fff9c4,stroke:#f57f17,stroke-width:4px
+    style D6 fill:#fff9c4,stroke:#f57f17,stroke-width:4px
+    style P8 fill:#e8f5e9,stroke:#1b5e20,stroke-width:2px
+```
+
+---
+
 ### P9.0 Tampilkan Website
 
 ```mermaid
@@ -497,6 +568,7 @@ graph TB
     D4["D4<br/>faqs"]
     D5["D5<br/>content_pages"]
     D7["D7<br/>sessions"]
+    D8["D8<br/>hero_slides"]
     
     %% Flows from External Entities
     Visitor -->|"data request halaman"| P91
@@ -512,6 +584,7 @@ graph TB
     P94 -->|"info layanan"| Visitor
     P94 -->|"info FAQ"| Visitor
     P94 -->|"info konten halaman"| Visitor
+    P94 -->|"info hero slide"| Visitor
     P94 -->|"info layout prioritas"| Visitor
     
     %% Flows to Data Stores
@@ -519,6 +592,7 @@ graph TB
     P92 -->|"data request"| D3
     P92 -->|"data request"| D4
     P92 -->|"data request"| D5
+    P92 -->|"data request"| D8
     P91 <-->|"data session"| D7
     P93 <-->|"data session"| D7
     
@@ -532,6 +606,7 @@ graph TB
     style D4 fill:#fff9c4,stroke:#f57f17,stroke-width:4px
     style D5 fill:#fff9c4,stroke:#f57f17,stroke-width:4px
     style D7 fill:#fff9c4,stroke:#f57f17,stroke-width:4px
+    style D8 fill:#fff9c4,stroke:#f57f17,stroke-width:4px
 ```
 
 ---
@@ -985,17 +1060,18 @@ graph TB
 
 **Input:**
 - `data request` dari P9.1
-- `data` dari D2, D3, D4, D5
+- `data` dari D2, D3, D4, D5, D8
 
 **Output:**
 - `data konten` ke P9.3
-- `data request` ke D2, D3, D4, D5
+- `data request` ke D2, D3, D4, D5, D8
 
 **Data Store:**
 - D2 (doctors) - membaca data dokter
 - D3 (services) - membaca data layanan
 - D4 (faqs) - membaca data FAQ
 - D5 (content_pages) - membaca data konten
+- D8 (hero_slides) - membaca data hero slides
 
 ---
 
@@ -1027,13 +1103,75 @@ graph TB
 - `info layanan` ke Pengunjung Website
 - `info FAQ` ke Pengunjung Website
 - `info konten halaman` ke Pengunjung Website
+- `info hero slide` ke Pengunjung Website
 - `info layout prioritas` ke Pengunjung Website
+
+---
+
+### P10.0 Manajemen Hero Slides
+
+#### P10.1 Tambah Data Hero Slide
+**Deskripsi:** Proses untuk menambahkan data hero slide baru.
+
+**Input:**
+- `info data hero slide` dari Super Admin/Admin
+- `data hero slide update` dari P10.4
+
+**Output:**
+- `data hero slide update` ke Super Admin/Admin
+- `info data hero slide` ke P10.4
+
+---
+
+#### P10.2 Ubah Data Hero Slide
+**Deskripsi:** Proses untuk mengubah data hero slide yang sudah ada.
+
+**Input:**
+- `info data hero slide` dari Super Admin/Admin
+- `data hero slide update` dari P10.4
+
+**Output:**
+- `data hero slide update` ke Super Admin/Admin
+- `info data hero slide` ke P10.4
+
+---
+
+#### P10.3 Hapus Data Hero Slide
+**Deskripsi:** Proses untuk menghapus data hero slide.
+
+**Input:**
+- `info data hero slide` dari Super Admin/Admin
+- `data hero slide update` dari P10.4
+
+**Output:**
+- `data hero slide update` ke Super Admin/Admin
+- `info data hero slide` ke P10.4
+
+---
+
+#### P10.4 Validasi Data Hero Slide
+**Deskripsi:** Proses untuk memvalidasi data hero slide sebelum disimpan ke database, termasuk auto-translation.
+
+**Input:**
+- `info data hero slide` dari P10.1, P10.2, P10.3
+- `data hero slide update` dari D8 (hero_slides)
+- `info teks terjemahan` dari P8.0
+
+**Output:**
+- `data hero slide update` ke P10.1, P10.2, P10.3, Super Admin/Admin
+- `info data hero slide` ke D8 (hero_slides)
+- `data log aktivitas` ke D6 (activity_logs)
+- `data teks bahasa Indonesia` ke P8.0
+
+**Data Store:**
+- D8 (hero_slides) - membaca dan menulis data hero slide
+- D6 (activity_logs) - menulis log aktivitas
 
 ---
 
 ## Hubungan dengan DFD Level 0
 
-**DFD Level 0** menampilkan 9 proses utama:
+**DFD Level 0** menampilkan 10 proses utama:
 - P1.0 Login
 - P2.0 Manajemen Dokter
 - P3.0 Manajemen Layanan
@@ -1043,9 +1181,10 @@ graph TB
 - P7.0 Pengaturan Akun
 - P8.0 Auto-Translation
 - P9.0 Tampilkan Website
+- P10.0 Manajemen Hero Slides
 
 **DFD Level 1** memecah setiap proses utama menjadi sub-proses detail:
-- **P1.0 Login** → P1.1 Masukkan Username & Password, P1.2 Verifikasi User
+- **P1.0 Login** → P1.1 Masukkan Username & Password, P1.2 Verifikasi User, P1.3 Logout
 - **P2.0 Manajemen Dokter** → P2.1 Tambah, P2.2 Ubah, P2.3 Hapus, P2.4 Validasi
 - **P3.0 Manajemen Layanan** → P3.1 Tambah, P3.2 Ubah, P3.3 Hapus, P3.4 Validasi
 - **P4.0 Manajemen FAQ** → P4.1 Tambah, P4.2 Ubah, P4.3 Hapus, P4.4 Validasi
@@ -1054,16 +1193,17 @@ graph TB
 - **P7.0 Pengaturan Akun** → P7.1 Ubah Username, P7.2 Ubah Password, P7.3 Validasi
 - **P8.0 Auto-Translation** → P8.1 Terima Teks, P8.2 Panggil API, P8.3 Proses Hasil
 - **P9.0 Tampilkan Website** → P9.1 Terima Request, P9.2 Baca Data, P9.3 Lokalisasi, P9.4 Render
+- **P10.0 Manajemen Hero Slides** → P10.1 Tambah, P10.2 Ubah, P10.3 Hapus, P10.4 Validasi
 
 ---
 
 ## Catatan Penting
 
 1. **P6.0 Manajemen User** hanya dapat diakses oleh Super Admin
-2. **P8.0 Auto-Translation** bekerja secara otomatis saat proses validasi (P2.4, P3.4, P4.4, P5.4) memproses data dalam bahasa Indonesia
+2. **P8.0 Auto-Translation** bekerja secara otomatis saat proses validasi (P2.4, P3.4, P4.4, P5.4, P10.4) memproses data dalam bahasa Indonesia
 3. **P9.0 Tampilkan Website** membaca data dari multiple data stores dan melokalisasi konten berdasarkan bahasa yang dipilih pengunjung
-4. Semua proses validasi (P2.4, P3.4, P4.4, P5.4, P6.4, P7.3) mencatat aktivitas ke D6 (activity_logs)
-5. Proses validasi untuk konten (P2.4, P3.4, P4.4, P5.4) mengirim data ke P8.0 untuk auto-translation sebelum menyimpan ke database
+4. Semua proses validasi (P2.4, P3.4, P4.4, P5.4, P6.4, P7.3, P10.4) mencatat aktivitas ke D6 (activity_logs)
+5. Proses validasi untuk konten (P2.4, P3.4, P4.4, P5.4, P10.4) mengirim data ke P8.0 untuk auto-translation sebelum menyimpan ke database
 
 ---
 

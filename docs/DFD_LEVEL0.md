@@ -28,6 +28,7 @@ graph TB
     P7["P7.0<br/>Pengaturan Akun"]
     P8["P8.0<br/>Auto-Translation"]
     P9["P9.0<br/>Tampilkan Website"]
+    P10["P10.0<br/>Manajemen Hero<br/>Slides"]
     
     %% Data Stores (DFD notation: two parallel horizontal lines)
     D1["D1<br/>admin_users"]
@@ -37,6 +38,7 @@ graph TB
     D5["D5<br/>content_pages"]
     D6["D6<br/>activity_logs"]
     D7["D7<br/>sessions"]
+    D8["D8<br/>hero_slides"]
     
     %% P1.0 Login Flows
     SuperAdmin -->|"data login super admin"| P1
@@ -99,10 +101,11 @@ graph TB
     %% P8.0 Auto-Translation Flows
     P8 -->|"data teks bahasa Indonesia"| GoogleAPI
     GoogleAPI -->|"info teks terjemahan"| P8
+    P8 -->|"info teks terjemahan"| P2
     P8 -->|"info teks terjemahan"| P3
     P8 -->|"info teks terjemahan"| P4
     P8 -->|"info teks terjemahan"| P5
-    P8 -->|"info teks terjemahan"| P2
+    P8 -->|"info teks terjemahan"| P10
     
     %% P9.0 Tampilkan Website Flows
     Visitor -->|"data request halaman"| P9
@@ -113,12 +116,23 @@ graph TB
     P9 -->|"info layanan"| Visitor
     P9 -->|"info FAQ"| Visitor
     P9 -->|"info konten halaman"| Visitor
+    P9 -->|"info hero slide"| Visitor
     P9 -->|"info layout prioritas"| Visitor
     P9 -->|"data request"| D2
     P9 -->|"data request"| D3
     P9 -->|"data request"| D4
     P9 -->|"data request"| D5
+    P9 -->|"data request"| D8
     P9 <-->|"data session"| D7
+    
+    %% P10.0 Manajemen Hero Slides Flows
+    SuperAdmin -->|"data hero slide"| P10
+    P10 -->|"info hero slide"| SuperAdmin
+    Admin -->|"data hero slide"| P10
+    P10 -->|"info hero slide"| Admin
+    P10 <-->|"data hero slide"| D8
+    P10 -->|"data log aktivitas"| D6
+    P10 -->|"data teks bahasa Indonesia"| P8
     
     style P1 fill:#e3f2fd,stroke:#1976d2,stroke-width:2px
     style P2 fill:#e3f2fd,stroke:#1976d2,stroke-width:2px
@@ -129,6 +143,7 @@ graph TB
     style P7 fill:#e3f2fd,stroke:#1976d2,stroke-width:2px
     style P8 fill:#e3f2fd,stroke:#1976d2,stroke-width:2px
     style P9 fill:#e3f2fd,stroke:#1976d2,stroke-width:2px
+    style P10 fill:#e3f2fd,stroke:#1976d2,stroke-width:2px
     style SuperAdmin fill:#ffebee,stroke:#c62828,stroke-width:2px
     style Admin fill:#fff3e0,stroke:#e65100,stroke-width:2px
     style Visitor fill:#f3e5f5,stroke:#4a148c,stroke-width:2px
@@ -140,6 +155,7 @@ graph TB
     style D5 fill:#fff9c4,stroke:#f57f17,stroke-width:4px
     style D6 fill:#fff9c4,stroke:#f57f17,stroke-width:4px
     style D7 fill:#fff9c4,stroke:#f57f17,stroke-width:4px
+    style D8 fill:#fff9c4,stroke:#f57f17,stroke-width:4px
 ```
 
 ## Proses-Proses Utama
@@ -289,6 +305,7 @@ graph TB
 - `info layanan` ke Pengunjung Website
 - `info FAQ` ke Pengunjung Website
 - `info konten halaman` ke Pengunjung Website
+- `info hero slide` ke Pengunjung Website
 - `info layout prioritas` ke Pengunjung Website
 
 **Data Store:**
@@ -296,7 +313,25 @@ graph TB
 - D3 (services) - membaca data layanan
 - D4 (faqs) - membaca data FAQ
 - D5 (content_pages) - membaca data konten
+- D8 (hero_slides) - membaca data hero slides
 - D7 (sessions) - membaca dan menulis data session
+
+---
+
+### P10.0 Manajemen Hero Slides
+**Deskripsi:** Proses CRUD untuk mengelola data hero slides.
+
+**Input:**
+- `data hero slide` dari Super Admin/Admin
+- `info teks terjemahan` dari P8.0 (Auto-Translation)
+
+**Output:**
+- `info hero slide` ke Super Admin/Admin
+- `data log aktivitas` ke D6 (activity_logs)
+- `data teks bahasa Indonesia` ke P8.0 (untuk auto-translation)
+
+**Data Store:**
+- D8 (hero_slides) - membaca dan menulis data hero slides
 
 ---
 
@@ -371,13 +406,22 @@ graph TB
 
 ---
 
+### D8. hero_slides
+**Deskripsi:** Menyimpan data hero slides untuk homepage.
+
+**Digunakan oleh:**
+- P10.0 (Manajemen Hero Slides) - membaca dan menulis
+- P9.0 (Tampilkan Website) - membaca
+
+---
+
 ## Catatan Penting
 
 1. **P6.0 Manajemen User** hanya dapat diakses oleh Super Admin
 2. **P8.0 Auto-Translation** bekerja secara otomatis saat admin menyimpan data dalam bahasa Indonesia
 3. **P9.0 Tampilkan Website** membaca data dari multiple data stores untuk menampilkan konten yang dilokalisasi
-4. Semua proses manajemen (P2-P7) mencatat aktivitas ke D6 (activity_logs)
-5. P2, P3, P4, P5 mengirim data ke P8 untuk auto-translation sebelum menyimpan ke database
+4. Semua proses manajemen (P2-P5, P10) mencatat aktivitas ke D6 (activity_logs)
+5. P2, P3, P4, P5, P10 mengirim data ke P8 untuk auto-translation sebelum menyimpan ke database
 
 ---
 

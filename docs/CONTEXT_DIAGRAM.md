@@ -20,6 +20,7 @@ graph TB
     SuperAdmin -->|"data layanan"| System
     SuperAdmin -->|"data FAQ"| System
     SuperAdmin -->|"data konten halaman"| System
+    SuperAdmin -->|"data hero slide"| System
     SuperAdmin -->|"data user admin"| System
     SuperAdmin -->|"data pengaturan akun"| System
     
@@ -29,6 +30,7 @@ graph TB
     System -->|"info layanan"| SuperAdmin
     System -->|"info FAQ"| SuperAdmin
     System -->|"info konten halaman"| SuperAdmin
+    System -->|"info hero slide"| SuperAdmin
     System -->|"info user admin"| SuperAdmin
     System -->|"info dashboard"| SuperAdmin
     System -->|"info log aktivitas"| SuperAdmin
@@ -39,6 +41,7 @@ graph TB
     Admin -->|"data layanan"| System
     Admin -->|"data FAQ"| System
     Admin -->|"data konten halaman"| System
+    Admin -->|"data hero slide"| System
     Admin -->|"data pengaturan akun"| System
     
     %% Admin Output Flows
@@ -47,6 +50,7 @@ graph TB
     System -->|"info layanan"| Admin
     System -->|"info FAQ"| Admin
     System -->|"info konten halaman"| Admin
+    System -->|"info hero slide"| Admin
     System -->|"info dashboard"| Admin
     System -->|"info log aktivitas"| Admin
     
@@ -61,6 +65,7 @@ graph TB
     System -->|"info layanan"| Visitor
     System -->|"info FAQ"| Visitor
     System -->|"info konten halaman"| Visitor
+    System -->|"info hero slide"| Visitor
     System -->|"info layout prioritas"| Visitor
     
     %% Google API Flows
@@ -85,12 +90,13 @@ graph TB
 - Mengelola layanan medis (CRUD)
 - Mengelola FAQ (CRUD)
 - Mengelola halaman konten (Tentang Kami, Kontak, dll)
+- Mengelola hero slides (CRUD)
 - Mengelola user admin (CRUD) - **hanya Super Admin**
 - Mengatur akun sendiri (ubah username/password)
 - Melihat dashboard dan log aktivitas
 
 **Alur Data:**
-- Input: Kredensial login, data CRUD (dokter, layanan, FAQ, konten, user admin)
+- Input: Kredensial login, data CRUD (dokter, layanan, FAQ, konten, hero slide, user admin)
 - Output: Dashboard, konfirmasi operasi, data yang dikelola, info user admin
 
 ### 2. Admin
@@ -102,11 +108,12 @@ graph TB
 - Mengelola layanan medis (CRUD)
 - Mengelola FAQ (CRUD)
 - Mengelola halaman konten (Tentang Kami, Kontak, dll)
+- Mengelola hero slides (CRUD)
 - Mengatur akun sendiri (ubah username/password)
 - Melihat dashboard dan log aktivitas
 
 **Alur Data:**
-- Input: Kredensial login, data CRUD (dokter, layanan, FAQ, konten)
+- Input: Kredensial login, data CRUD (dokter, layanan, FAQ, konten, hero slide)
 - Output: Dashboard, konfirmasi operasi, data yang dikelola
 
 ### 3. Pengunjung Website (Public Visitor)
@@ -118,6 +125,7 @@ graph TB
 - Melihat layanan medis
 - Melihat FAQ
 - Melihat konten halaman (Tentang Kami, Kontak)
+- Melihat hero slides
 - Mengganti bahasa (Indonesia/Inggris)
 - Mengisi kuesioner preferensi section
 
@@ -146,7 +154,7 @@ graph TB
 
 **Fitur Utama:**
 1. **Website Publik:**
-   - Menampilkan informasi dokter, layanan, FAQ, dan konten halaman
+   - Menampilkan informasi dokter, layanan, FAQ, konten halaman, dan hero slides
    - Dukungan multi-bahasa (Indonesia/Inggris)
    - Prioritisasi konten dinamis berdasarkan kuesioner
 
@@ -169,6 +177,7 @@ Sistem menggunakan database untuk menyimpan:
 - `services` - Data layanan medis
 - `faqs` - Data FAQ
 - `content_pages` - Konten halaman (Tentang Kami, Kontak, dll)
+- `hero_slides` - Data hero slides untuk homepage
 - `activity_logs` - Log aktivitas admin
 - `sessions` - Data session
 
