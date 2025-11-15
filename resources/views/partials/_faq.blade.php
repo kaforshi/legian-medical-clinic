@@ -39,7 +39,7 @@
         <div class="row justify-content-center">
             <div class="col-lg-8">
                 @if(isset($faqs) && $faqs->count() > 0)
-                    <div class="accordion" id="faq-accordion">
+                    <div class="accordion scroll-animate-children" id="faq-accordion">
                         @foreach ($faqs as $index => $faq)
                         <div class="accordion-item" data-category="{{ $faq->category ?? '' }}">
                             <h2 class="accordion-header" id="heading-{{ $faq->id }}">

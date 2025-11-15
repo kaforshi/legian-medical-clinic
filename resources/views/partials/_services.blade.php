@@ -4,7 +4,7 @@
             <h2 class="fw-bold section-title d-inline-block">{{ __('messages.servicesTitle') }}</h2>
             <p class="text-muted mt-2">{{ __('messages.servicesSubtitle') }}</p>
         </div>
-        <div id="service-list" class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+        <div id="service-list" class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4 scroll-animate-children">
             @if($services->count() > 0)
                 @foreach ($services as $service)
                 <div class="col">

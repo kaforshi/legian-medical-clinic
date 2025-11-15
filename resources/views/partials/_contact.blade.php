@@ -4,7 +4,7 @@
             <h2 class="fw-bold section-title d-inline-block">{{ __('messages.contactTitle') }}</h2>
             <p class="text-muted mt-2">{{ __('messages.contactSubtitle') }}</p>
         </div>
-        <div class="row g-4">
+        <div class="row g-4 scroll-animate-children">
             <div class="col-lg-6">
                 <div class="bg-white p-4 rounded shadow-sm h-100">
                     @if(isset($content['contact']) && $content['contact'])
