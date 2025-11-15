@@ -10,152 +10,135 @@ DFD Level 0 (Data Flow Diagram Level 0) menggambarkan proses-proses utama dalam 
 
 ## DFD Level 0
 
-```mermaid
-graph TB
-    %% External Entities
-    SuperAdmin["Super Admin"]
-    Admin["Admin"]
-    Visitor["Pengunjung Website"]
-    GoogleAPI["Google Translate API"]
-    
-    %% Processes
-    P1["P1.0<br/>Login"]
-    P2["P2.0<br/>Manajemen Dokter"]
-    P3["P3.0<br/>Manajemen Layanan"]
-    P4["P4.0<br/>Manajemen FAQ"]
-    P5["P5.0<br/>Manajemen Konten"]
-    P6["P6.0<br/>Manajemen User"]
-    P7["P7.0<br/>Pengaturan Akun"]
-    P8["P8.0<br/>Auto-Translation"]
-    P9["P9.0<br/>Tampilkan Website"]
-    P10["P10.0<br/>Manajemen Hero<br/>Slides"]
-    
-    %% Data Stores (DFD notation: two parallel horizontal lines)
-    D1["D1<br/>admin_users"]
-    D2["D2<br/>doctors"]
-    D3["D3<br/>services"]
-    D4["D4<br/>faqs"]
-    D5["D5<br/>content_pages"]
-    D6["D6<br/>activity_logs"]
-    D7["D7<br/>sessions"]
-    D8["D8<br/>hero_slides"]
-    
-    %% P1.0 Login Flows
-    SuperAdmin -->|"data login super admin"| P1
-    P1 -->|"info login"| SuperAdmin
-    Admin -->|"data login admin"| P1
-    P1 -->|"info login"| Admin
-    P1 <-->|"data login"| D1
-    P1 -->|"data session"| D7
-    P1 -->|"data log aktivitas"| D6
-    
-    %% P2.0 Manajemen Dokter Flows
-    SuperAdmin -->|"data dokter"| P2
-    P2 -->|"info dokter"| SuperAdmin
-    Admin -->|"data dokter"| P2
-    P2 -->|"info dokter"| Admin
-    P2 <-->|"data dokter"| D2
-    P2 -->|"data log aktivitas"| D6
-    
-    %% P3.0 Manajemen Layanan Flows
-    SuperAdmin -->|"data layanan"| P3
-    P3 -->|"info layanan"| SuperAdmin
-    Admin -->|"data layanan"| P3
-    P3 -->|"info layanan"| Admin
-    P3 <-->|"data layanan"| D3
-    P3 -->|"data log aktivitas"| D6
-    P3 -->|"data teks bahasa Indonesia"| P8
-    
-    %% P4.0 Manajemen FAQ Flows
-    SuperAdmin -->|"data FAQ"| P4
-    P4 -->|"info FAQ"| SuperAdmin
-    Admin -->|"data FAQ"| P4
-    P4 -->|"info FAQ"| Admin
-    P4 <-->|"data FAQ"| D4
-    P4 -->|"data log aktivitas"| D6
-    P4 -->|"data teks bahasa Indonesia"| P8
-    
-    %% P5.0 Manajemen Konten Flows
-    SuperAdmin -->|"data konten halaman"| P5
-    P5 -->|"info konten halaman"| SuperAdmin
-    Admin -->|"data konten halaman"| P5
-    P5 -->|"info konten halaman"| Admin
-    P5 <-->|"data konten halaman"| D5
-    P5 -->|"data log aktivitas"| D6
-    P5 -->|"data teks bahasa Indonesia"| P8
-    
-    %% P6.0 Manajemen User Flows (Super Admin only)
-    SuperAdmin -->|"data user admin"| P6
-    P6 -->|"info user admin"| SuperAdmin
-    P6 <-->|"data user admin"| D1
-    P6 -->|"data log aktivitas"| D6
-    
-    %% P7.0 Pengaturan Akun Flows
-    SuperAdmin -->|"data pengaturan akun"| P7
-    P7 -->|"info pengaturan akun"| SuperAdmin
-    Admin -->|"data pengaturan akun"| P7
-    P7 -->|"info pengaturan akun"| Admin
-    P7 <-->|"data admin user"| D1
-    P7 -->|"data log aktivitas"| D6
-    
-    %% P8.0 Auto-Translation Flows
-    P8 -->|"data teks bahasa Indonesia"| GoogleAPI
-    GoogleAPI -->|"info teks terjemahan"| P8
-    P8 -->|"info teks terjemahan"| P2
-    P8 -->|"info teks terjemahan"| P3
-    P8 -->|"info teks terjemahan"| P4
-    P8 -->|"info teks terjemahan"| P5
-    P8 -->|"info teks terjemahan"| P10
-    
-    %% P9.0 Tampilkan Website Flows
-    Visitor -->|"data request halaman"| P9
-    Visitor -->|"data pilihan bahasa"| P9
-    Visitor -->|"data response kuesioner"| P9
-    P9 -->|"info konten website"| Visitor
-    P9 -->|"info dokter"| Visitor
-    P9 -->|"info layanan"| Visitor
-    P9 -->|"info FAQ"| Visitor
-    P9 -->|"info konten halaman"| Visitor
-    P9 -->|"info hero slide"| Visitor
-    P9 -->|"info layout prioritas"| Visitor
-    P9 -->|"data request"| D2
-    P9 -->|"data request"| D3
-    P9 -->|"data request"| D4
-    P9 -->|"data request"| D5
-    P9 -->|"data request"| D8
-    P9 <-->|"data session"| D7
-    
-    %% P10.0 Manajemen Hero Slides Flows
-    SuperAdmin -->|"data hero slide"| P10
-    P10 -->|"info hero slide"| SuperAdmin
-    Admin -->|"data hero slide"| P10
-    P10 -->|"info hero slide"| Admin
-    P10 <-->|"data hero slide"| D8
-    P10 -->|"data log aktivitas"| D6
-    P10 -->|"data teks bahasa Indonesia"| P8
-    
-    style P1 fill:#e3f2fd,stroke:#1976d2,stroke-width:2px
-    style P2 fill:#e3f2fd,stroke:#1976d2,stroke-width:2px
-    style P3 fill:#e3f2fd,stroke:#1976d2,stroke-width:2px
-    style P4 fill:#e3f2fd,stroke:#1976d2,stroke-width:2px
-    style P5 fill:#e3f2fd,stroke:#1976d2,stroke-width:2px
-    style P6 fill:#e3f2fd,stroke:#1976d2,stroke-width:2px
-    style P7 fill:#e3f2fd,stroke:#1976d2,stroke-width:2px
-    style P8 fill:#e3f2fd,stroke:#1976d2,stroke-width:2px
-    style P9 fill:#e3f2fd,stroke:#1976d2,stroke-width:2px
-    style P10 fill:#e3f2fd,stroke:#1976d2,stroke-width:2px
-    style SuperAdmin fill:#ffebee,stroke:#c62828,stroke-width:2px
-    style Admin fill:#fff3e0,stroke:#e65100,stroke-width:2px
-    style Visitor fill:#f3e5f5,stroke:#4a148c,stroke-width:2px
-    style GoogleAPI fill:#e8f5e9,stroke:#1b5e20,stroke-width:2px
-    style D1 fill:#fff9c4,stroke:#f57f17,stroke-width:4px
-    style D2 fill:#fff9c4,stroke:#f57f17,stroke-width:4px
-    style D3 fill:#fff9c4,stroke:#f57f17,stroke-width:4px
-    style D4 fill:#fff9c4,stroke:#f57f17,stroke-width:4px
-    style D5 fill:#fff9c4,stroke:#f57f17,stroke-width:4px
-    style D6 fill:#fff9c4,stroke:#f57f17,stroke-width:4px
-    style D7 fill:#fff9c4,stroke:#f57f17,stroke-width:4px
-    style D8 fill:#fff9c4,stroke:#f57f17,stroke-width:4px
+```plantuml
+@startuml DFD Level 0
+!theme plain
+skinparam linetype ortho
+skinparam roundcorner 10
+
+' External Entities
+actor "Super Admin" as SuperAdmin #ffebee
+actor "Admin" as Admin #fff3e0
+actor "Pengunjung Website" as Visitor #f3e5f5
+cloud "Google Translate API" as GoogleAPI #e8f5e9
+
+' Processes (circles in DFD)
+circle "P1.0\nLogin" as P1 #e3f2fd
+circle "P2.0\nManajemen\nDokter" as P2 #e3f2fd
+circle "P3.0\nManajemen\nLayanan" as P3 #e3f2fd
+circle "P4.0\nManajemen\nFAQ" as P4 #e3f2fd
+circle "P5.0\nManajemen\nKonten" as P5 #e3f2fd
+circle "P6.0\nManajemen\nUser" as P6 #e3f2fd
+circle "P7.0\nPengaturan\nAkun" as P7 #e3f2fd
+circle "P8.0\nAuto-\nTranslation" as P8 #e3f2fd
+circle "P9.0\nTampilkan\nWebsite" as P9 #e3f2fd
+circle "P10.0\nManajemen\nHero Slides" as P10 #e3f2fd
+
+' Data Stores (database notation)
+database "D1\nadmin_users" as D1 #fff9c4
+database "D2\ndoctors" as D2 #fff9c4
+database "D3\nservices" as D3 #fff9c4
+database "D4\nfaqs" as D4 #fff9c4
+database "D5\ncontent_pages" as D5 #fff9c4
+database "D6\nactivity_logs" as D6 #fff9c4
+database "D7\nsessions" as D7 #fff9c4
+database "D8\nhero_slides" as D8 #fff9c4
+
+' P1.0 Login Flows
+SuperAdmin --> P1 : data login super admin
+P1 --> SuperAdmin : info login
+Admin --> P1 : data login admin
+P1 --> Admin : info login
+P1 <--> D1 : data login
+P1 --> D7 : data session
+P1 --> D6 : data log aktivitas
+
+' P2.0 Manajemen Dokter Flows
+SuperAdmin --> P2 : data dokter
+P2 --> SuperAdmin : info dokter
+Admin --> P2 : data dokter
+P2 --> Admin : info dokter
+P2 <--> D2 : data dokter
+P2 --> D6 : data log aktivitas
+
+' P3.0 Manajemen Layanan Flows
+SuperAdmin --> P3 : data layanan
+P3 --> SuperAdmin : info layanan
+Admin --> P3 : data layanan
+P3 --> Admin : info layanan
+P3 <--> D3 : data layanan
+P3 --> D6 : data log aktivitas
+P3 --> P8 : data teks bahasa Indonesia
+
+' P4.0 Manajemen FAQ Flows
+SuperAdmin --> P4 : data FAQ
+P4 --> SuperAdmin : info FAQ
+Admin --> P4 : data FAQ
+P4 --> Admin : info FAQ
+P4 <--> D4 : data FAQ
+P4 --> D6 : data log aktivitas
+P4 --> P8 : data teks bahasa Indonesia
+
+' P5.0 Manajemen Konten Flows
+SuperAdmin --> P5 : data konten halaman
+P5 --> SuperAdmin : info konten halaman
+Admin --> P5 : data konten halaman
+P5 --> Admin : info konten halaman
+P5 <--> D5 : data konten halaman
+P5 --> D6 : data log aktivitas
+P5 --> P8 : data teks bahasa Indonesia
+
+' P6.0 Manajemen User Flows (Super Admin only)
+SuperAdmin --> P6 : data user admin
+P6 --> SuperAdmin : info user admin
+P6 <--> D1 : data user admin
+P6 --> D6 : data log aktivitas
+
+' P7.0 Pengaturan Akun Flows
+SuperAdmin --> P7 : data pengaturan akun
+P7 --> SuperAdmin : info pengaturan akun
+Admin --> P7 : data pengaturan akun
+P7 --> Admin : info pengaturan akun
+P7 <--> D1 : data admin user
+P7 --> D6 : data log aktivitas
+
+' P8.0 Auto-Translation Flows
+P8 --> GoogleAPI : data teks bahasa Indonesia
+GoogleAPI --> P8 : info teks terjemahan
+P8 --> P2 : info teks terjemahan
+P8 --> P3 : info teks terjemahan
+P8 --> P4 : info teks terjemahan
+P8 --> P5 : info teks terjemahan
+P8 --> P10 : info teks terjemahan
+
+' P9.0 Tampilkan Website Flows
+Visitor --> P9 : data request halaman
+Visitor --> P9 : data pilihan bahasa
+Visitor --> P9 : data response kuesioner
+P9 --> Visitor : info konten website
+P9 --> Visitor : info dokter
+P9 --> Visitor : info layanan
+P9 --> Visitor : info FAQ
+P9 --> Visitor : info konten halaman
+P9 --> Visitor : info hero slide
+P9 --> Visitor : info layout prioritas
+P9 --> D2 : data request
+P9 --> D3 : data request
+P9 --> D4 : data request
+P9 --> D5 : data request
+P9 --> D8 : data request
+P9 <--> D7 : data session
+
+' P10.0 Manajemen Hero Slides Flows
+SuperAdmin --> P10 : data hero slide
+P10 --> SuperAdmin : info hero slide
+Admin --> P10 : data hero slide
+P10 --> Admin : info hero slide
+P10 <--> D8 : data hero slide
+P10 --> D6 : data log aktivitas
+P10 --> P8 : data teks bahasa Indonesia
+
+@enduml
 ```
 
 ## Proses-Proses Utama

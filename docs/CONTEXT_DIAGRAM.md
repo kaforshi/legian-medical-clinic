@@ -5,78 +5,78 @@ Diagram konteks (Context Diagram / DFD Level 0) menggambarkan sistem secara kese
 
 ## Diagram Konteks
 
-```mermaid
-graph TB
-    System(("Sistem Website<br/>Legian Medical Clinic"))
-    
-    SuperAdmin["Super Admin"]
-    Admin["Admin"]
-    Visitor["Pengunjung Website"]
-    GoogleAPI["Google Translate API"]
-    
-    %% Super Admin Input Flows
-    SuperAdmin -->|"data login super admin"| System
-    SuperAdmin -->|"data dokter"| System
-    SuperAdmin -->|"data layanan"| System
-    SuperAdmin -->|"data FAQ"| System
-    SuperAdmin -->|"data konten halaman"| System
-    SuperAdmin -->|"data hero slide"| System
-    SuperAdmin -->|"data user admin"| System
-    SuperAdmin -->|"data pengaturan akun"| System
-    
-    %% Super Admin Output Flows
-    System -->|"info login"| SuperAdmin
-    System -->|"info dokter"| SuperAdmin
-    System -->|"info layanan"| SuperAdmin
-    System -->|"info FAQ"| SuperAdmin
-    System -->|"info konten halaman"| SuperAdmin
-    System -->|"info hero slide"| SuperAdmin
-    System -->|"info user admin"| SuperAdmin
-    System -->|"info dashboard"| SuperAdmin
-    System -->|"info log aktivitas"| SuperAdmin
-    
-    %% Admin Input Flows
-    Admin -->|"data login admin"| System
-    Admin -->|"data dokter"| System
-    Admin -->|"data layanan"| System
-    Admin -->|"data FAQ"| System
-    Admin -->|"data konten halaman"| System
-    Admin -->|"data hero slide"| System
-    Admin -->|"data pengaturan akun"| System
-    
-    %% Admin Output Flows
-    System -->|"info login"| Admin
-    System -->|"info dokter"| Admin
-    System -->|"info layanan"| Admin
-    System -->|"info FAQ"| Admin
-    System -->|"info konten halaman"| Admin
-    System -->|"info hero slide"| Admin
-    System -->|"info dashboard"| Admin
-    System -->|"info log aktivitas"| Admin
-    
-    %% Visitor Input Flows
-    Visitor -->|"data request halaman"| System
-    Visitor -->|"data pilihan bahasa"| System
-    Visitor -->|"data response kuesioner"| System
-    
-    %% Visitor Output Flows
-    System -->|"info konten website"| Visitor
-    System -->|"info dokter"| Visitor
-    System -->|"info layanan"| Visitor
-    System -->|"info FAQ"| Visitor
-    System -->|"info konten halaman"| Visitor
-    System -->|"info hero slide"| Visitor
-    System -->|"info layout prioritas"| Visitor
-    
-    %% Google API Flows
-    System -->|"data teks bahasa Indonesia"| GoogleAPI
-    GoogleAPI -->|"info teks terjemahan"| System
-    
-    style System fill:#e1f5ff,stroke:#01579b,stroke-width:4px
-    style SuperAdmin fill:#ffebee,stroke:#c62828,stroke-width:2px
-    style Admin fill:#fff3e0,stroke:#e65100,stroke-width:2px
-    style Visitor fill:#f3e5f5,stroke:#4a148c,stroke-width:2px
-    style GoogleAPI fill:#e8f5e9,stroke:#1b5e20,stroke-width:2px
+```plantuml
+@startuml Context Diagram
+!theme plain
+skinparam componentStyle rectangle
+skinparam linetype ortho
+
+rectangle "Sistem Website\nLegian Medical Clinic" as System #e1f5ff
+
+actor "Super Admin" as SuperAdmin #ffebee
+actor "Admin" as Admin #fff3e0
+actor "Pengunjung Website" as Visitor #f3e5f5
+cloud "Google Translate API" as GoogleAPI #e8f5e9
+
+' Super Admin Input Flows
+SuperAdmin --> System : data login super admin
+SuperAdmin --> System : data dokter
+SuperAdmin --> System : data layanan
+SuperAdmin --> System : data FAQ
+SuperAdmin --> System : data konten halaman
+SuperAdmin --> System : data hero slide
+SuperAdmin --> System : data user admin
+SuperAdmin --> System : data pengaturan akun
+
+' Super Admin Output Flows
+System --> SuperAdmin : info login
+System --> SuperAdmin : info dokter
+System --> SuperAdmin : info layanan
+System --> SuperAdmin : info FAQ
+System --> SuperAdmin : info konten halaman
+System --> SuperAdmin : info hero slide
+System --> SuperAdmin : info user admin
+System --> SuperAdmin : info dashboard
+System --> SuperAdmin : info log aktivitas
+
+' Admin Input Flows
+Admin --> System : data login admin
+Admin --> System : data dokter
+Admin --> System : data layanan
+Admin --> System : data FAQ
+Admin --> System : data konten halaman
+Admin --> System : data hero slide
+Admin --> System : data pengaturan akun
+
+' Admin Output Flows
+System --> Admin : info login
+System --> Admin : info dokter
+System --> Admin : info layanan
+System --> Admin : info FAQ
+System --> Admin : info konten halaman
+System --> Admin : info hero slide
+System --> Admin : info dashboard
+System --> Admin : info log aktivitas
+
+' Visitor Input Flows
+Visitor --> System : data request halaman
+Visitor --> System : data pilihan bahasa
+Visitor --> System : data response kuesioner
+
+' Visitor Output Flows
+System --> Visitor : info konten website
+System --> Visitor : info dokter
+System --> Visitor : info layanan
+System --> Visitor : info FAQ
+System --> Visitor : info konten halaman
+System --> Visitor : info hero slide
+System --> Visitor : info layout prioritas
+
+' Google API Flows
+System --> GoogleAPI : data teks bahasa Indonesia
+GoogleAPI --> System : info teks terjemahan
+
+@enduml
 ```
 
 ## Entitas Eksternal

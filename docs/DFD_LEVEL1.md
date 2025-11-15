@@ -12,190 +12,157 @@ DFD Level 1 (Data Flow Diagram Level 1) adalah dekomposisi dari setiap proses di
 
 ### P1.0 Login
 
-```mermaid
-graph TB
-    %% External Entities
-    SuperAdmin["Super Admin"]
-    Admin["Admin"]
-    
-    %% Sub-processes
-    P11["P1.1<br/>Masukkan<br/>Username &<br/>Password"]
-    P12["P1.2<br/>Verifikasi<br/>User"]
-    P13["P1.3<br/>Logout"]
-    
-    %% Data Stores
-    D1["D1<br/>admin_users"]
-    D7["D7<br/>sessions"]
-    D6["D6<br/>activity_logs"]
-    
-    %% Flows - Login
-    SuperAdmin -->|"login"| P11
-    Admin -->|"login"| P11
-    P11 -->|"data username & password"| P12
-    P12 <-->|"data login"| D1
-    P12 -->|"data session"| D7
-    P12 -->|"data log aktivitas"| D6
-    P12 -->|"pesan login berhasil atau gagal"| SuperAdmin
-    P12 -->|"pesan login berhasil atau gagal"| Admin
-    
-    %% Flows - Logout
-    SuperAdmin -->|"request logout"| P13
-    Admin -->|"request logout"| P13
-    P13 -->|"hapus session"| D7
-    P13 -->|"data log aktivitas"| D6
-    P13 -->|"konfirmasi logout"| SuperAdmin
-    P13 -->|"konfirmasi logout"| Admin
-    
-    style P11 fill:#e3f2fd,stroke:#1976d2,stroke-width:2px
-    style P12 fill:#e3f2fd,stroke:#1976d2,stroke-width:2px
-    style P13 fill:#e3f2fd,stroke:#1976d2,stroke-width:2px
-    style SuperAdmin fill:#ffebee,stroke:#c62828,stroke-width:2px
-    style Admin fill:#fff3e0,stroke:#e65100,stroke-width:2px
-    style D1 fill:#fff9c4,stroke:#f57f17,stroke-width:4px
-    style D7 fill:#fff9c4,stroke:#f57f17,stroke-width:4px
-    style D6 fill:#fff9c4,stroke:#f57f17,stroke-width:4px
+```plantuml
+@startuml P1.0 Login
+!theme plain
+skinparam linetype ortho
+
+actor "Super Admin" as SuperAdmin #ffebee
+actor "Admin" as Admin #fff3e0
+
+circle "P1.1\nMasukkan\nUsername &\nPassword" as P11 #e3f2fd
+circle "P1.2\nVerifikasi\nUser" as P12 #e3f2fd
+circle "P1.3\nLogout" as P13 #e3f2fd
+
+database "D1\nadmin_users" as D1 #fff9c4
+database "D7\nsessions" as D7 #fff9c4
+database "D6\nactivity_logs" as D6 #fff9c4
+
+' Flows - Login
+SuperAdmin --> P11 : login
+Admin --> P11 : login
+P11 --> P12 : data username & password
+P12 <--> D1 : data login
+P12 --> D7 : data session
+P12 --> D6 : data log aktivitas
+P12 --> SuperAdmin : pesan login berhasil atau gagal
+P12 --> Admin : pesan login berhasil atau gagal
+
+' Flows - Logout
+SuperAdmin --> P13 : request logout
+Admin --> P13 : request logout
+P13 --> D7 : hapus session
+P13 --> D6 : data log aktivitas
+P13 --> SuperAdmin : konfirmasi logout
+P13 --> Admin : konfirmasi logout
+
+@enduml
 ```
 
 ---
 
 ### P2.0 Manajemen Dokter
 
-```mermaid
-graph TB
-    %% External Entities
-    SuperAdmin["Super Admin"]
-    Admin["Admin"]
-    
-    %% Sub-processes
-    P21["P2.1<br/>Tambah Data<br/>Dokter"]
-    P22["P2.2<br/>Ubah Data<br/>Dokter"]
-    P23["P2.3<br/>Hapus Data<br/>Dokter"]
-    P24["P2.4<br/>Validasi Data<br/>Dokter"]
-    
-    %% Data Stores
-    D2["D2<br/>doctors"]
-    D6["D6<br/>activity_logs"]
-    
-    %% External Process
-    P8["P8.0<br/>Auto-Translation"]
-    
-    %% Flows from External Entities
-    SuperAdmin -->|"info data dokter"| P21
-    SuperAdmin -->|"info data dokter"| P22
-    SuperAdmin -->|"info data dokter"| P23
-    Admin -->|"info data dokter"| P21
-    Admin -->|"info data dokter"| P22
-    Admin -->|"info data dokter"| P23
-    
-    %% Flows between processes
-    P21 -->|"info data dokter"| P24
-    P22 -->|"info data dokter"| P24
-    P23 -->|"info data dokter"| P24
-    P24 -->|"data dokter update"| P21
-    P24 -->|"data dokter update"| P22
-    P24 -->|"data dokter update"| P23
-    
-    %% Flows to Data Store
-    P24 -->|"info data dokter"| D2
-    D2 -->|"data dokter update"| P24
-    
-    %% Flows to Activity Log
-    P24 -->|"data log aktivitas"| D6
-    
-    %% Flows to Auto-Translation
-    P24 -->|"data teks bahasa Indonesia"| P8
-    P8 -->|"info teks terjemahan"| P24
-    
-    %% Flows back to External Entities
-    P21 -->|"data dokter update"| SuperAdmin
-    P21 -->|"data dokter update"| Admin
-    P22 -->|"data dokter update"| SuperAdmin
-    P22 -->|"data dokter update"| Admin
-    P23 -->|"data dokter update"| SuperAdmin
-    P23 -->|"data dokter update"| Admin
-    P24 -->|"data dokter update"| SuperAdmin
-    P24 -->|"data dokter update"| Admin
-    
-    style P21 fill:#e3f2fd,stroke:#1976d2,stroke-width:2px
-    style P22 fill:#e3f2fd,stroke:#1976d2,stroke-width:2px
-    style P23 fill:#e3f2fd,stroke:#1976d2,stroke-width:2px
-    style P24 fill:#e3f2fd,stroke:#1976d2,stroke-width:2px
-    style SuperAdmin fill:#ffebee,stroke:#c62828,stroke-width:2px
-    style Admin fill:#fff3e0,stroke:#e65100,stroke-width:2px
-    style D2 fill:#fff9c4,stroke:#f57f17,stroke-width:4px
-    style D6 fill:#fff9c4,stroke:#f57f17,stroke-width:4px
-    style P8 fill:#e8f5e9,stroke:#1b5e20,stroke-width:2px
+```plantuml
+@startuml P2.0 Manajemen Dokter
+!theme plain
+skinparam linetype ortho
+
+actor "Super Admin" as SuperAdmin #ffebee
+actor "Admin" as Admin #fff3e0
+
+circle "P2.1\nTambah Data\nDokter" as P21 #e3f2fd
+circle "P2.2\nUbah Data\nDokter" as P22 #e3f2fd
+circle "P2.3\nHapus Data\nDokter" as P23 #e3f2fd
+circle "P2.4\nValidasi Data\nDokter" as P24 #e3f2fd
+
+database "D2\ndoctors" as D2 #fff9c4
+database "D6\nactivity_logs" as D6 #fff9c4
+
+circle "P8.0\nAuto-\nTranslation" as P8 #e8f5e9
+
+' Flows from External Entities
+SuperAdmin --> P21 : info data dokter
+SuperAdmin --> P22 : info data dokter
+SuperAdmin --> P23 : info data dokter
+Admin --> P21 : info data dokter
+Admin --> P22 : info data dokter
+Admin --> P23 : info data dokter
+
+' Flows between processes
+P21 --> P24 : info data dokter
+P22 --> P24 : info data dokter
+P23 --> P24 : info data dokter
+P24 --> P21 : data dokter update
+P24 --> P22 : data dokter update
+P24 --> P23 : data dokter update
+
+' Flows to Data Store
+P24 <--> D2 : data dokter
+P24 --> D6 : data log aktivitas
+
+' Flows to Auto-Translation
+P24 <--> P8 : data teks bahasa Indonesia\ninfo teks terjemahan
+
+' Flows back to External Entities
+P21 --> SuperAdmin : data dokter update
+P21 --> Admin : data dokter update
+P22 --> SuperAdmin : data dokter update
+P22 --> Admin : data dokter update
+P23 --> SuperAdmin : data dokter update
+P23 --> Admin : data dokter update
+P24 --> SuperAdmin : data dokter update
+P24 --> Admin : data dokter update
+
+@enduml
 ```
 
 ---
 
 ### P3.0 Manajemen Layanan
 
-```mermaid
-graph TB
-    %% External Entities
-    SuperAdmin["Super Admin"]
-    Admin["Admin"]
-    
-    %% Sub-processes
-    P31["P3.1<br/>Tambah Data<br/>Layanan"]
-    P32["P3.2<br/>Ubah Data<br/>Layanan"]
-    P33["P3.3<br/>Hapus Data<br/>Layanan"]
-    P34["P3.4<br/>Validasi Data<br/>Layanan"]
-    
-    %% Data Stores
-    D3["D3<br/>services"]
-    D6["D6<br/>activity_logs"]
-    
-    %% External Process
-    P8["P8.0<br/>Auto-Translation"]
-    
-    %% Flows from External Entities
-    SuperAdmin -->|"info data layanan"| P31
-    SuperAdmin -->|"info data layanan"| P32
-    SuperAdmin -->|"info data layanan"| P33
-    Admin -->|"info data layanan"| P31
-    Admin -->|"info data layanan"| P32
-    Admin -->|"info data layanan"| P33
-    
-    %% Flows between processes
-    P31 -->|"info data layanan"| P34
-    P32 -->|"info data layanan"| P34
-    P33 -->|"info data layanan"| P34
-    P34 -->|"data layanan update"| P31
-    P34 -->|"data layanan update"| P32
-    P34 -->|"data layanan update"| P33
-    
-    %% Flows to Data Store
-    P34 -->|"info data layanan"| D3
-    D3 -->|"data layanan update"| P34
-    
-    %% Flows to Activity Log
-    P34 -->|"data log aktivitas"| D6
-    
-    %% Flows to Auto-Translation
-    P34 -->|"data teks bahasa Indonesia"| P8
-    P8 -->|"info teks terjemahan"| P34
-    
-    %% Flows back to External Entities
-    P31 -->|"data layanan update"| SuperAdmin
-    P31 -->|"data layanan update"| Admin
-    P32 -->|"data layanan update"| SuperAdmin
-    P32 -->|"data layanan update"| Admin
-    P33 -->|"data layanan update"| SuperAdmin
-    P33 -->|"data layanan update"| Admin
-    P34 -->|"data layanan update"| SuperAdmin
-    P34 -->|"data layanan update"| Admin
-    
-    style P31 fill:#e3f2fd,stroke:#1976d2,stroke-width:2px
-    style P32 fill:#e3f2fd,stroke:#1976d2,stroke-width:2px
-    style P33 fill:#e3f2fd,stroke:#1976d2,stroke-width:2px
-    style P34 fill:#e3f2fd,stroke:#1976d2,stroke-width:2px
-    style SuperAdmin fill:#ffebee,stroke:#c62828,stroke-width:2px
-    style Admin fill:#fff3e0,stroke:#e65100,stroke-width:2px
-    style D3 fill:#fff9c4,stroke:#f57f17,stroke-width:4px
-    style D6 fill:#fff9c4,stroke:#f57f17,stroke-width:4px
-    style P8 fill:#e8f5e9,stroke:#1b5e20,stroke-width:2px
+```plantuml
+@startuml P3.0 Manajemen Layanan
+!theme plain
+skinparam linetype ortho
+
+actor "Super Admin" as SuperAdmin #ffebee
+actor "Admin" as Admin #fff3e0
+
+circle "P3.1\nTambah Data\nLayanan" as P31 #e3f2fd
+circle "P3.2\nUbah Data\nLayanan" as P32 #e3f2fd
+circle "P3.3\nHapus Data\nLayanan" as P33 #e3f2fd
+circle "P3.4\nValidasi Data\nLayanan" as P34 #e3f2fd
+
+database "D3\nservices" as D3 #fff9c4
+database "D6\nactivity_logs" as D6 #fff9c4
+
+circle "P8.0\nAuto-\nTranslation" as P8 #e8f5e9
+
+' Flows from External Entities
+SuperAdmin --> P31 : info data layanan
+SuperAdmin --> P32 : info data layanan
+SuperAdmin --> P33 : info data layanan
+Admin --> P31 : info data layanan
+Admin --> P32 : info data layanan
+Admin --> P33 : info data layanan
+
+' Flows between processes
+P31 --> P34 : info data layanan
+P32 --> P34 : info data layanan
+P33 --> P34 : info data layanan
+P34 --> P31 : data layanan update
+P34 --> P32 : data layanan update
+P34 --> P33 : data layanan update
+
+' Flows to Data Store
+P34 <--> D3 : data layanan
+P34 --> D6 : data log aktivitas
+
+' Flows to Auto-Translation
+P34 <--> P8 : data teks bahasa Indonesia\ninfo teks terjemahan
+
+' Flows back to External Entities
+P31 --> SuperAdmin : data layanan update
+P31 --> Admin : data layanan update
+P32 --> SuperAdmin : data layanan update
+P32 --> Admin : data layanan update
+P33 --> SuperAdmin : data layanan update
+P33 --> Admin : data layanan update
+P34 --> SuperAdmin : data layanan update
+P34 --> Admin : data layanan update
+
+@enduml
 ```
 
 ---
