@@ -36,6 +36,12 @@ async function changeWebsiteLanguage(locale) {
             // Update document lang attribute
             document.documentElement.lang = locale;
 
+            // Update language switcher display
+            const langCodeSpan = document.querySelector('.btn-language-switcher .lang-code');
+            if (langCodeSpan) {
+                langCodeSpan.textContent = locale.toUpperCase();
+            }
+
             // 3. Update all content dynamically
             await updatePageContent(locale);
 
@@ -79,11 +85,13 @@ async function updatePageContent(locale) {
         if (response.data.success) {
             const data = response.data.data;
 
+            // Messages received - no logging needed in production
+
             // Update navbar menu items
             updateNavbar(data.messages);
 
             // Update hero section
-            updateHero(data.messages);
+            updateHero(data.messages, data.heroSlides);
 
             // Update sections titles
             updateSectionTitles(data.messages);
@@ -131,24 +139,79 @@ function updateNavbar(messages) {
             navLinks[key].textContent = messages[key];
         }
     });
+
+    // Update book appointment button
+    const bookAppointmentBtn = document.getElementById('book-appointment-btn');
+    if (bookAppointmentBtn) {
+        if (messages && messages.bookAppointment) {
+            // Gunakan innerHTML untuk memastikan teks ter-render dengan benar
+            bookAppointmentBtn.innerHTML = messages.bookAppointment;
+        } else {
+            // Fallback ke default text dari data attribute atau current text
+            const defaultText = bookAppointmentBtn.getAttribute('data-default-text');
+            const currentText = bookAppointmentBtn.textContent.trim();
+            
+            // Gunakan default text jika ada dan bukan literal "messages.bookAppointment"
+            if (defaultText && defaultText !== 'messages.bookAppointment') {
+                bookAppointmentBtn.innerHTML = defaultText;
+            } else if (currentText && currentText !== 'messages.bookAppointment') {
+                // Gunakan current text sebagai fallback jika tidak ada default text
+                // Do nothing, keep current text
+            } else {
+                // Hard-coded fallback berdasarkan locale
+                const locale = document.documentElement.lang || 'id';
+                const fallbackText = locale === 'id' ? 'Buat Janji Temu' : 'Book Appointment';
+                bookAppointmentBtn.innerHTML = fallbackText;
+            }
+        }
+    }
 }
 
 /**
  * Update hero section
  */
-function updateHero(messages) {
-    const heroTitle = document.querySelector('#home .hero-section h1');
-    const heroSubtitle = document.querySelector('#home .hero-section .lead');
-    const heroButton = document.querySelector('#home .hero-section .btn');
+function updateHero(messages, heroSlides) {
+    // Check if hero carousel exists (dynamic hero slides)
+    const heroCarousel = document.getElementById('heroCarousel');
+    if (heroCarousel && heroSlides && heroSlides.length > 0) {
+        // Update carousel slides
+        const carouselItems = heroCarousel.querySelectorAll('.carousel-item');
+        carouselItems.forEach((item, index) => {
+            if (heroSlides[index]) {
+                const slide = heroSlides[index];
+                const titleEl = item.querySelector('h1');
+                const subtitleEl = item.querySelector('.lead');
+                const buttonEl = item.querySelector('.btn');
+                
+                if (titleEl) {
+                    titleEl.textContent = slide.localized_title || slide.title_id || '';
+                }
+                if (subtitleEl) {
+                    subtitleEl.textContent = slide.localized_subtitle || slide.subtitle_id || '';
+                }
+                if (buttonEl) {
+                    buttonEl.textContent = slide.localized_button_text || slide.button_text_id || '';
+                    if (slide.button_link) {
+                        buttonEl.setAttribute('href', slide.button_link);
+                    }
+                }
+            }
+        });
+    } else {
+        // Fallback: Update static hero section (old format)
+        const heroTitle = document.querySelector('#home .hero-section h1');
+        const heroSubtitle = document.querySelector('#home .hero-section .lead');
+        const heroButton = document.querySelector('#home .hero-section .btn');
 
-    if (heroTitle && messages.heroTitle) {
-        heroTitle.textContent = messages.heroTitle;
-    }
-    if (heroSubtitle && messages.heroSubtitle) {
-        heroSubtitle.textContent = messages.heroSubtitle;
-    }
-    if (heroButton && messages.heroButton) {
-        heroButton.textContent = messages.heroButton;
+        if (heroTitle && messages && messages.heroTitle) {
+            heroTitle.textContent = messages.heroTitle;
+        }
+        if (heroSubtitle && messages && messages.heroSubtitle) {
+            heroSubtitle.textContent = messages.heroSubtitle;
+        }
+        if (heroButton && messages && messages.heroButton) {
+            heroButton.textContent = messages.heroButton;
+        }
     }
 }
 
@@ -342,8 +405,8 @@ function updateContact(content, messages) {
  */
 function updateQuestionnaireModal(messages) {
     const modalTitle = document.getElementById('questionnaireModalLabel');
-    const modalSubtitle = document.querySelector('#questionnaireModal .text-muted.mb-4');
-    const skipButton = document.querySelector('#questionnaireModal button[data-bs-dismiss="modal"]');
+    const modalSubtitle = document.querySelector('#questionnaireModal .questionnaire-subtitle');
+    const skipButton = document.querySelector('#questionnaireModal .questionnaire-skip-link');
     
     if (modalTitle && messages.questionnaireTitle) {
         modalTitle.textContent = messages.questionnaireTitle;
@@ -355,13 +418,24 @@ function updateQuestionnaireModal(messages) {
         skipButton.textContent = messages.skipButton;
     }
 
-    // Update questionnaire buttons
+    // Update questionnaire buttons text (keep icons)
     const buttons = document.querySelectorAll('.questionnaire-btn');
-    if (buttons.length >= 4 && messages.q1 && messages.q2 && messages.q3 && messages.q4) {
-        buttons[0].textContent = messages.q1;
-        buttons[1].textContent = messages.q2;
-        buttons[2].textContent = messages.q3;
-        buttons[3].textContent = messages.q4;
+    const buttonTexts = ['q1', 'q2', 'q3', 'q4'];
+    
+    buttons.forEach((button, index) => {
+        if (messages[buttonTexts[index]]) {
+            const textSpan = button.querySelector('.questionnaire-btn-text');
+            if (textSpan) {
+                textSpan.textContent = messages[buttonTexts[index]];
+            }
+        }
+    });
+    
+    // Update language switcher text in modal
+    const modalLangText = document.querySelector('.questionnaire-lang-text');
+    if (modalLangText) {
+        const currentLang = document.documentElement.lang || 'id';
+        modalLangText.textContent = currentLang === 'id' ? 'Indonesia (ID)' : 'English (EN)';
     }
 }
 

@@ -18,7 +18,14 @@ function setupSmoothScroll() {
     document.querySelectorAll('a[href^="#"]').forEach(anchor => {
         anchor.addEventListener('click', function (e) {
             e.preventDefault();
-            const target = document.querySelector(this.getAttribute('href'));
+            const href = this.getAttribute('href');
+            
+            // Skip jika href hanya '#' saja (invalid selector)
+            if (!href || href === '#') {
+                return;
+            }
+            
+            const target = document.querySelector(href);
             if (target) {
                 const navbar = document.querySelector('nav.navbar');
                 const navbarHeight = navbar ? navbar.offsetHeight : 0;
@@ -38,11 +45,8 @@ function setupFixedNavbar() {
     const navbar = document.querySelector('.navbar');
     
     if (!navbar) {
-        console.log('Navbar not found, skipping navbar setup');
         return;
     }
-
-    console.log('Setting up fixed navbar with scroll effects');
     
     window.addEventListener('scroll', function() {
         const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
@@ -58,8 +62,6 @@ function setupFixedNavbar() {
 
 // Event listener utama
 document.addEventListener('DOMContentLoaded', function() {
-    console.log('DOM loaded');
-    
     // Setup smooth scroll
     setupSmoothScroll();
     
@@ -137,4 +139,4 @@ function setupFaqSearchAndFilter() {
     }
 }
 
-console.log('Script loaded successfully');
+// Script loaded

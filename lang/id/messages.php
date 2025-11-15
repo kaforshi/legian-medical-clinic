@@ -48,13 +48,13 @@ return [
     'readMore' => 'Baca Selengkapnya',
 
     // Questionnaire
-    'questionnaireTitle' => 'Apa yang Anda cari?',
-    'questionnaireSubtitle' => 'Silakan pilih satu opsi untuk membantu kami melayani Anda dengan lebih baik',
-    'q1' => 'Saya membutuhkan informasi kontak resmi',
-    'q2' => 'Saya ingin mengetahui lokasi',
-    'q3' => 'Saya ingin mengetahui informasi tentang Anda',
-    'q4' => 'Saya tertarik dengan layanan Anda',
-    'skipButton' => 'Lewati',
+    'questionnaireTitle' => 'Selamat Datang di Legian Medical Clinic!',
+    'questionnaireSubtitle' => 'Untuk membantu Anda lebih cepat, informasi apa yang sedang Anda cari?',
+    'q1' => 'Kontak Resmi',
+    'q2' => 'Lokasi Klinik',
+    'q3' => 'Informasi Klinik',
+    'q4' => 'Layanan Kami',
+    'skipButton' => 'Lewati & lihat semua',
     'sectionPrioritized' => 'Section diprioritaskan berdasarkan jawaban kuesioner Anda',
 
 

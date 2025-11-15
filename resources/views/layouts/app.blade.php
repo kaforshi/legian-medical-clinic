@@ -38,15 +38,12 @@
     <script>
         // Script untuk modal kuesioner
         document.addEventListener('DOMContentLoaded', function() {
-            console.log('Direct script: DOM loaded');
-            
             // Cek apakah kuesioner baru saja dijawab (dari URL parameter atau sessionStorage)
             const urlParams = new URLSearchParams(window.location.search);
             const justAnswered = urlParams.get('answered') === '1' || sessionStorage.getItem('justAnswered') === 'true';
             
             // Jika baru saja dijawab, jangan tampilkan kuesioner di reload ini
             if (justAnswered) {
-                console.log('Direct script: Questionnaire just answered, skipping this reload');
                 sessionStorage.removeItem('justAnswered'); // Clear flag
                 // Remove answered parameter from URL
                 if (urlParams.has('answered')) {
@@ -66,42 +63,31 @@
                         'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
                     }
                 })
-                .then(response => {
-                    console.log('Layout reset on refresh');
-                })
                 .catch(error => {
-                    console.error('Error resetting layout:', error);
+                    // Silent fail - tidak perlu log error
                 });
             }
             
             // Kuesioner akan muncul setiap kali halaman di-refresh (kecuali setelah baru dijawab)
-            console.log('Direct script: Will show questionnaire in 2 seconds...');
-            
             setTimeout(function() {
                 const modal = document.getElementById('questionnaireModal');
                 if (modal) {
-                    console.log('Direct script: Modal found, showing...');
-                    
                     if (typeof bootstrap !== 'undefined') {
                         try {
                             const bootstrapModal = new bootstrap.Modal(modal);
                             bootstrapModal.show();
-                            console.log('Direct script: Modal shown with Bootstrap');
                         } catch (error) {
-                            console.error('Direct script: Bootstrap error:', error);
                             // Fallback CSS
                             modal.style.display = 'block';
                             modal.classList.add('show');
                             document.body.classList.add('modal-open');
                         }
                     } else {
-                        console.log('Direct script: Bootstrap not available, using CSS');
+                        // Fallback CSS
                         modal.style.display = 'block';
                         modal.classList.add('show');
                         document.body.classList.add('modal-open');
                     }
-                } else {
-                    console.error('Direct script: Modal element not found!');
                 }
             }, 2000);
             
@@ -117,8 +103,6 @@
             const skipButton = document.querySelector('#questionnaireModal button[data-bs-dismiss="modal"]');
             if (skipButton) {
                 skipButton.addEventListener('click', function() {
-                    console.log('Skip button clicked');
-                    
                     // Set flag bahwa kuesioner baru saja di-skip
                     sessionStorage.setItem('justAnswered', 'true');
                     
@@ -130,12 +114,10 @@
                         }
                     })
                     .then(response => {
-                        console.log('Priority section cleared, reloading page...');
                         // Reload halaman untuk memastikan layout benar-benar reset
                         window.location.reload();
                     })
                     .catch(error => {
-                        console.error('Error clearing priority:', error);
                         // Tetap reload meskipun ada error
                         window.location.reload();
                     });
@@ -165,8 +147,6 @@
             document.body.style.overflow = '';
             document.body.style.paddingRight = '';
             document.documentElement.style.overflow = '';
-            
-            console.log('Modal backdrop cleaned up and scrolling restored');
         }
         
         // Fungsi untuk setup event handler form kuesioner
@@ -174,11 +154,8 @@
             const form = document.getElementById('questionnaireForm');
             if (form) {
                 form.addEventListener('submit', function(e) {
-                    console.log('Questionnaire form submitted');
-                    
                     // Tidak perlu menyimpan status, karena kuesioner akan muncul lagi saat refresh
                     // Biarkan form submit secara normal
-                    console.log('Form will submit normally');
                 });
             }
         }
@@ -186,7 +163,6 @@
         // Fungsi untuk clear questionnaire status (untuk testing)
         window.clearQuestionnaireStatus = function() {
             sessionStorage.removeItem('questionnaireAnswered');
-            console.log('Questionnaire status cleared from sessionStorage');
         };
         
         // Event listener untuk modal hidden event (Bootstrap)
@@ -194,7 +170,6 @@
             const modal = document.getElementById('questionnaireModal');
             if (modal) {
                 modal.addEventListener('hidden.bs.modal', function() {
-                    console.log('Modal hidden event triggered');
                     cleanupModalBackdrop();
                 });
             }

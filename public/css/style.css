@@ -80,6 +80,22 @@ html {
     opacity: 1;
 }
 
+#heroCarousel .hero-bg {
+    height: 100vh;
+    min-height: 600px;
+    position: relative;
+}
+
+#heroCarousel .carousel-item {
+    transition: opacity 0.6s ease-in-out;
+}
+
+#heroCarousel .carousel-item .hero-bg {
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
 /* Hero background with image */
 .hero-bg {
     background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
@@ -121,8 +137,13 @@ html {
         gap: 1rem;
     }
     
-    .navbar-spacer {
-        display: none !important;
+    .navbar-nav-center {
+        position: static !important;
+        transform: none !important;
+        left: auto !important;
+        flex: none;
+        margin: 0;
+        width: 100%;
     }
     
     .navbar-nav {
@@ -140,6 +161,35 @@ html {
     
     .navbar-nav .nav-link:last-child {
         border-bottom: none;
+    }
+    
+    .navbar-collapse .navbar-actions {
+        position: static !important;
+        right: auto !important;
+        top: auto !important;
+        transform: none !important;
+        width: 100% !important;
+        justify-content: center !important;
+        flex-direction: column !important;
+        gap: 1rem !important;
+        margin-left: 0 !important;
+        margin-right: 0 !important;
+        padding-right: 0 !important;
+        z-index: auto !important;
+    }
+    
+    .btn-book-appointment {
+        width: 100%;
+        text-align: center;
+    }
+    
+    /* Section yang diprioritaskan di mobile */
+    .prioritized-section-above-hero {
+        padding-top: 66px !important; /* Space untuk navbar mobile */
+    }
+    
+    .prioritized-section-above-hero::before {
+        top: 66px !important; /* Mulai tepat di bawah navbar mobile */
     }
     
     .hero-section,
@@ -168,25 +218,190 @@ html {
 .navbar {
     transition: all 0.3s ease;
     z-index: 1030 !important;
+    padding: 1rem 0;
 }
 
-/* Navbar center menu styling */
+/* Brand Title Styling */
+.navbar-brand.brand-title {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #0d6efd !important;
+    text-decoration: none;
+    margin-right: 2rem;
+}
+
+.navbar-brand.brand-title:hover {
+    color: #0a58ca !important;
+}
+
+/* Navbar menu styling */
 .navbar-nav {
     display: flex;
     flex-direction: row;
     align-items: center;
-    gap: 1rem;
+    gap: 0.25rem;
+}
+
+/* Center menu styling - menu tetap di tengah (center absolut) */
+.navbar-nav-center {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 0.25rem;
+}
+
+/* Actions di pojok kanan - Pojok kanan absolut */
+.navbar-collapse .w-100 .navbar-actions,
+#navbarNav .navbar-actions,
+.navbar-actions {
+    position: absolute !important;
+    right: 0 !important;
+    top: 50% !important;
+    transform: translateY(-50%) !important;
+    display: flex !important;
+    align-items: center !important;
+    gap: 0.75rem !important;
+    flex-shrink: 0 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    z-index: 10 !important;
+    width: auto !important;
+    max-width: none !important;
+}
+
+/* Pastikan parent container tidak overflow hidden dan full width */
+.navbar-collapse {
+    overflow: visible !important;
+}
+
+.navbar-collapse .w-100.position-relative {
+    overflow: visible !important;
+    padding-right: 0 !important;
+    margin-right: 0 !important;
+    min-height: 40px !important;
+}
+
+/* Override Bootstrap container padding untuk navbar actions */
+.navbar .container {
+    position: relative;
+}
+
+/* Desktop: Pastikan actions di pojok kanan container */
+@media (min-width: 992px) {
+    .navbar-collapse .w-100 .navbar-actions,
+    #navbarNav .navbar-actions,
+    .navbar-actions {
+        right: -15px !important; /* Kompensasi padding container Bootstrap (default 15px) */
+    }
+}
+
+/* Tablet dan lebih besar */
+@media (min-width: 768px) {
+    .navbar-collapse .w-100 .navbar-actions,
+    #navbarNav .navbar-actions,
+    .navbar-actions {
+        right: -12px !important;
+    }
 }
 
 .navbar-nav .nav-link {
     padding: 0.5rem 1rem;
     font-weight: 500;
     transition: all 0.3s ease;
+    color: #6c757d !important;
+    font-size: 0.95rem;
 }
 
-.navbar-nav .nav-link:hover {
+.navbar-nav .nav-link:hover,
+.navbar-nav .nav-link:focus {
     color: #0d6efd !important;
+}
+
+.navbar-nav .nav-link.active {
+    color: #0d6efd !important;
+}
+
+/* Language Switcher Styling */
+.language-switcher-wrapper {
+    position: relative;
+}
+
+.btn-language-switcher {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.5rem 1rem;
+    background: white;
+    border: 1px solid #b0d4f1;
+    border-radius: 6px;
+    color: #495057;
+    font-size: 0.9rem;
+    transition: all 0.3s ease;
+    box-shadow: none;
+}
+
+.btn-language-switcher:hover,
+.btn-language-switcher:focus,
+.btn-language-switcher.show {
+    background: white;
+    border-color: #86b7fe;
+    color: #495057;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.btn-language-switcher .fa-globe {
+    font-size: 0.9rem;
+}
+
+.btn-language-switcher .lang-code {
+    font-weight: 500;
+}
+
+.btn-language-switcher .fa-chevron-down {
+    font-size: 0.75rem;
+}
+
+/* Language Dropdown Menu */
+.language-dropdown {
+    min-width: 180px;
+    border: 1px solid #dee2e6;
+    border-radius: 6px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    padding: 0.5rem 0;
+    margin-top: 0.5rem;
+}
+
+.language-dropdown .dropdown-item {
+    padding: 0.75rem 1.25rem;
+    color: #6c757d;
+    transition: all 0.2s ease;
+}
+
+.language-dropdown .dropdown-item:hover {
+    background-color: #f8f9fa;
+    color: #0d6efd;
+}
+
+/* Book Appointment Button */
+.btn-book-appointment {
+    padding: 0.6rem 1.5rem;
+    font-weight: 600;
+    border-radius: 6px;
+    background-color: #0d6efd;
+    border: none;
+    color: white;
+    transition: all 0.3s ease;
+    white-space: nowrap;
+}
+
+.btn-book-appointment:hover {
+    background-color: #0a58ca;
+    color: white;
     transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(13, 110, 253, 0.3);
 }
 
 /* Fixed navbar styling */
@@ -245,9 +460,232 @@ html {
 }
 
 /* --- STYLING UNTUK MODAL KUESIONER --- */
-#questionnaireModal .modal-content {
-    border-radius: 15px;
+/* ===== QUESTIONNAIRE MODAL STYLING ===== */
+.questionnaire-modal-content {
+    border-radius: 20px !important;
+    border: none !important;
+    position: relative;
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+/* Close Button */
+.questionnaire-close-btn {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    z-index: 10;
+    background: none;
     border: none;
+    font-size: 1.5rem;
+    opacity: 0.7;
+    cursor: pointer;
+    width: 30px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.questionnaire-close-btn:hover {
+    opacity: 1;
+}
+
+/* Logo LMC */
+.questionnaire-logo-container {
+    display: flex;
+    justify-content: center;
+    padding: 2rem 0 1rem;
+}
+
+.questionnaire-logo-img {
+    height: 120px;
+    width: auto;
+    object-fit: contain;
+    max-width: 300px;
+}
+
+/* Title */
+.questionnaire-title {
+    font-size: 1.5rem;
+    color: #212529;
+    margin-top: 0;
+}
+
+/* Subtitle */
+.questionnaire-subtitle {
+    font-size: 1rem;
+    color: #6c757d;
+}
+
+/* Language Switcher */
+.questionnaire-language-switcher-wrapper {
+    display: flex;
+    justify-content: center;
+}
+
+.questionnaire-lang-btn {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.5rem 1rem;
+    background: #f8f9fa;
+    border: 1px solid #dee2e6;
+    border-radius: 8px;
+    color: #495057;
+    font-size: 0.9rem;
+    transition: all 0.3s ease;
+}
+
+.questionnaire-lang-btn:hover,
+.questionnaire-lang-btn:focus {
+    background: #e9ecef;
+    border-color: #adb5bd;
+    color: #495057;
+}
+
+.questionnaire-lang-btn .fa-globe {
+    color: #0d6efd;
+}
+
+.questionnaire-lang-dropdown {
+    min-width: 180px;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+
+/* Buttons Grid 2x2 */
+.questionnaire-buttons-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+    margin-top: 1rem;
+}
+
+.questionnaire-btn {
+    background: #f8f9fa;
+    border: 2px solid #e9ecef;
+    border-radius: 15px;
+    padding: 1.5rem 1rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 0.75rem;
+    transition: all 0.3s ease;
+    cursor: pointer;
+    min-height: 140px;
+}
+
+.questionnaire-btn:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 16px rgba(0,0,0,0.15);
+}
+
+.questionnaire-btn-icon {
+    font-size: 2.5rem;
+    margin-bottom: 0.5rem;
+}
+
+.questionnaire-btn-text {
+    font-size: 0.95rem;
+    font-weight: 500;
+    color: #212529;
+    text-align: center;
+}
+
+/* Button Colors */
+.questionnaire-btn-contact {
+    border-color: #0d6efd;
+}
+
+.questionnaire-btn-contact:hover {
+    background: #e7f1ff;
+    border-color: #0d6efd;
+}
+
+.questionnaire-btn-contact .questionnaire-btn-icon {
+    color: #0d6efd;
+}
+
+.questionnaire-btn-location {
+    border-color: #28a745;
+}
+
+.questionnaire-btn-location:hover {
+    background: #e8f5e9;
+    border-color: #28a745;
+}
+
+.questionnaire-btn-location .questionnaire-btn-icon {
+    color: #28a745;
+}
+
+.questionnaire-btn-info {
+    border-color: #0d6efd;
+}
+
+.questionnaire-btn-info:hover {
+    background: #e7f1ff;
+    border-color: #0d6efd;
+}
+
+.questionnaire-btn-info .questionnaire-btn-icon {
+    color: #0d6efd;
+}
+
+.questionnaire-btn-services {
+    border-color: #dc3545;
+}
+
+.questionnaire-btn-services:hover {
+    background: #ffeaea;
+    border-color: #dc3545;
+}
+
+.questionnaire-btn-services .questionnaire-btn-icon {
+    color: #dc3545;
+}
+
+/* Skip Link */
+.questionnaire-skip-link {
+    color: #0d6efd !important;
+    text-decoration: underline !important;
+    font-weight: 500;
+    padding: 0.5rem 1rem;
+    border: none;
+    background: none;
+}
+
+.questionnaire-skip-link:hover {
+    color: #0a58ca !important;
+    text-decoration: underline !important;
+}
+
+/* Mobile Responsive */
+@media (max-width: 576px) {
+    .questionnaire-buttons-grid {
+        grid-template-columns: 1fr;
+        gap: 0.75rem;
+    }
+    
+    .questionnaire-btn {
+        min-height: 120px;
+        padding: 1.25rem 1rem;
+    }
+    
+    .questionnaire-btn-icon {
+        font-size: 2rem;
+    }
+    
+    .questionnaire-title {
+        font-size: 1.25rem;
+    }
+    
+    .questionnaire-logo-img {
+        height: 90px;
+        max-width: 250px;
+    }
 }
 
 /* --- STYLING UNTUK HIGHLIGHT SECTION SETELAH KUESIONER --- */
@@ -256,94 +694,6 @@ html {
     box-shadow: 0 0 20px rgba(13, 110, 253, 0.3);
     border: 2px solid #0d6efd;
     border-radius: 8px;
-}
-
-
-
-
-
-/* Smooth scroll behavior untuk semua browser */
-html {
-    scroll-behavior: smooth;
-}
-
-#questionnaireModal .modal-body {
-    padding: 2rem;
-}
-
-#questionnaireModal .btn-primary {
-    border-radius: 10px;
-    font-weight: 500;
-    transition: all 0.3s ease;
-}
-
-#questionnaireModal .btn-primary:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(13, 110, 253, 0.3);
-}
-
-#questionnaireModal .btn-link {
-    color: #6c757d;
-    text-decoration: none;
-    font-weight: 500;
-}
-
-#questionnaireModal .btn-link:hover {
-    color: #0d6efd;
-    text-decoration: underline;
-}
-
-/* Language Switcher Styling */
-.language-switcher {
-    position: relative;
-}
-
-/* Questionnaire Language Switcher - sama seperti navbar */
-#questionnaire-language-switcher {
-    min-width: 160px;
-    border: 1px solid #dee2e6;
-    border-radius: 6px;
-    background: white;
-    font-size: 0.875rem;
-    padding: 0.375rem 0.75rem;
-    transition: all 0.3s ease;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
-}
-
-
-
-#questionnaire-language-switcher:focus {
-    border-color: #0d6efd;
-    box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.25);
-}
-
-#questionnaire-language-switcher:hover {
-    border-color: #adb5bd;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-}
-
-/* Modal header styling */
-#questionnaireModal .modal-header {
-    background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
-    border-bottom: 1px solid #dee2e6;
-    padding: 1rem 1.5rem 0.5rem;
-    width: 100%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
-#questionnaireModal .modal-header .language-switcher {
-    margin: 0;
-    display: flex;
-    justify-content: center;
-    width: auto;
-}
-
-/* Styling untuk option dalam dropdown */
-#questionnaire-language-switcher option {
-    padding: 0.5rem;
-    font-size: 0.875rem;
 }
 
 /* FAQ Section Styling */
@@ -437,8 +787,10 @@ html {
     border-bottom: 4px solid #0d6efd;
     box-shadow: 0 4px 12px rgba(13, 110, 253, 0.15);
     animation: slideDown 0.6s ease-out;
-    z-index: 10;
+    z-index: 100; /* Di atas navbar untuk memastikan visible */
+    margin-top: 0;
     margin-bottom: 0;
+    padding-top: 76px; /* Space untuk navbar fixed-top */
     order: -1; /* Pastikan berada di urutan paling atas */
 }
 
@@ -456,7 +808,7 @@ html {
 .prioritized-section-above-hero::before {
     content: '⭐ Section yang Direkomendasikan';
     position: absolute;
-    top: 0;
+    top: 76px; /* Mulai tepat di bawah navbar */
     left: 0;
     right: 0;
     background: linear-gradient(90deg, #0d6efd, #0056b3);
@@ -466,10 +818,12 @@ html {
     font-size: 0.875rem;
     font-weight: 600;
     z-index: 1;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 .prioritized-section-above-hero .container {
-    padding-top: 3rem;
+    padding-top: 2rem; /* Kurangi padding karena sudah ada padding-top di parent */
+    padding-bottom: 2rem;
 }
 
 .prioritized-section-above-hero .section-title {

@@ -48,13 +48,13 @@ return [
     'readMore' => 'Read More',
 
     // Questionnaire
-    'questionnaireTitle' => 'What are you looking for?',
-    'questionnaireSubtitle' => 'Please select one option to help us serve you better',
-    'q1' => 'I need official contact information',
-    'q2' => 'I want to know the location',
-    'q3' => 'I want to know information about you',
-    'q4' => 'I am interested in your services',
-    'skipButton' => 'Skip',
+    'questionnaireTitle' => 'Welcome to Legian Medical Clinic!',
+    'questionnaireSubtitle' => 'To help you faster, what information are you looking for?',
+    'q1' => 'Official Contact',
+    'q2' => 'Clinic Location',
+    'q3' => 'Clinic Information',
+    'q4' => 'Our Services',
+    'skipButton' => 'Skip & see all',
     'sectionPrioritized' => 'Section prioritized based on your questionnaire answer',
 
 

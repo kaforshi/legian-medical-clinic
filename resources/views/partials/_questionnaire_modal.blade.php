@@ -1,36 +1,77 @@
 <div class="modal fade" id="questionnaireModal" tabindex="-1" aria-labelledby="questionnaireModalLabel" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
-    <div class="modal-dialog modal-dialog-centered modal-lg">
-        <div class="modal-content shadow-lg border-0">
-            {{-- Language Switcher Header --}}
-            <div class="modal-header border-0 pb-0 d-flex justify-content-center">
-                <div class="language-switcher">
-                    <select id="questionnaire-language-switcher" class="form-select form-select-sm" onchange="changeLanguage(this.value)">
-                        <option value="id" {{ app()->getLocale() === 'id' ? 'selected' : '' }}>
-                            🇮🇩 Indonesia (ID)
-                        </option>
-                        <option value="en" {{ app()->getLocale() === 'en' ? 'selected' : '' }}>
-                            🇺🇸 English (EN)
-                        </option>
-                    </select>
-                </div>
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content questionnaire-modal-content shadow-lg border-0">
+            {{-- Close Button --}}
+            <button type="button" class="btn-close questionnaire-close-btn" data-bs-dismiss="modal" aria-label="Close"></button>
+            
+            {{-- Logo LMC --}}
+            <div class="questionnaire-logo-container">
+                <img src="{{ asset('images/lmc.png') }}" alt="Legian Medical Clinic Logo" class="questionnaire-logo-img">
             </div>
-            <div class="modal-body p-4 p-md-5 text-center">
-                <h2 class="modal-title fw-bold mb-3" id="questionnaireModalLabel">{{ __('messages.questionnaireTitle') }}</h2>
-                <p class="text-muted mb-4">{{ __('messages.questionnaireSubtitle') }}</p>
+            
+            <div class="modal-body p-4 p-md-5">
+                {{-- Title --}}
+                <h2 class="questionnaire-title text-center fw-bold mb-3" id="questionnaireModalLabel">{{ __('messages.questionnaireTitle') }}</h2>
+                
+                {{-- Subtitle --}}
+                <p class="questionnaire-subtitle text-center text-muted mb-4">{{ __('messages.questionnaireSubtitle') }}</p>
+                
+                {{-- Language Switcher --}}
+                <div class="questionnaire-language-switcher-wrapper mb-4">
+                    <button class="btn questionnaire-lang-btn" type="button" id="questionnaire-lang-switcher-btn" data-bs-toggle="dropdown" aria-expanded="false">
+                        <i class="fas fa-globe"></i>
+                        <span class="questionnaire-lang-text">{{ app()->getLocale() === 'id' ? 'Indonesia (ID)' : 'English (EN)' }}</span>
+                    </button>
+                    <ul class="dropdown-menu dropdown-menu-end questionnaire-lang-dropdown" aria-labelledby="questionnaire-lang-switcher-btn">
+                        <li>
+                            <a class="dropdown-item" href="#" onclick="changeLanguage('id'); return false;">
+                                <span>Indonesia (ID)</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a class="dropdown-item" href="#" onclick="changeLanguage('en'); return false;">
+                                <span>English (EN)</span>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+                
+                {{-- Question Buttons Grid 2x2 --}}
                 <form id="questionnaireForm" method="POST" action="{{ route('questionnaire.submit') }}">
                     @csrf
-                    <div class="d-grid gap-3">
-                        {{-- Tombol untuk kontak resmi --}}
-                        <button type="button" name="section" value="contact" class="btn btn-primary btn-lg text-center p-3 questionnaire-btn">{{ __('messages.q1') }}</button>
-                        {{-- Tombol untuk lokasi --}}
-                        <button type="button" name="section" value="contact" class="btn btn-primary btn-lg text-center p-3 questionnaire-btn">{{ __('messages.q2') }}</button>
-                        {{-- Tombol untuk informasi --}}
-                        <button type="button" name="section" value="about" class="btn btn-primary btn-lg text-center p-3 questionnaire-btn">{{ __('messages.q3') }}</button>
-                        {{-- Tombol untuk layanan --}}
-                        <button type="button" name="section" value="services" class="btn btn-primary btn-lg text-center p-3 questionnaire-btn">{{ __('messages.q4') }}</button>
+                    <div class="questionnaire-buttons-grid">
+                        {{-- Kontak Resmi --}}
+                        <button type="button" name="section" value="contact" class="questionnaire-btn questionnaire-btn-contact">
+                            <i class="fas fa-phone questionnaire-btn-icon"></i>
+                            <span class="questionnaire-btn-text">{{ __('messages.q1') }}</span>
+                        </button>
+                        
+                        {{-- Lokasi Klinik --}}
+                        <button type="button" name="section" value="contact" class="questionnaire-btn questionnaire-btn-location">
+                            <i class="fas fa-map-marker-alt questionnaire-btn-icon"></i>
+                            <span class="questionnaire-btn-text">{{ __('messages.q2') }}</span>
+                        </button>
+                        
+                        {{-- Informasi Klinik --}}
+                        <button type="button" name="section" value="about" class="questionnaire-btn questionnaire-btn-info">
+                            <i class="fas fa-info-circle questionnaire-btn-icon"></i>
+                            <span class="questionnaire-btn-text">{{ __('messages.q3') }}</span>
+                        </button>
+                        
+                        {{-- Layanan Kami --}}
+                        <button type="button" name="section" value="services" class="questionnaire-btn questionnaire-btn-services">
+                            <i class="fas fa-heartbeat questionnaire-btn-icon"></i>
+                            <span class="questionnaire-btn-text">{{ __('messages.q4') }}</span>
+                        </button>
                     </div>
                 </form>
-                <button type="button" class="btn btn-link mt-4" data-bs-dismiss="modal">{{ __('messages.skipButton') }}</button>
+                
+                {{-- Skip Link --}}
+                <div class="text-center mt-4">
+                    <button type="button" class="btn btn-link questionnaire-skip-link" data-bs-dismiss="modal">
+                        {{ __('messages.skipButton') }}
+                    </button>
+                </div>
             </div>
         </div>
     </div>
@@ -39,37 +80,54 @@
 {{-- JavaScript untuk language switcher --}}
 <script>
 function changeLanguage(lang) {
-    // Update dropdown selection
-    const dropdown = document.getElementById('questionnaire-language-switcher');
-    if (dropdown) {
-        dropdown.value = lang;
+    // Update language button text immediately for better UX
+    const langTextSpan = document.querySelector('.questionnaire-lang-text');
+    if (langTextSpan) {
+        langTextSpan.textContent = lang === 'id' ? 'Indonesia (ID)' : 'English (EN)';
     }
     
-    // Store language preference in localStorage
-    localStorage.setItem('preferredLanguage', lang);
+    // Update language switcher di navbar juga
+    const navbarLangCode = document.querySelector('.btn-language-switcher .lang-code');
+    if (navbarLangCode) {
+        navbarLangCode.textContent = lang.toUpperCase();
+    }
     
-    // Send AJAX request to change language
-    fetch(`/lang/${lang}`, {
-        method: 'GET',
-        headers: {
-            'X-Requested-With': 'XMLHttpRequest',
-        }
-    })
-    .then(response => response.json())
-    .then(data => {
-        if (data.success) {
-            // Reload modal content with new language
+    // Panggil changeWebsiteLanguage untuk mengubah bahasa seluruh website
+    // Fungsi ini akan mengupdate semua konten termasuk modal kuesioner
+    if (typeof changeWebsiteLanguage === 'function') {
+        changeWebsiteLanguage(lang).catch(error => {
+            console.error('Error changing website language:', error);
+            // Fallback: update modal content only
             reloadModalContent(lang);
-            
-            // Show success message
-            showLanguageChangeMessage(lang);
-        }
-    })
-    .catch(error => {
-        console.error('Error changing language:', error);
+        });
+    } else {
+        // Fallback jika changeWebsiteLanguage belum tersedia
+        // Store language preference in localStorage
+        localStorage.setItem('preferredLanguage', lang);
+        
+        // Send AJAX request to change language
+        fetch(`/lang/${lang}`, {
+            method: 'GET',
+            headers: {
+                'X-Requested-With': 'XMLHttpRequest',
+            }
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                // Update document lang attribute
+                document.documentElement.lang = lang;
+                
+                // Reload modal content with new language
+                reloadModalContent(lang);
+            }
+        })
+        .catch(error => {
+            console.error('Error changing language:', error);
             // Fallback: update content without server response
             reloadModalContent(lang);
-    });
+        });
+    }
 }
 
 function showLanguageChangeMessage(lang) {
@@ -104,45 +162,54 @@ function reloadModalContent(lang) {
     
     // Update title
     const titleElement = modal.querySelector('#questionnaireModalLabel');
-    titleElement.textContent = getLocalizedText('questionnaireTitle', lang);
+    if (titleElement) {
+        titleElement.textContent = getLocalizedText('questionnaireTitle', lang);
+    }
     
     // Update subtitle
-    const subtitleElement = modal.querySelector('.modal-body .text-muted');
-    subtitleElement.textContent = getLocalizedText('questionnaireSubtitle', lang);
+    const subtitleElement = modal.querySelector('.questionnaire-subtitle');
+    if (subtitleElement) {
+        subtitleElement.textContent = getLocalizedText('questionnaireSubtitle', lang);
+    }
     
-    // Update buttons
-    const buttons = modal.querySelectorAll('button[name="section"]');
+    // Update buttons text (keep icons, only update text)
+    const buttons = modal.querySelectorAll('.questionnaire-btn');
     const buttonTexts = ['q1', 'q2', 'q3', 'q4'];
     
     buttons.forEach((button, index) => {
-        button.textContent = getLocalizedText(buttonTexts[index], lang);
+        const textSpan = button.querySelector('.questionnaire-btn-text');
+        if (textSpan) {
+            textSpan.textContent = getLocalizedText(buttonTexts[index], lang);
+        }
     });
     
     // Update skip button
-    const skipButton = modal.querySelector('.btn-link');
-    skipButton.textContent = getLocalizedText('skipButton', lang);
+    const skipButton = modal.querySelector('.questionnaire-skip-link');
+    if (skipButton) {
+        skipButton.textContent = getLocalizedText('skipButton', lang);
+    }
 }
 
 function getLocalizedText(key, lang) {
     // Localized text mapping
     const texts = {
         'id': {
-            'questionnaireTitle': 'Apa yang Anda cari?',
-            'questionnaireSubtitle': 'Silakan pilih satu opsi untuk membantu kami melayani Anda dengan lebih baik',
-            'q1': 'Saya membutuhkan informasi kontak resmi',
-            'q2': 'Saya ingin mengetahui lokasi',
-            'q3': 'Saya ingin mengetahui informasi tentang Anda',
-            'q4': 'Saya tertarik dengan layanan Anda',
-            'skipButton': 'Lewati'
+            'questionnaireTitle': 'Selamat Datang di Legian Medical Clinic!',
+            'questionnaireSubtitle': 'Untuk membantu Anda lebih cepat, informasi apa yang sedang Anda cari?',
+            'q1': 'Kontak Resmi',
+            'q2': 'Lokasi Klinik',
+            'q3': 'Informasi Klinik',
+            'q4': 'Layanan Kami',
+            'skipButton': 'Lewati & lihat semua'
         },
         'en': {
-            'questionnaireTitle': 'What are you looking for?',
-            'questionnaireSubtitle': 'Please select one option to help us serve you better',
-            'q1': 'I need official contact information',
-            'q2': 'I want to know the location',
-            'q3': 'I want to know information about you',
-            'q4': 'I am interested in your services',
-            'skipButton': 'Skip'
+            'questionnaireTitle': 'Welcome to Legian Medical Clinic!',
+            'questionnaireSubtitle': 'To help you faster, what information are you looking for?',
+            'q1': 'Official Contact',
+            'q2': 'Clinic Location',
+            'q3': 'Clinic Information',
+            'q4': 'Our Services',
+            'skipButton': 'Skip & see all'
         }
     };
     
@@ -158,9 +225,13 @@ document.addEventListener('DOMContentLoaded', function() {
             const button = this;
             
             // Show loading
-            const originalText = button.innerHTML;
+            const originalHTML = button.innerHTML;
+            const textSpan = button.querySelector('.questionnaire-btn-text');
+            const originalText = textSpan ? textSpan.textContent : '';
             button.disabled = true;
-            button.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span>Memproses...';
+            if (textSpan) {
+                textSpan.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span>Memproses...';
+            }
             
             // Submit via AJAX
             axios.post('{{ route("questionnaire.submit") }}', {
@@ -194,7 +265,10 @@ document.addEventListener('DOMContentLoaded', function() {
                     }, 800);
                 } else {
                     button.disabled = false;
-                    button.innerHTML = originalText;
+                    const textSpan = button.querySelector('.questionnaire-btn-text');
+                    if (textSpan) {
+                        textSpan.textContent = originalText;
+                    }
                     if (typeof showToast === 'function') {
                         showToast('Terjadi kesalahan saat memproses kuesioner.', 'error');
                     }
@@ -203,7 +277,10 @@ document.addEventListener('DOMContentLoaded', function() {
             .catch(error => {
                 console.error('Error submitting questionnaire:', error);
                 button.disabled = false;
-                button.innerHTML = originalText;
+                const textSpan = button.querySelector('.questionnaire-btn-text');
+                if (textSpan) {
+                    textSpan.textContent = originalText;
+                }
                 if (typeof showToast === 'function') {
                     showToast('Terjadi kesalahan saat memproses kuesioner.', 'error');
                 } else {
@@ -216,10 +293,10 @@ document.addEventListener('DOMContentLoaded', function() {
     // Restore language preference when modal opens
     const savedLang = localStorage.getItem('preferredLanguage');
     if (savedLang && (savedLang === 'id' || savedLang === 'en')) {
-        // Update dropdown selection
-        const dropdown = document.getElementById('questionnaire-language-switcher');
-        if (dropdown) {
-            dropdown.value = savedLang;
+        // Update language button text
+        const langTextSpan = document.querySelector('.questionnaire-lang-text');
+        if (langTextSpan) {
+            langTextSpan.textContent = savedLang === 'id' ? 'Indonesia (ID)' : 'English (EN)';
         }
         
         // Update content if different from current locale

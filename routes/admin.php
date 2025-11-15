@@ -7,6 +7,7 @@ use App\Http\Controllers\Admin\DoctorController;
 use App\Http\Controllers\Admin\ServiceController;
 use App\Http\Controllers\Admin\ContentController;
 use App\Http\Controllers\Admin\FaqController;
+use App\Http\Controllers\Admin\HeroSlideController;
 use App\Http\Controllers\Admin\AdminUserController;
 use App\Http\Controllers\Admin\AccountController;
 
@@ -35,6 +36,9 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.'], function () {
         
         // Service management
         Route::resource('services', ServiceController::class)->except(['show']);
+        
+        // Hero slide management
+        Route::resource('hero-slides', HeroSlideController::class)->except(['show']);
         
                         // Content management
                 Route::get('content', [ContentController::class, 'index'])->name('content.index');

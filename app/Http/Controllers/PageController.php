@@ -7,6 +7,7 @@ use App\Models\Doctor;
 use App\Models\Service;
 use App\Models\ContentPage;
 use App\Models\Faq;
+use App\Models\HeroSlide;
 
 
 class PageController extends Controller
@@ -48,6 +49,7 @@ class PageController extends Controller
         $data = [
             'sections' => $sections,
             'prioritizedSection' => $prioritizedSection,
+            'heroSlides' => HeroSlide::active()->ordered()->get(),
             'doctors' => Doctor::where('is_active', true)->get(),
             'services' => Service::where('is_active', true)->orderBy('sort_order')->get(),
             'faqs' => Faq::active()->ordered()->get(),
@@ -130,8 +132,13 @@ class PageController extends Controller
 
         try {
             // Get all content in the requested locale
+            $messages = $this->getMessages($locale);
+            
+            // Debug: Log messages untuk memastikan bookAppointment ada
+            \Log::debug('Messages for locale ' . $locale . ':', $messages);
+            
             $data = [
-                'messages' => $this->getMessages($locale),
+                'messages' => $messages,
                 'doctors' => Doctor::where('is_active', true)->get()->map(function($doctor) use ($locale) {
                     // Temporarily set locale to get correct localized values
                     $oldLocale = app()->getLocale();
@@ -188,6 +195,30 @@ class PageController extends Controller
                     ];
                 }),
                 'content' => $this->getContentPagesForApi($locale),
+                'heroSlides' => HeroSlide::active()->ordered()->get()->map(function($slide) use ($locale) {
+                    // Temporarily set locale to get correct localized values
+                    $oldLocale = app()->getLocale();
+                    app()->setLocale($locale);
+                    $localizedTitle = $slide->localized_title;
+                    $localizedSubtitle = $slide->localized_subtitle;
+                    $localizedButtonText = $slide->localized_button_text;
+                    app()->setLocale($oldLocale);
+                    
+                    return [
+                        'id' => $slide->id,
+                        'title_id' => $slide->title_id,
+                        'title_en' => $slide->title_en,
+                        'localized_title' => $localizedTitle,
+                        'subtitle_id' => $slide->subtitle_id,
+                        'subtitle_en' => $slide->subtitle_en,
+                        'localized_subtitle' => $localizedSubtitle,
+                        'image_url' => $slide->image_url,
+                        'button_text_id' => $slide->button_text_id,
+                        'button_text_en' => $slide->button_text_en,
+                        'localized_button_text' => $localizedButtonText,
+                        'button_link' => $slide->button_link,
+                    ];
+                }),
             ];
 
             // Restore old locale
@@ -208,10 +239,36 @@ class PageController extends Controller
 
     private function getMessages($locale)
     {
-        $messagesPath = lang_path($locale . '/messages.php');
-        if (file_exists($messagesPath)) {
-            return require $messagesPath;
+        // Prioritaskan resources/lang/ karena file lebih lengkap dengan struktur data
+        $messagesPath = resource_path('lang/' . $locale . '/messages.php');
+        
+        // Fallback ke lang/ directory jika tidak ada di resources/lang/
+        if (!file_exists($messagesPath)) {
+            $messagesPath = lang_path($locale . '/messages.php');
         }
+        
+        if (file_exists($messagesPath)) {
+            $messages = require $messagesPath;
+            
+            // Pastikan bookAppointment ada, jika tidak ada coba ambil dari lang/ directory
+            if (!isset($messages['bookAppointment'])) {
+                $fallbackPath = lang_path($locale . '/messages.php');
+                if (file_exists($fallbackPath) && $fallbackPath !== $messagesPath) {
+                    $fallbackMessages = require $fallbackPath;
+                    if (isset($fallbackMessages['bookAppointment'])) {
+                        $messages['bookAppointment'] = $fallbackMessages['bookAppointment'];
+                    }
+                }
+                
+                if (!isset($messages['bookAppointment'])) {
+                    \Log::warning('bookAppointment not found in messages for locale: ' . $locale);
+                }
+            }
+            
+            return $messages;
+        }
+        
+        \Log::warning('Messages file not found for locale: ' . $locale . ' at path: ' . $messagesPath);
         return [];
     }
 

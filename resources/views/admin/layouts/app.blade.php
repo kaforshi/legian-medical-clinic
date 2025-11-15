@@ -427,6 +427,13 @@
                 </li>
                 
                 <li class="nav-item">
+                    <a href="{{ route('admin.hero-slides.index') }}" class="nav-link {{ request()->routeIs('admin.hero-slides.*') ? 'active' : '' }}">
+                        <i class="fas fa-images"></i>
+                        <span>Hero Slides</span>
+                    </a>
+                </li>
+                
+                <li class="nav-item">
                     <a href="{{ route('admin.content.index') }}" class="nav-link {{ request()->routeIs('admin.content.*') ? 'active' : '' }}">
                         <i class="fas fa-edit"></i>
                         <span>Manajemen Konten</span>
