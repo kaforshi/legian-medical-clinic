@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ERD - Legian Medical Clinic</title>
+    <script type="module">
+        import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';
+        mermaid.initialize({ startOnLoad: true, theme: 'default' });
+    </script>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            background-color: white;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        h1 {
+            color: #2c3e50;
+            border-bottom: 3px solid #3498db;
+            padding-bottom: 10px;
+        }
+        h2 {
+            color: #34495e;
+            margin-top: 30px;
+        }
+        .mermaid {
+            text-align: center;
+            margin: 30px 0;
+            background-color: #fafafa;
+            padding: 20px;
+            border-radius: 4px;
+        }
+        .info {
+            background-color: #e8f4f8;
+            padding: 15px;
+            border-left: 4px solid #3498db;
+            margin: 20px 0;
+            border-radius: 4px;
+        }
+        .legend {
+            background-color: #fff9e6;
+            padding: 15px;
+            border-left: 4px solid #f39c12;
+            margin: 20px 0;
+            border-radius: 4px;
+        }
+        code {
+            background-color: #f4f4f4;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-family: 'Courier New', monospace;
+        }
+        ul {
+            line-height: 1.8;
+        }
+        .footer {
+            text-align: center;
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 1px solid #ddd;
+            color: #7f8c8d;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Entity Relationship Diagram (ERD)</h1>
+        <h2>Sistem Website Legian Medical Clinic</h2>
+        
+        <div class="info">
+            <strong>📊 Format:</strong> Mermaid ER Diagram<br>
+            <strong>🔄 Cara Update:</strong> Edit file <code>ERD_MERMAID.md</code> atau file HTML ini
+        </div>
+
+        <div class="mermaid">
+erDiagram
+    ADMIN_USERS {
+        bigint id PK "Primary Key"
+        string name "Nama Admin"
+        string email UK "Email Unik"
+        string username UK "Username Unik"
+        string password "Password Terenkripsi"
+        enum role "super_admin, admin"
+        boolean is_active "Status Aktif"
+        timestamp last_login_at "Waktu Login Terakhir"
+        timestamp created_at "Waktu Dibuat"
+        timestamp updated_at "Waktu Diupdate"
+    }
+    
+    DOCTORS {
+        bigint id PK "Primary Key"
+        string name "Nama Dokter"
+        string name_id "Nama (Indonesia)"
+        string name_en "Nama (Inggris)"
+        string specialization "Spesialisasi"
+        string specialization_id "Spesialisasi (Indonesia)"
+        string specialization_en "Spesialisasi (Inggris)"
+        text description "Deskripsi"
+        string photo "Path Foto"
+        string email "Email Dokter"
+        string phone "Nomor Telepon"
+        string education "Riwayat Pendidikan"
+        text experience "Pengalaman"
+        boolean is_active "Status Aktif"
+        timestamp created_at "Waktu Dibuat"
+        timestamp updated_at "Waktu Diupdate"
+    }
+    
+    SERVICES {
+        bigint id PK "Primary Key"
+        string name "Nama Layanan"
+        string name_id "Nama (Indonesia)"
+        string name_en "Nama (Inggris)"
+        text description "Deskripsi"
+        text description_id "Deskripsi (Indonesia)"
+        text description_en "Deskripsi (Inggris)"
+        string icon "Path Icon"
+        decimal price "Harga"
+        boolean is_active "Status Aktif"
+        integer sort_order "Urutan Tampil"
+        timestamp created_at "Waktu Dibuat"
+        timestamp updated_at "Waktu Diupdate"
+    }
+    
+    CONTENT_PAGES {
+        bigint id PK "Primary Key"
+        string page_key "Key Halaman (about_us, contact, dll)"
+        string locale "Bahasa (id, en)"
+        string title "Judul Halaman"
+        longtext content "Isi Konten"
+        json meta_data "Data Tambahan (JSON)"
+        timestamp created_at "Waktu Dibuat"
+        timestamp updated_at "Waktu Diupdate"
+    }
+    
+    FAQS {
+        bigint id PK "Primary Key"
+        text question_id "Pertanyaan (Indonesia)"
+        text question_en "Pertanyaan (Inggris)"
+        longtext answer_id "Jawaban (Indonesia)"
+        longtext answer_en "Jawaban (Inggris)"
+        string category "Kategori FAQ"
+        integer sort_order "Urutan Tampil"
+        boolean is_active "Status Aktif"
+        timestamp created_at "Waktu Dibuat"
+        timestamp updated_at "Waktu Diupdate"
+        timestamp deleted_at "Soft Delete"
+    }
+    
+    HERO_SLIDES {
+        bigint id PK "Primary Key"
+        string title_id "Judul (Indonesia)"
+        string title_en "Judul (Inggris)"
+        text subtitle_id "Subjudul (Indonesia)"
+        text subtitle_en "Subjudul (Inggris)"
+        string image "Path Gambar"
+        string button_text_id "Teks Tombol (Indonesia)"
+        string button_text_en "Teks Tombol (Inggris)"
+        string button_link "Link Tombol"
+        integer sort_order "Urutan Tampil"
+        boolean is_active "Status Aktif"
+        timestamp created_at "Waktu Dibuat"
+        timestamp updated_at "Waktu Diupdate"
+        timestamp deleted_at "Soft Delete"
+    }
+    
+    ACTIVITY_LOGS {
+        bigint id PK "Primary Key"
+        bigint admin_user_id FK "Foreign Key ke ADMIN_USERS"
+        string action "Jenis Aksi (create, update, delete, login, logout)"
+        text description "Deskripsi Aktivitas"
+        json old_values "Nilai Lama (JSON)"
+        json new_values "Nilai Baru (JSON)"
+        string ip_address "IP Address"
+        string user_agent "User Agent Browser"
+        timestamp created_at "Waktu Dibuat"
+        timestamp updated_at "Waktu Diupdate"
+    }
+    
+    SESSIONS {
+        string id PK "Primary Key (Session ID)"
+        bigint user_id "ID User (nullable, untuk admin_users)"
+        string ip_address "IP Address"
+        text user_agent "User Agent Browser"
+        longtext payload "Data Session"
+        integer last_activity "Timestamp Aktivitas Terakhir"
+    }
+
+    %% Relationships
+    ADMIN_USERS ||--o{ ACTIVITY_LOGS : "melakukan aksi"
+    ADMIN_USERS ||--o{ SESSIONS : "memiliki sesi"
+        </div>
+
+        <div class="legend">
+            <h3>📋 Legenda Relasi</h3>
+            <ul>
+                <li><code>||--o{</code> : One-to-Many (1:N) - Satu entitas memiliki banyak entitas terkait</li>
+            </ul>
+        </div>
+
+        <h2>Deskripsi Relasi</h2>
+        
+        <h3>1. ADMIN_USERS → ACTIVITY_LOGS (1:N)</h3>
+        <ul>
+            <li><strong>Relasi:</strong> "melakukan aksi"</li>
+            <li><strong>Deskripsi:</strong> Satu admin dapat melakukan banyak aktivitas</li>
+            <li><strong>Foreign Key:</strong> <code>admin_user_id</code> di tabel <code>activity_logs</code></li>
+        </ul>
+
+        <h3>2. ADMIN_USERS → SESSIONS (1:N)</h3>
+        <ul>
+            <li><strong>Relasi:</strong> "memiliki sesi"</li>
+            <li><strong>Deskripsi:</strong> Satu admin dapat memiliki banyak session</li>
+            <li><strong>Foreign Key:</strong> <code>user_id</code> di tabel <code>sessions</code> (nullable)</li>
+        </ul>
+
+        <h2>Catatan Penting</h2>
+        <ul>
+            <li><strong>Multilingual Support:</strong> DOCTORS, SERVICES, FAQS, HERO_SLIDES, dan CONTENT_PAGES mendukung multi-bahasa (Indonesia & Inggris)</li>
+            <li><strong>Soft Delete:</strong> FAQS dan HERO_SLIDES menggunakan soft delete (tidak menghapus record secara permanen)</li>
+            <li><strong>Activity Logging:</strong> Aktivitas admin dicatat dalam ACTIVITY_LOGS yang terhubung langsung dengan ADMIN_USERS</li>
+            <li><strong>Unique Constraints:</strong> 
+                <ul>
+                    <li>ADMIN_USERS: <code>email</code> dan <code>username</code> harus unik</li>
+                    <li>CONTENT_PAGES: kombinasi <code>page_key</code> dan <code>locale</code> harus unik</li>
+                </ul>
+            </li>
+        </ul>
+
+        <div class="footer">
+            <p>© 2024 Legian Medical Clinic</p>
+            <p><small>ERD dibuat dengan Mermaid.js</small></p>
+        </div>
+    </div>
+</body>
+</html>
+

@@ -19,7 +19,6 @@ erDiagram
         enum role
         boolean is_active
         timestamp last_login_at
-        string remember_token
         timestamps created_at
         timestamps updated_at
     }
@@ -124,16 +123,9 @@ erDiagram
         longtext payload
         integer last_activity
     }
-    
-    ADMIN_PASSWORD_RESET_TOKENS {
-        string email PK
-        string token
-        timestamp created_at
-    }
 
     %% Direct Relationships
     ADMIN_USERS ||--o{ ACTIVITY_LOGS : "melakukan aksi"
-    ADMIN_USERS ||--o| ADMIN_PASSWORD_RESET_TOKENS : "memiliki token reset"
     ADMIN_USERS ||--o{ SESSIONS : "memiliki sesi"
     
     %% Polymorphic Relationships (via model_type and model_id)
@@ -162,7 +154,6 @@ Tabel untuk menyimpan data admin yang memiliki akses ke admin panel.
 
 **Relasi:**
 - One-to-Many dengan ACTIVITY_LOGS
-- One-to-One dengan ADMIN_PASSWORD_RESET_TOKENS (optional)
 - One-to-Many dengan SESSIONS (optional)
 
 ---
@@ -297,29 +288,13 @@ Tabel untuk menyimpan session Laravel.
 
 ---
 
-### 9. ADMIN_PASSWORD_RESET_TOKENS
-Tabel untuk menyimpan token reset password admin.
-
-**Atribut Utama:**
-- `email`: Primary key (email admin)
-- `token`: Token reset password
-- `created_at`: Waktu pembuatan token
-
-**Relasi:**
-- One-to-One dengan ADMIN_USERS (via email)
-
----
-
 ## Tipe Relasi
 
 1. **One-to-Many (1:N)**
    - ADMIN_USERS → ACTIVITY_LOGS: Satu admin dapat melakukan banyak aktivitas
    - ADMIN_USERS → SESSIONS: Satu admin dapat memiliki banyak session
 
-2. **One-to-One (1:1)**
-   - ADMIN_USERS → ADMIN_PASSWORD_RESET_TOKENS: Satu admin memiliki satu token reset password
-
-3. **Polymorphic Relationship**
+2. **Polymorphic Relationship**
    - ACTIVITY_LOGS dapat merujuk ke berbagai entitas (DOCTORS, SERVICES, CONTENT_PAGES, FAQS, HERO_SLIDES) melalui `model_type` dan `model_id`
 
 ---

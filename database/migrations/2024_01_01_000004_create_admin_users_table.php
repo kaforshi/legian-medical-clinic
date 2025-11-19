@@ -17,7 +17,6 @@ return new class extends Migration
             $table->enum('role', ['super_admin', 'admin'])->default('admin');
             $table->boolean('is_active')->default(true);
             $table->timestamp('last_login_at')->nullable();
-            $table->rememberToken();
             $table->timestamps();
         });
     }
