@@ -43,10 +43,6 @@ class RetranslateData extends Command
         $bar->start();
 
         foreach ($doctors as $doctor) {
-            // Name tidak di-translate, set name_en sama dengan name_id
-            if ($doctor->name_id) {
-                $doctor->name_en = $doctor->name_id;
-            }
             // Translate specialization if needed
             if ($doctor->specialization_id && (empty($doctor->specialization_en) || $doctor->specialization_en === $doctor->specialization_id)) {
                 $translatedSpec = $translationService->translateToEnglish($doctor->specialization_id);

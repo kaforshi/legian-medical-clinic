@@ -150,7 +150,6 @@ class PageController extends Controller
                     return [
                         'id' => $doctor->id,
                         'name_id' => $doctor->name_id,
-                        'name_en' => $doctor->name_en,
                         'localized_name' => $localizedName,
                         'specialization_id' => $doctor->specialization_id,
                         'specialization_en' => $doctor->specialization_en,

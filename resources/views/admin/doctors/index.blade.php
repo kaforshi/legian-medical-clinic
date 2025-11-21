@@ -35,9 +35,6 @@
                             </td>
                             <td>
                                 <div class="fw-medium">{{ $doctor->name_id ?: $doctor->name ?: '-' }}</div>
-                                @if($doctor->name_en && $doctor->name_en !== $doctor->name_id)
-                                    <small class="text-muted">{{ $doctor->name_en }}</small>
-                                @endif
                             </td>
                             <td>
                                 <div>{{ $doctor->specialization_id ?: '-' }}</div>

@@ -64,7 +64,6 @@ class DoctorController extends Controller
 
             $data = [
                 'name_id' => $request->name_id,
-                'name_en' => $request->name_id, // Name tidak di-translate, tetap sama
                 'name' => $request->name_id, // Fallback for backward compatibility
                 'specialization_id' => $request->specialization_id,
                 'specialization_en' => $specializationEn, // Use translated value
@@ -206,7 +205,6 @@ class DoctorController extends Controller
             $oldValues = $doctor->toArray();
             $data = [
                 'name_id' => $request->name_id,
-                'name_en' => $request->name_id, // Name tidak di-translate, tetap sama
                 'name' => $request->name_id, // Fallback for backward compatibility
                 'specialization_id' => $request->specialization_id,
                 'specialization_en' => $specializationEn,
